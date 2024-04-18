@@ -73,7 +73,7 @@ const createLead = async(e) => {
                             <span id='leadlist' onClick={handleList}>Created Leads</span>
                         </li>
                         <li>
-                            <span onClick={handleLeads}>Closed Leads</span>
+                            <span >Closed Leads</span>
                         </li>
                         <li>
                             <span>Succesfull Leads</span>
@@ -106,12 +106,12 @@ const createLead = async(e) => {
                     }
                     {list&&
                         <div className="new-lead">
-                            <Newlead/>
+                            <Newlead handleLeads={handleLeads}/>
                         </div>
                     }
                     {leads&&
                         <div className="lead">
-                            <Leads/>
+                            <Leads />
                         </div>
                     }
                 </div>

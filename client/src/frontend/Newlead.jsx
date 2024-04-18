@@ -1,6 +1,6 @@
 import React, { useEffect,useState } from 'react'
 import '../css/newlead.css';
-const Newlead = () => {
+const Newlead = ({handleLeads}) => {
     const[newcreatedLeads,setNewcreatedLeads]=useState("");
     // const items = [
     //     {
@@ -47,15 +47,12 @@ const Newlead = () => {
         {
             Array.isArray(newcreatedLeads) && newcreatedLeads.length> 0 ?(
                 newcreatedLeads.map((leads,index) => (
-                    <div key={index} className={`list-item ${index % 2 === 0 ? 'even' : 'odd'}`}>
+                    <div key={index} className={`list-item ${index % 2 === 0 ? 'even' : 'odd'}`} onClick={handleLeads}>
                         <div>{leads.fullname}</div>
                         <div>{leads.email}</div>
                         <div>{leads.number}</div>
                         <div>{leads.requirements}</div>
-                        {/* <div className="action">
-                          <button type="button" className="action-button close">Close</button>
-                          <button type="button" className="action-button successful">Successful</button>
-                        </div> */}
+
                     </div>
                     ))
             ):(

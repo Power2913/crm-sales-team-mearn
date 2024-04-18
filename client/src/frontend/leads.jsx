@@ -21,9 +21,8 @@ function leads() {
         </form>
       </div>
       <div className="action">
-        {/* Action button to close or indicate completion of conversation */}
-        <button type="button">Close Conversation</button>
-        <button type="button">Successful Lead</button>
+        <button type="button" className="action-button close">Close</button>
+        <button type="button" className="action-button successful" >Successful</button>
       </div>
     </div>
   )
