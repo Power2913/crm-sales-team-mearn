@@ -1,0 +1,78 @@
+/* List Container */
+.list-container {
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* List Header */
+  .list-header {
+    display: flex;
+    background-color: #3498db; /* Blue */
+    color: #fff;
+    padding: 10px;
+    font-weight: bold;
+  }
+  
+  .list-header > div {
+    flex: 1;
+    text-align: center;
+  }
+  
+  /* List Items */
+  .list-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+  }
+  
+  .list-item.even {
+    background-color: #f0f9eb; /* Light shade of green */
+  }
+  
+  .list-item.odd {
+    background-color: #d4e6f1; /* Light shade of blue */
+  }
+  
+  .list-item > div {
+    flex: 1;
+    text-align: center;
+  }
+  /* Action Container */
+.action {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  /* Action Button */
+  .action-button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Close Button */
+  .action-button.close {
+    background-color: #e74c3c; /* Red */
+    color: #fff;
+  }
+  
+  .action-button.close:hover {
+    background-color: #c0392b; /* Darker shade of red on hover */
+  }
+  
+  /* Successful Button */
+  .action-button.successful {
+    background-color: #2ecc71; /* Green */
+    color: #fff;
+  }
+  
+  .action-button.successful:hover {
+    background-color: #27ae60; /* Darker shade of green on hover */
+  }
+  
