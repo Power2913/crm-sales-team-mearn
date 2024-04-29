@@ -24,6 +24,7 @@
     display: flex;
     align-items: center;
     padding: 10px;
+    cursor: pointer;
   }
   
   .list-item.even {
@@ -75,4 +76,27 @@
   .action-button.successful:hover {
     background-color: #27ae60; /* Darker shade of green on hover */
   }
-  
+  /* CSS for chat container */
+.chat {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Adjust the gap between chat messages */
+}
+
+/* CSS for sales chat messages */
+.sales-chat {
+    background-color: #f0f0f0; /* Light gray background */
+    border-radius: 10px;
+    padding: 10px 20px; /* Adjust padding as needed */
+    max-width: 70%; /* Limit the width of the chat message */
+    align-self: flex-end; /* Align sales messages to the left */
+}
+
+/* CSS for admin chat messages */
+.admin-chat {
+    background-color: #cfe2f3; /* Light blue background */
+    border-radius: 10px;
+    padding: 10px 20px; /* Adjust padding as needed */
+    max-width: 70%; /* Limit the width of the chat message */
+    align-self: flex-start; /* Align admin messages to the right */
+}

@@ -23,12 +23,20 @@ app.post('/login',(req,res)=>{
 // Create Leads
 app.post('/createlead',(req,res)=>{
     const{fullname,email,phone,requirements} = req.body;
-    const leadcheck = "SELECT * FROM new_lead WHERE email = ?";
+    const leadcheck = "SELECT * FROM new_lead WHERE email = ? AND number =?";
 
     // Insert Data into Database table new_lead
     const uniqueid = phone.toString().slice(0, -5);
     const sqlInsert = "INSERT INTO new_lead (unique_id,fullname,email,number,requirements) VALUES (?,?,?,?,?)";
-    con.query(leadcheck,[email],(err,result)=>{
+    // Create Table for Client
+    const client_table = uniqueid;
+    const query = (`CREATE TABLE IF NOT EXISTS \`${client_table}\` (
+        uid SERIAL PRIMARY KEY,
+        clientid VARCHAR(30) NOT NULL,
+        message LONGTEXT NOT NULL,
+        sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )`);
+    con.query(leadcheck,[email,phone],(err,result)=>{
        if (err) {
             console.error(err);
             res.status(500).send({ message: "Internal server error" });
@@ -37,10 +45,17 @@ app.post('/createlead',(req,res)=>{
        } else{
             con.query(sqlInsert,[uniqueid,fullname,email,phone,requirements],(dberr,dbresult)=>{
                 if (dberr) {
-                    console.error(err);
+                    console.error(dberr);
                     res.send({ message: "Error in creating Leads in Database" });
                 } else {
-                    res.send({ message: 'Lead created successfully.' });
+                    con.query(query, (clienterr, result) => {
+                        if (clienterr) {
+                            console.error(clienterr);
+                            res.send({ message: "Error in creating Clients Table in Database" });
+                        } else {
+                            res.send({ message: 'Lead created successfully.' });
+                        }
+                    });                 
                 }
             });
        }
@@ -59,6 +74,36 @@ app.get('/newclient',(req,res)=>{
       }
   })
 });
-app.listen(3002,'192.168.1.4',()=>{
+
+// New Messages
+app.post('/newmessages', (req, res) => {
+    const { uniqueid, message } = req.body;
+    const sqlInsert = `INSERT INTO \`${uniqueid}\` (clientid,message) VALUES (?,?)`;
+    con.query(sqlInsert, [uniqueid, message], (err, result) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send({ message: "Internal server error" });
+      } else {
+        res.status(200).send({ message: 'Message sent successfully.' }); // Use res.status(status).send(body)
+      }
+    });
+  });
+
+// Get New Messges from Database table 
+app.get('/clientmessage/:uniqueid',(req,res)=>{
+    const {uniqueid} = req.params;
+    const sqlGet = `SELECT * FROM \`${uniqueid}\``;
+    con.query(sqlGet,(err,result)=>{
+        if (err) {
+            console.error(err);
+            res.status(500).send({ message: "Internal server error" });
+        } else {
+            res.send(result);
+        }
+    })
+})
+
+app.listen(3002,'192.168.1.11',()=>{
      console.log('Server is successfully runnig on 3002 port')
 });
+

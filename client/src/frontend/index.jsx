@@ -7,12 +7,14 @@ const[list, setList] = useState(false);
 const[newlead,setNewlead] = useState(true);
 const [message, setMessage] = useState("");
 const [leads,setLeads] = useState(false);
+const [selectedLead, setSelectedLead] = useState(null);
 const handleList = () => {
     setLeads(false)
     setList(true);
     setNewlead(false);
 }
-const handleLeads = () => {
+const handleLeads = (lead) => {
+    setSelectedLead(lead);
     setLeads(true);
     setList(false);
     setNewlead(false);
@@ -31,7 +33,7 @@ const handleChange =(e)=>{
 const createLead = async(e) => {
     e.preventDefault();
     try {
-        const response = await fetch('http://192.168.1.4:3002/createlead',{
+        const response = await fetch('http://192.168.1.11:3002/createlead',{
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -47,6 +49,7 @@ const createLead = async(e) => {
         setMessage('Error in adding lead');
     }
 }
+
   return (
     <div className="container">
         <div className="main">
@@ -67,7 +70,9 @@ const createLead = async(e) => {
                 <div className="sidebar">
                     <div className="option">
                         <li>
-                            <span id='leadlist'><a href="/admin">Home</a></span>
+                           <a href="/admin">
+                             <span id='leadlist'><a href="/admin">Home</a></span>
+                           </a>
                         </li>
                         <li>
                             <span id='leadlist' onClick={handleList}>Created Leads</span>
@@ -87,16 +92,16 @@ const createLead = async(e) => {
                             {message && <p className='message'>{message}</p>}
                             <form className="form" method='POST' onSubmit={createLead}>
                                 <div className="form-group">
-                                <input type="text" placeholder="Enter your full name" name='fullname'value={formlead.fullname} onChange={handleChange} className="input-field" />
+                                <input type="text" placeholder="Enter your full name" name='fullname'value={formlead.fullname} onChange={handleChange} className="input-field" required />
                                 </div>
                                 <div className="form-group">
-                                <input type="email" placeholder="Enter your email address" name='email' value={formlead.email} onChange={handleChange} className="input-field" />
+                                <input type="email" placeholder="Enter your email address" name='email' value={formlead.email} onChange={handleChange} className="input-field" required/>
                                 </div>
                                 <div className="form-group">
-                                <input type="tel" placeholder="Enter your phone number" name='phone' value={formlead.phone} onChange={handleChange} className="input-field" />
+                                <input type="tel" placeholder="Enter your phone number" name='phone' value={formlead.phone} onChange={handleChange} className="input-field" required/>
                                 </div>
                                 <div className="form-group">
-                                <textarea placeholder="Enter requirements" name='requirements' value={formlead.requirements} onChange={handleChange} className="textarea-field" rows={10}/>
+                                <textarea placeholder="Enter requirements" name='requirements' value={formlead.requirements} onChange={handleChange} className="textarea-field" rows={10} required/>
                                 </div>
                                 <div className="form-group">
                                 <button type="submit" className="submit-button">Submit</button>
@@ -111,7 +116,7 @@ const createLead = async(e) => {
                     }
                     {leads&&
                         <div className="lead">
-                            <Leads />
+                            <Leads leadData={selectedLead} />
                         </div>
                     }
                 </div>

@@ -21,7 +21,7 @@ const Newlead = ({handleLeads}) => {
       useEffect(()=>{
         const newleads =async()=>{
            try {
-             const response = await fetch('http://192.168.1.4:3002/newclient');
+             const response = await fetch('http://192.168.1.11:3002/newclient');
              if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
              }
@@ -35,6 +35,11 @@ const Newlead = ({handleLeads}) => {
         };
         newleads();
       },[])
+
+      const handleClick = (lead) => {
+        // Call handleLeads function with selected lead's data
+        handleLeads(lead);
+    };
   return (
     <div className="list-container">
         <div className="list-header">
@@ -47,7 +52,7 @@ const Newlead = ({handleLeads}) => {
         {
             Array.isArray(newcreatedLeads) && newcreatedLeads.length> 0 ?(
                 newcreatedLeads.map((leads,index) => (
-                    <div key={index} className={`list-item ${index % 2 === 0 ? 'even' : 'odd'}`} onClick={handleLeads}>
+                    <div key={index} className={`list-item ${index % 2 === 0 ? 'even' : 'odd'}`} onClick={() => handleClick(leads)}>
                         <div>{leads.fullname}</div>
                         <div>{leads.email}</div>
                         <div>{leads.number}</div>
