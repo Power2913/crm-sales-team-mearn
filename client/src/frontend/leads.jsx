@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import '../css/leads.css';
 
-function Leads({ leadData }) {
+function Leads({ leadData,handleClosedLead }) {
   const [formData, setFormData] = useState({
     requirements: '',
   });
@@ -39,7 +39,7 @@ function Leads({ leadData }) {
     const fetchMessages = async () => {
       try {
         const uniqueid= leadData.unique_id
-        const response = await fetch(`http://192.168.1.11:3002/clientmessage/${uniqueid}`);
+        const response = await fetch(`http://192.168.1.12:3002/clientmessage/${uniqueid}`);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -54,12 +54,14 @@ function Leads({ leadData }) {
     // Call the fetchMessages function when the component mounts
     fetchMessages();
   }, []); // Empty dependency array ensures useEffect runs only once
-
+  const handleClick = (closedleaddata) => {
+    handleClosedLead(closedleaddata);
+  };
   return (
     <div className="conversation-page">
       <div className="old-message">
         {/* Display the previous message or conversation */}
-        <p> {leadData.fullname}</p>
+        <p>Client Name: {leadData.fullname}</p>
         <div className="chat">
           <div className="admin-chat">
             <span>Hi, who sent this?</span>
@@ -90,9 +92,10 @@ function Leads({ leadData }) {
         </form>
       </div>
       <div className="action">
-        <button type="button" className="action-button close">Close</button>
+        <button type="button" className="action-button close" onClick={handleClosedLead(leadData)}>Close</button>
         <button type="button" className="action-button successful" >Successful</button>
       </div>
+
     </div>
   );
 }

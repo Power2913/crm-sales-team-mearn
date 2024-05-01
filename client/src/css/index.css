@@ -194,14 +194,20 @@ body {
     background-color: #1a5276; /* Darker shade of blue on hover */
   }
 .hero{
-    width: 80%;
+    width: 100%;
     display: flex;
 }  
 .hero-content{
     width: 80%;
     margin: 0 auto;
+    display: flex;
 }
-
+.new-lead{
+    width: 100%;
+}
+.closed-lead-list{
+    width: 100%;
+}
 .message {
     background-color: #4CAF50; /* Light red background color */
     color: #ffff; /* Dark red text color */
@@ -209,5 +215,13 @@ body {
     padding: 10px; /* Padding around the message */
     margin-top: 10px; /* Spacing from elements above */
     border-radius: 5px; /* Rounded corners */
+  }
+  .lead{
+    width: 60%;
+    margin: 1% auto auto;
+  }
+  .closedlead{
+    width: 30%;
+    margin: -10% auto auto;
   }
   

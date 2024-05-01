@@ -2,23 +2,49 @@ import React,{useState} from 'react'
 import '../css/index.css'
 import Newlead from './Newlead'
 import Leads from './leads';
+import ClosedLeads from './ClosedLeads';
+import ClosedLeadsList from './ClosedLeadsList';
 function Index() {
 const[list, setList] = useState(false);
 const[newlead,setNewlead] = useState(true);
 const [message, setMessage] = useState("");
 const [leads,setLeads] = useState(false);
 const [selectedLead, setSelectedLead] = useState(null);
+const [closedlead, setclosedlead] = useState(false);
+const [closedleaddata, setClosedleaddata] = useState(null);
+const [closedLeadlist, setClosedLeadList] = useState(false);
 const handleList = () => {
-    setLeads(false)
+    setLeads(false);
     setList(true);
     setNewlead(false);
+    setclosedlead(false);
+    setClosedLeadList(false)
 }
 const handleLeads = (lead) => {
     setSelectedLead(lead);
     setLeads(true);
     setList(false);
     setNewlead(false);
+    setclosedlead(false);
+    setClosedLeadList(false)
 }
+const handleClosedLeads = (closedleaddata) => {
+    // setclosedlead(true);
+    setClosedleaddata(closedleaddata);
+    setclosedlead(true);
+    setLeads(true);
+    setList(false);
+    setNewlead(false);
+    setClosedLeadList(false)
+}
+const handleClosedleadlist = ()=>{
+    setClosedLeadList(true)
+    setclosedlead(false);
+    setLeads(false);
+    setList(false);
+    setNewlead(false);
+}
+//##################### New Lead Api Call Start ###########################
 const[formlead,setFormlead] = useState({
     fullname:'',
     email:'',
@@ -33,7 +59,7 @@ const handleChange =(e)=>{
 const createLead = async(e) => {
     e.preventDefault();
     try {
-        const response = await fetch('http://192.168.1.11:3002/createlead',{
+        const response = await fetch('http://192.168.1.12:3002/createlead',{
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -49,6 +75,7 @@ const createLead = async(e) => {
         setMessage('Error in adding lead');
     }
 }
+// ########################### End ################################
 
   return (
     <div className="container">
@@ -78,13 +105,14 @@ const createLead = async(e) => {
                             <span id='leadlist' onClick={handleList}>Created Leads</span>
                         </li>
                         <li>
-                            <span >Closed Leads</span>
+                            <span onClick={handleClosedleadlist}>Closed Leads</span>
                         </li>
                         <li>
                             <span>Succesfull Leads</span>
                         </li>
                     </div>
                 </div>
+                {/* Create New Lead */}
                 <div className="hero-content">
                     {newlead&&
                         <div className="form-container">
@@ -109,14 +137,28 @@ const createLead = async(e) => {
                             </form>
                         </div>
                     }
+                    {/* New Client List */}
                     {list&&
                         <div className="new-lead">
                             <Newlead handleLeads={handleLeads}/>
                         </div>
                     }
+                    {/* Selected Leads */}
                     {leads&&
                         <div className="lead">
-                            <Leads leadData={selectedLead} />
+                            <Leads leadData={selectedLead} handleClosedLead={handleClosedLeads}/>
+                        </div>
+                    }
+                    {/* Close Leads */}
+                    {closedlead&&
+                        <div className="closedlead">
+                            <ClosedLeads ClosedLeads={closedleaddata}/>
+                        </div>
+                    }
+                    {/* Closed Lead List */}
+                    {closedLeadlist&&
+                        <div className="closed-lead-list">
+                            <ClosedLeadsList/>
                         </div>
                     }
                 </div>

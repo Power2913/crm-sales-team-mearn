@@ -21,7 +21,7 @@ const Newlead = ({handleLeads}) => {
       useEffect(()=>{
         const newleads =async()=>{
            try {
-             const response = await fetch('http://192.168.1.11:3002/newclient');
+             const response = await fetch('http://192.168.1.12:3002/newclient');
              if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
              }
@@ -42,6 +42,7 @@ const Newlead = ({handleLeads}) => {
     };
   return (
     <div className="list-container">
+        <h3>New Leads</h3>
         <div className="list-header">
             <div>Full Name</div>
             <div>Email</div>

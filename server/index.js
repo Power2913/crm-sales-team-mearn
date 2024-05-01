@@ -103,7 +103,41 @@ app.get('/clientmessage/:uniqueid',(req,res)=>{
     })
 })
 
-app.listen(3002,'192.168.1.11',()=>{
+app.post('/closedlead', (req, res) => {
+    const { created_at, name, email, phone, finalrequirement, closingreason } = req.body;
+    const sqlInsert = "INSERT INTO closed_leads (fullname,email,number,requirements,reason,created_at) VALUES (?,?,?,?,?,?)";
+    const sqlDelete = `DELETE FROM new_lead WHERE email = ?`;
+
+    con.query(sqlInsert, [name, email, phone, finalrequirement, closingreason, created_at], (insertErr, insertResult) => {
+        if (insertErr) {
+            console.error(insertErr);
+            res.status(500).send({ message: "Internal server error in inserting data" });
+        } else {
+            con.query(sqlDelete, [email], (deleteErr, deleteResult) => {
+                if (deleteErr) {
+                    console.error(deleteErr);
+                    res.status(500).send({ message: "Internal Server error in deleting" });
+                } else {
+                    res.send({ message: "Client Closed" });
+                }
+            });
+        }
+    });
+});
+
+
+app.get('/closedLeadlist', (req, res) => {
+    const sqlClosedLead = "SELECT * FROM closed_leads";
+    con.query(sqlClosedLead, (err, result) => {
+        if (err) {
+            res.send({ Message: "Error in SQL Query in /closedLeadlist API" });
+        } else {
+            res.send(result);
+        }
+    });
+});
+
+app.listen(3002,'192.168.1.12',()=>{
      console.log('Server is successfully runnig on 3002 port')
 });
 
