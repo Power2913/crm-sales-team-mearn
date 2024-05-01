@@ -23,7 +23,7 @@ app.post('/login',(req,res)=>{
 // Create Leads
 app.post('/createlead',(req,res)=>{
     const{fullname,email,phone,requirements} = req.body;
-    const leadcheck = "SELECT * FROM new_lead WHERE email = ? AND number =?";
+    const leadcheck = "SELECT * FROM new_lead WHERE email = ? AND unique_id =?";
 
     // Insert Data into Database table new_lead
     const uniqueid = phone.toString().slice(0, -5);
@@ -36,7 +36,7 @@ app.post('/createlead',(req,res)=>{
         message LONGTEXT NOT NULL,
         sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )`);
-    con.query(leadcheck,[email,phone],(err,result)=>{
+    con.query(leadcheck,[email,unique_id],(err,result)=>{
        if (err) {
             console.error(err);
             res.status(500).send({ message: "Internal server error" });
@@ -79,6 +79,7 @@ app.get('/newclient',(req,res)=>{
 app.post('/newmessages', (req, res) => {
     const { uniqueid, message } = req.body;
     const sqlInsert = `INSERT INTO \`${uniqueid}\` (clientid,message) VALUES (?,?)`;
+    console.log('Lead Data',uniqueid)
     con.query(sqlInsert, [uniqueid, message], (err, result) => {
       if (err) {
         console.error(err);

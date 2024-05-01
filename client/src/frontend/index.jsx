@@ -14,9 +14,9 @@ const [closedlead, setclosedlead] = useState(false);
 const [closedleaddata, setClosedleaddata] = useState(null);
 const [closedLeadlist, setClosedLeadList] = useState(false);
 const handleList = () => {
-    setLeads(false);
     setList(true);
     setNewlead(false);
+    setLeads(false);
     setclosedlead(false);
     setClosedLeadList(false)
 }
@@ -30,9 +30,10 @@ const handleLeads = (lead) => {
 }
 const handleClosedLeads = (closedleaddata) => {
     // setclosedlead(true);
-    setClosedleaddata(closedleaddata);
+  
     setclosedlead(true);
     setLeads(true);
+    setClosedleaddata(closedleaddata);
     setList(false);
     setNewlead(false);
     setClosedLeadList(false)

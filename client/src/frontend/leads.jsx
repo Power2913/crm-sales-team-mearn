@@ -2,6 +2,7 @@ import React, { useState,useEffect } from 'react';
 import '../css/leads.css';
 
 function Leads({ leadData,handleClosedLead }) {
+  console.log('Lead Data:', leadData)
   const [formData, setFormData] = useState({
     requirements: '',
   });
@@ -9,7 +10,7 @@ function Leads({ leadData,handleClosedLead }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://192.168.1.11:3002/newmessages', {
+      const response = await fetch('http://192.168.1.12:3002/newmessages', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -35,25 +36,29 @@ function Leads({ leadData,handleClosedLead }) {
   };
   const [messages, setMessages] = useState([]);
 
-  useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const uniqueid= leadData.unique_id
-        const response = await fetch(`http://192.168.1.12:3002/clientmessage/${uniqueid}`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        setMessages(data);
-      } catch (error) {
-        console.error('Error fetching messages:', error);
-        // Handle error
+  const fetchMessages = async () => {
+    try {
+      const uniqueid = leadData.unique_id;
+      const response = await fetch(`http://192.168.1.12:3002/clientmessage/${uniqueid}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
-    };
+      const data = await response.json();
+      setMessages(data);
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+      // Handle error
+    }
+  };
 
-    // Call the fetchMessages function when the component mounts
-    fetchMessages();
-  }, []); // Empty dependency array ensures useEffect runs only once
+  // Call the fetchMessages function repeatedly at regular intervals
+  useEffect(() => {
+    const intervalId = setInterval(fetchMessages, 1000/2); // Fetch messages every 5 seconds
+
+    // Clean up function to clear the interval when the component unmounts
+    return () => clearInterval(intervalId);
+  }, [leadData]); // Re-run effect whenever leadData changes
+
   const handleClick = (closedleaddata) => {
     handleClosedLead(closedleaddata);
   };
@@ -92,7 +97,7 @@ function Leads({ leadData,handleClosedLead }) {
         </form>
       </div>
       <div className="action">
-        <button type="button" className="action-button close" onClick={handleClosedLead(leadData)}>Close</button>
+        <button type="button" className="action-button close" onClick={handleClick(leadData)}>Close</button>
         <button type="button" className="action-button successful" >Successful</button>
       </div>
 
