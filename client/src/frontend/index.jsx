@@ -10,14 +10,14 @@ const[newlead,setNewlead] = useState(true);
 const [message, setMessage] = useState("");
 const [leads,setLeads] = useState(false);
 const [selectedLead, setSelectedLead] = useState(null);
-const [closedlead, setclosedlead] = useState(false);
+const [closedleadform, setclosedleadform] = useState(false);
 const [closedleaddata, setClosedleaddata] = useState(null);
 const [closedLeadlist, setClosedLeadList] = useState(false);
 const handleList = () => {
     setList(true);
     setNewlead(false);
     setLeads(false);
-    setclosedlead(false);
+    setclosedleadform(false);
     setClosedLeadList(false)
 }
 const handleLeads = (lead) => {
@@ -25,22 +25,23 @@ const handleLeads = (lead) => {
     setLeads(true);
     setList(false);
     setNewlead(false);
-    setclosedlead(false);
-    setClosedLeadList(false)
+    setclosedleadform(false);
+    setClosedLeadList(false);
 }
 const handleClosedLeads = (closedleaddata) => {
     // setclosedlead(true);
   
-    setclosedlead(true);
+    setclosedleadform(true);
     setLeads(true);
     setClosedleaddata(closedleaddata);
     setList(false);
     setNewlead(false);
     setClosedLeadList(false)
 }
+
 const handleClosedleadlist = ()=>{
     setClosedLeadList(true)
-    setclosedlead(false);
+    setclosedleadform(false);
     setLeads(false);
     setList(false);
     setNewlead(false);
@@ -60,7 +61,7 @@ const handleChange =(e)=>{
 const createLead = async(e) => {
     e.preventDefault();
     try {
-        const response = await fetch('http://192.168.1.12:3002/createlead',{
+        const response = await fetch('http://192.168.1.11:3002/createlead',{
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -151,7 +152,7 @@ const createLead = async(e) => {
                         </div>
                     }
                     {/* Close Leads */}
-                    {closedlead&&
+                    {closedleadform&&
                         <div className="closedlead">
                             <ClosedLeads ClosedLeads={closedleaddata}/>
                         </div>

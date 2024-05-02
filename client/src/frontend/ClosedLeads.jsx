@@ -3,7 +3,7 @@ import '../css/closedlead.css'
 function ClosedLeads({ClosedLeads}) {
   const [message, setMessage] = useState('');
   
-  console.log('Closed Lead:',ClosedLeads)
+//   console.log('Closed Lead:',ClosedLeads)
     const [closingstatement, setClosingStatement]=useState({
         finalrequirement: '',
         closingreason: ''
@@ -15,7 +15,7 @@ function ClosedLeads({ClosedLeads}) {
     const handleSubmit  = async (e) =>{
         e.preventDefault();
         try {
-            const response = await fetch('http://192.168.1.12:3002/closedlead',{
+            const response = await fetch('http://192.168.1.11:3002/closedlead',{
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json'

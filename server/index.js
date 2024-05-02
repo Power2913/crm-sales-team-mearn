@@ -138,7 +138,7 @@ app.get('/closedLeadlist', (req, res) => {
     });
 });
 
-app.listen(3002,'192.168.1.12',()=>{
+app.listen(3002,'192.168.1.11',()=>{
      console.log('Server is successfully runnig on 3002 port')
 });
 
