@@ -80,6 +80,9 @@ function Leads({ leadData,handleClosedLead }) {
           phone: leadData.number,
         }),
       });
+      setTimeout(() => {
+          window.location.reload();
+      }, 5000);
       if (!response.ok) {
         throw new Error(`Error! status: ${response.status}`);
       }
@@ -125,7 +128,7 @@ function Leads({ leadData,handleClosedLead }) {
           <button type="submit">Send</button>
         </form>
       </div>
-      {successleadmessage && <p className='message'>{successleadmessage.Message}</p>}
+      {successleadmessage&& <p className='message'>{successleadmessage.Message}</p>}
       <div className="action">
         <button type="button" className="action-button close" onClick={()=> handleClosedLead(leadData)}>Close</button>
         <form   onSubmit={handleleadsuccess}>

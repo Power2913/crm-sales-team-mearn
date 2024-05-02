@@ -23,7 +23,7 @@ const SuccessfulLeads = () => {
 
   return (
     <div className="closed-list-container">
-        <h3>Closed Lead</h3>
+        <h3>Successful Leads</h3>
         <div className="closed-list-header">
             <div>Unique data</div>
             <div>Full Name</div>
