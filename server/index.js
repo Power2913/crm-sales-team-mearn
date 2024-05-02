@@ -36,7 +36,7 @@ app.post('/createlead',(req,res)=>{
         message LONGTEXT NOT NULL,
         sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )`);
-    con.query(leadcheck,[email,unique_id],(err,result)=>{
+    con.query(leadcheck,[email,uniqueid],(err,result)=>{
        if (err) {
             console.error(err);
             res.status(500).send({ message: "Internal server error" });
@@ -103,7 +103,7 @@ app.get('/clientmessage/:uniqueid',(req,res)=>{
         }
     })
 })
-
+// Lead Closing Form
 app.post('/closedlead', (req, res) => {
     const { created_at, name, email, phone, finalrequirement, closingreason } = req.body;
     const sqlInsert = "INSERT INTO closed_leads (fullname,email,number,requirements,reason,created_at) VALUES (?,?,?,?,?,?)";
@@ -126,7 +126,7 @@ app.post('/closedlead', (req, res) => {
     });
 });
 
-
+// Closed Client List
 app.get('/closedLeadlist', (req, res) => {
     const sqlClosedLead = "SELECT * FROM closed_leads";
     con.query(sqlClosedLead, (err, result) => {
@@ -138,6 +138,40 @@ app.get('/closedLeadlist', (req, res) => {
     });
 });
 
+// Set Lead Status to set
+app.post('/successlead',(req,res)=>{
+    const {uniqueid,name,email,phone} = req.body;
+
+    const sqlsuccesslead = "INSERT INTO successful_lead (unique_id,fullname,email,phone) VALUES(?,?,?,?)";
+    const sqlDelete = "DELETE FROM new_lead WHERE unique_id = ?";
+    con.query(sqlsuccesslead,[uniqueid,name,email,phone],(err)=>{
+       if (err) {
+           res.status(500).send({Message:'Error in SQL query in successlead API'});
+       } else {
+           con.query(sqlDelete,[uniqueid],(err)=>{
+             if (err) {
+                console.error(deleteErr);
+                res.status(500).send({ Message: "Internal Server error in deleting" });
+             } else {
+                res.send({Message:"Lead Status Success"});
+             }
+           });
+       }
+    })
+});
+// Get Successful lead data
+app.get('/successfullead', (req, res) => {
+    const sqlsuccessleads = "SELECT * FROM successful_lead";
+    con.query(sqlsuccessleads, (err, result) => {
+       if (err) {
+          res.send({ Message: "Error in SQL Query in successfullead API" });
+       } else {
+          res.send(result);
+          console.log(result);
+       }
+    });
+ });
+ 
 app.listen(3002,'192.168.1.11',()=>{
      console.log('Server is successfully runnig on 3002 port')
 });

@@ -2,6 +2,8 @@ import React, { useState,useEffect } from 'react';
 import '../css/leads.css';
 
 function Leads({ leadData,handleClosedLead }) {
+
+  const [successleadmessage,setsuccessleadMessage]=useState([]);
   // console.log('Lead Data:', leadData)
   const [formData, setFormData] = useState({
     requirements: '',
@@ -62,6 +64,33 @@ function Leads({ leadData,handleClosedLead }) {
   // const handleclosedleadClick = (closedleaddata) => {
   //   handleClosedLead(closedleaddata);
   // };
+  // Lead Success API call
+  const handleleadsuccess = async (e)=>{
+    e.preventDefault();
+    try {
+      const response = await fetch('http://192.168.1.11:3002/successlead',{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          uniqueid  : leadData.unique_id,
+          name: leadData.fullname,
+          email: leadData.email,
+          phone: leadData.number,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error(`Error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      console.log('Result:',result);
+      setsuccessleadMessage(result);
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+    }
+
+  }
   return (
     <div className="conversation-page">
       <div className="old-message">
@@ -93,12 +122,15 @@ function Leads({ leadData,handleClosedLead }) {
               required
             ></textarea>
           </div>
-          <button type="submit">Send Updates</button>
+          <button type="submit">Send</button>
         </form>
       </div>
+      {successleadmessage && <p className='message'>{successleadmessage.Message}</p>}
       <div className="action">
         <button type="button" className="action-button close" onClick={()=> handleClosedLead(leadData)}>Close</button>
-        <button type="button" className="action-button successful" >Successful</button>
+        <form   onSubmit={handleleadsuccess}>
+          <button type="submit" className="action-button successful" >Successful</button>
+        </form>      
       </div>
 
     </div>

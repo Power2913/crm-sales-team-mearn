@@ -4,6 +4,9 @@ import Newlead from './Newlead'
 import Leads from './leads';
 import ClosedLeads from './ClosedLeads';
 import ClosedLeadsList from './ClosedLeadsList';
+import { FaBell } from 'react-icons/fa';
+import SuccessfulLeads from './SuccessfulLeads';
+
 function Index() {
 const[list, setList] = useState(false);
 const[newlead,setNewlead] = useState(true);
@@ -13,12 +16,15 @@ const [selectedLead, setSelectedLead] = useState(null);
 const [closedleadform, setclosedleadform] = useState(false);
 const [closedleaddata, setClosedleaddata] = useState(null);
 const [closedLeadlist, setClosedLeadList] = useState(false);
+const [successLeads,setSucccessLeads] = useState(false);
+
 const handleList = () => {
     setList(true);
     setNewlead(false);
     setLeads(false);
     setclosedleadform(false);
-    setClosedLeadList(false)
+    setClosedLeadList(false);
+    setSucccessLeads(false);
 }
 const handleLeads = (lead) => {
     setSelectedLead(lead);
@@ -27,6 +33,7 @@ const handleLeads = (lead) => {
     setNewlead(false);
     setclosedleadform(false);
     setClosedLeadList(false);
+    setSucccessLeads(false);
 }
 const handleClosedLeads = (closedleaddata) => {
     // setclosedlead(true);
@@ -37,6 +44,7 @@ const handleClosedLeads = (closedleaddata) => {
     setList(false);
     setNewlead(false);
     setClosedLeadList(false)
+    setSucccessLeads(false);
 }
 
 const handleClosedleadlist = ()=>{
@@ -45,6 +53,16 @@ const handleClosedleadlist = ()=>{
     setLeads(false);
     setList(false);
     setNewlead(false);
+    setSucccessLeads(false);
+}
+const handleSuccessfulleadlist = ()=>{
+    setSucccessLeads(true);
+    setClosedLeadList(false)
+    setclosedleadform(false);
+    setLeads(false);
+    setList(false);
+    setNewlead(false);
+
 }
 //##################### New Lead Api Call Start ###########################
 const[formlead,setFormlead] = useState({
@@ -90,6 +108,9 @@ const createLead = async(e) => {
                     <div className="welcome">
                         <h2>Welcome Nitesh</h2>
                     </div>
+                    <div>
+                        <FaBell />
+                    </div>
                     <div className="logout">
                         <button>Logout</button>
                     </div>
@@ -110,7 +131,7 @@ const createLead = async(e) => {
                             <span onClick={handleClosedleadlist}>Closed Leads</span>
                         </li>
                         <li>
-                            <span>Succesfull Leads</span>
+                            <span onClick={handleSuccessfulleadlist}>Succesfull Leads</span>
                         </li>
                     </div>
                 </div>
@@ -161,6 +182,11 @@ const createLead = async(e) => {
                     {closedLeadlist&&
                         <div className="closed-lead-list">
                             <ClosedLeadsList/>
+                        </div>
+                    }
+                    {successLeads&&
+                        <div className="SuccessfulLeads">
+                            <SuccessfulLeads/>
                         </div>
                     }
                 </div>
