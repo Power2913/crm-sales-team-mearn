@@ -132,6 +132,21 @@ useEffect(() => {
     getNotification();
 }, []);
 const notificationCount = notification.length;
+const notificationCount24HoursOld = notification.reduce((count, notification) => {
+    const lastSeenTime = new Date(notification.last_seen);
+    const currentTime = new Date();
+    const twentyFourHoursAgo = new Date(currentTime.getTime() - (24 * 60 * 60 * 1000)); // Subtract 24 hours from the current time
+
+    // Check if last_seen time is 24 hours or more in the past
+    const is24HoursOrMore = lastSeenTime <= twentyFourHoursAgo;
+
+    // If the notification is 24 hours or more old, increment the count
+    if (is24HoursOrMore) {
+        return count + 1;
+    } else {
+        return count;
+    }
+}, 0);
   return (
     <div className="container">
         <div className="main">
@@ -145,7 +160,7 @@ const notificationCount = notification.length;
                     </div>
                     <div onClick={handleNotification} style={{ position: 'relative' }}>
                         <FaBell />
-                        {notificationCount > 0 && (
+                        {notificationCount24HoursOld > 0 && (
                             <span
                             style={{
                                 position: 'absolute',
@@ -162,7 +177,7 @@ const notificationCount = notification.length;
                                 fontSize: '14px',
                             }}
                             >
-                            {notificationCount}
+                            {notificationCount24HoursOld}
                             </span>
                         )}
                         </div>
