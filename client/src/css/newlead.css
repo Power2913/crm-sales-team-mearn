@@ -61,6 +61,7 @@
   .action-button.close {
     background-color: #e74c3c; /* Red */
     color: #fff;
+    height: 45px;
   }
   
   .action-button.close:hover {
@@ -71,6 +72,7 @@
   .action-button.successful {
     background-color: #2ecc71; /* Green */
     color: #fff;
+    height: 45px;
   }
   
   .action-button.successful:hover {

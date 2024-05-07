@@ -1,10 +1,11 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import '../css/index.css'
 import Newlead from './Newlead'
 import Leads from './leads';
 import ClosedLeads from './ClosedLeads';
 import ClosedLeadsList from './ClosedLeadsList';
 import { FaBell } from 'react-icons/fa';
+import Notificationpage from './Notification';
 import SuccessfulLeads from './SuccessfulLeads';
 
 function Index() {
@@ -17,6 +18,7 @@ const [closedleadform, setclosedleadform] = useState(false);
 const [closedleaddata, setClosedleaddata] = useState(null);
 const [closedLeadlist, setClosedLeadList] = useState(false);
 const [successLeads,setSucccessLeads] = useState(false);
+const [notificationshow, setNotificationshow] = useState(false);
 
 const handleList = () => {
     setList(true);
@@ -25,6 +27,7 @@ const handleList = () => {
     setclosedleadform(false);
     setClosedLeadList(false);
     setSucccessLeads(false);
+    setNotificationshow(false);
 }
 const handleLeads = (lead) => {
     setSelectedLead(lead);
@@ -34,6 +37,7 @@ const handleLeads = (lead) => {
     setclosedleadform(false);
     setClosedLeadList(false);
     setSucccessLeads(false);
+    setNotificationshow(false);
 }
 const handleClosedLeads = (closedleaddata) => {
     // setclosedlead(true);
@@ -45,6 +49,7 @@ const handleClosedLeads = (closedleaddata) => {
     setNewlead(false);
     setClosedLeadList(false)
     setSucccessLeads(false);
+    setNotificationshow(false);
 }
 
 const handleClosedleadlist = ()=>{
@@ -54,6 +59,7 @@ const handleClosedleadlist = ()=>{
     setList(false);
     setNewlead(false);
     setSucccessLeads(false);
+    setNotificationshow(false);
 }
 const handleSuccessfulleadlist = ()=>{
     setSucccessLeads(true);
@@ -62,7 +68,17 @@ const handleSuccessfulleadlist = ()=>{
     setLeads(false);
     setList(false);
     setNewlead(false);
+    setNotificationshow(false);
+}
 
+const handleNotification = () => {
+    setNotificationshow(true);
+    setSucccessLeads(false);
+    setClosedLeadList(false)
+    setclosedleadform(false);
+    setLeads(false);
+    setList(false);
+    setNewlead(false);
 }
 //##################### New Lead Api Call Start ###########################
 const[formlead,setFormlead] = useState({
@@ -96,7 +112,26 @@ const createLead = async(e) => {
     }
 }
 // ########################### End ################################
+const [notification,setNotification] = useState(['']);
 
+useEffect(() => {
+    const getNotification = async() => {
+        try {
+            const response = await fetch('http://192.168.1.11:3002/notification-list');
+            if (!response.ok) {
+                throw new Error(`Error! status: ${response.status}`);  
+            }
+            const data = await response.json();
+            setNotification(data);
+            console.log('Data:',data);
+
+        } catch (error) {
+            console.error('Error fetching messages from last message:', error);
+        }
+    };
+    getNotification();
+}, []);
+const notificationCount = notification.length;
   return (
     <div className="container">
         <div className="main">
@@ -108,9 +143,29 @@ const createLead = async(e) => {
                     <div className="welcome">
                         <h2>Welcome Nitesh</h2>
                     </div>
-                    <div>
+                    <div onClick={handleNotification} style={{ position: 'relative' }}>
                         <FaBell />
-                    </div>
+                        {notificationCount > 0 && (
+                            <span
+                            style={{
+                                position: 'absolute',
+                                top: '-8px',
+                                right: '-8px',
+                                backgroundColor: 'red',
+                                color: 'white',
+                                borderRadius: '50%',
+                                width: '20px',
+                                height: '20px',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                fontSize: '14px',
+                            }}
+                            >
+                            {notificationCount}
+                            </span>
+                        )}
+                        </div>
                     <div className="logout">
                         <button>Logout</button>
                     </div>
@@ -137,8 +192,12 @@ const createLead = async(e) => {
                 </div>
                 {/* Create New Lead */}
                 <div className="hero-content">
+                    { notificationshow&&
+                      <Notificationpage notification={notification}/>
+                    }              
                     {newlead&&
                         <div className="form-container">
+                        
                             <h3>Create New Lead</h3>
                             {message && <p className='message'>{message}</p>}
                             <form className="form" method='POST' onSubmit={createLead}>

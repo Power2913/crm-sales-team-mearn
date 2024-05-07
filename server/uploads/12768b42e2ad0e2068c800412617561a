@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html> 
+    <head>
+        <title>USA Import || US Trade Data</title>
+        @include('link')
+    </head>
+    <body>
+        @include('header')
+
+        {{-- Overview Section --}}
+        <section class="dark:bg-gray-900">
+            <div class="py-28 px-5 mx-auto lg:container grid sm:grid-cols-2 gap-8">
+                <div class="flex flex-col justify-center">
+                    <h1 class="mb-6 mt-4 text-5xl font-semibold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-5xl dark:text-white">
+                        Get Ready To Feel The Power Of USA Trade Data
+                    </h1>
+                    <p class="mb-1 text-lg font-medium text-gray-500 sm:text-lg lg:text-md dark:text-gray-400">
+                        US Trade Data or USA Trade Data will help you to get solutions for any queries 
+                        that you might be having if you are targeting the market of the United States. 
+                        The US Trade data formed by us includes all major details about USA Export Data 
+                        and USA Import Data that will help any marketer to fetch potential clients, leads, 
+                        importers, and exporters from the United States. Keep a close watch over all the 
+                        ongoings that are happening with respect to going in and going out of goods from 
+                        the United States with the help of our interactive US Trade Data which will help 
+                        you to stay one step ahead of your competitors.
+                    </p>
+                </div>
+                <div>
+                    <img src="{{url('frontend/img/overview.gif')}}">
+                </div>
+            </div>
+        </section>
+
+        {{-- Search Bar --}}
+        <section class="bg-gray-900">
+            <div class="py-8 px-4 mx-auto md:container max-w-screen-xl lg:py-16 grid lg:grid-cols-2 gap-8 lg:gap-16">
+                <div class="flex flex-col justify-center">
+                    <h1 class="mb-4 text-4xl text-white font-semibold tracking-tight leading-none text-gray-900 md:text-3xl lg:text-4xl dark:text-white">
+                        Search Live Data
+                    </h1>
+                    <p class="mb-6 text-lg text-white font-normal text-gray-500 lg:text-l dark:text-gray-400">
+                        US Trade Data or USA Trade Data will help you to get solutions for any queries 
+                    </p>
+                </div>
+                <div class="flex justify-center items-center">
+                    <form class="max-w-lg mx-auto">
+                        <div class="flex">
+                            <select id="large" class="block w-full px-4 py-3 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected>Choose a country</option>
+                                <option value="US">United States</option>
+                                <option value="CA">Canada</option>
+                                <option value="FR">France</option>
+                                <option value="DE">Germany</option>
+                            </select>
+                            <input type="search" class="block w-full px-4 py-3 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="HS Code" required />
+                            <input type="search" class="block w-full px-4 py-3 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Description" required />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        {{-- cards option --}}
+        <section class="dark:bg-gray-900">
+            <div class="py-8 px-4 mx-auto md:container max-w-screen-xl lg:py-16">
+                <div class="rounded-lg mb-8">
+                    <h1 class="text-gray-900 text-center dark:text-white text-2xl lg:text-4xl md:text-5xl font-semibold mb-2">
+                        Real-Time Statistics Of The United States
+                    </h1>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="dashed-card p-8 md:p-6">
+                        {{-- <a href="#" class="bg-green-100 text-green-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-green-400 mb-2">
+                            <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+                                <path d="M17 11h-2.722L8 17.278a5.512 5.512 0 0 1-.9.722H17a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1ZM6 0H1a1 1 0 0 0-1 1v13.5a3.5 3.5 0 1 0 7 0V1a1 1 0 0 0-1-1ZM3.5 15.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2ZM16.132 4.9 12.6 1.368a1 1 0 0 0-1.414 0L9 3.55v9.9l7.132-7.132a1 1 0 0 0 0-1.418Z"/>
+                            </svg>
+                            Design
+                        </a> --}}
+                        <h2 class="text-gray-900 dark:text-white text-2xl lg:text-2xl font-semibold mb-4">
+                            US Trade Data Analysis
+                        </h2>
+                        <p class="lg:text-md font-medium text-gray-500 dark:text-gray-400 mb-4">
+                            In the complete year 2021, the United States was able to export goods 
+                            worth USD 1.75 trillion as mentioned in USA Export Data and imported 
+                            goods worth USD 2.93 trillion. As the United States imported more than 
+                            it exported, the nation experienced a negative trade balance of USD 1.18 
+                            trillion. As per the USA Export Data analysis, the exports of the nation 
+                            increased by almost 23% in one year, i.e., from the year 2020 to 2021. 
+                            Whereas a growth of 22% was observed in total imports during the same period.
+                        </p>
+                    </div>
+                    <div class="dashed-card p-8 md:p-6">
+                        {{-- <a href="#" class="bg-purple-100 text-purple-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-purple-400 mb-2">
+                            <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4 1 8l4 4m10-8 4 4-4 4M11 1 9 15"/>
+                            </svg>
+                            Code
+                        </a> --}}
+                        <h2 class="text-gray-900 dark:text-white text-2xl lg:text-2xl font-semibold mb-4">
+                            Major Export Partners Of The US
+                        </h2>
+                        <p class="text-md font-medium text-gray-500 dark:text-gray-400 mb-4">
+                            During the year 2021, the US had the following countries as its export 
+                            partners to whom it exported its goods the most, and the same are listed 
+                            in the USA Export Data or USA Export Data for that time frame. Canada 
+                            (USD 30.7 billion); Mexico (USD 27.6 billion); China (USD 15.21 billion); 
+                            Japan (USD 7.45 billion) and Korea (USD 6.58 billion). The goods exported 
+                            the most were Mineral fuels like oils and coal, machinery and nuclear reactors, 
+                            automobile, and miscellaneous commodities like cameras and medical equipment.
+                        </p>
+                    </div>
+                    <div class="dashed-card p-8 md:p-6">
+                        {{-- <a href="#" class="bg-green-100 text-green-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-green-400 mb-2">
+                            <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+                                <path d="M17 11h-2.722L8 17.278a5.512 5.512 0 0 1-.9.722H17a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1ZM6 0H1a1 1 0 0 0-1 1v13.5a3.5 3.5 0 1 0 7 0V1a1 1 0 0 0-1-1ZM3.5 15.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2ZM16.132 4.9 12.6 1.368a1 1 0 0 0-1.414 0L9 3.55v9.9l7.132-7.132a1 1 0 0 0 0-1.418Z"/>
+                            </svg>
+                            Design
+                        </a> --}}
+                        <h2 class="text-gray-900 dark:text-white text-2xl lg:text-2xl font-semibold mb-4">
+                            Major Import Partners Of The US
+                        </h2>
+                        <p class="text-md font-medium text-gray-500 dark:text-gray-400 mb-4">
+                            During the year 2021, the US had the following countries as its import 
+                            partners from whom it imported the goods the most. China (USD 54.1 billion); 
+                            Mexico (USD 38.8 billion); Canada (USD 36.5 billion); Japan (USD 13.9 billion) 
+                            and Germany (USD 13.75 billion).The goods imported by the US were machinery 
+                            and spare parts, four-wheelers like cars, PCs, and mineral fuels like 
+                            oils and coal.
+                        </p>
+                    </div>
+                    <div class="dashed-card p-8 md:p-6">
+                        {{-- <a href="#" class="bg-purple-100 text-purple-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-purple-400 mb-2">
+                            <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4 1 8l4 4m10-8 4 4-4 4M11 1 9 15"/>
+                            </svg>
+                            Code
+                        </a> --}}
+                        <h2 class="text-gray-900 dark:text-white text-2xl lg:text-2xl font-semibold mb-4">
+                            Growth Prospects Of The US Trade Data
+                        </h2>
+                        <p class="text-md font-medium text-gray-500 dark:text-gray-400 mb-4">
+                            The main reason which gave an incredible push to the exports of the United 
+                            States was the rise in exports from the US to countries like China, Japan, 
+                            and Mexico. The products that turned out to be the most popular products 
+                            exported were automobiles, nuclear items, and machinery. On the other hand, 
+                            the growth in the US Import Data was considerable because of the growth in 
+                            importing goods from Germany and Canada into the nation with goods like computers, 
+                            telephones, and mineral fuels.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {{-- GAIN AN UNFAIR ADVANTAGE THROUGH OUR US TRADE DATA REPORTS --}}
+        <section class="dark:bg-gray-900">
+            <div class="py-8 px-4 mx-auto md:container max-w-screen-xl lg:py-4 grid gap-8 lg:gap-16">
+                <div class="flex flex-col justify-center">
+                    <h1 class="mb-4 text-4xl font-semibold tracking-tight leading-none text-gray-900 md:text-3xl lg:text-4xl dark:text-white">
+                        Gain An Unfair Advantage Through Our US Trade Data Reports
+                    </h1>
+                    <p class="mb-6 text-lg font-normal text-gray-500 lg:text-l dark:text-gray-400">
+                        US Import Export Data that we collect from the trusted authorities of the nation, 
+                        government bodies, and other reliable institutions will help you to keep an eye on 
+                        the latest trends and insights that are prevailing in the US market. Get access to 
+                        new avenues and opportunities in the US market. The US Import Export Data that we 
+                        provide will give you a wide-angle view of the spectrum of commodities that are 
+                        imported to and exported from the United States to other nations.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-gradient">
+            <div class="py-8 px-4 mx-auto md:container max-w-screen-xl sm:py-20 lg:py-8 grid lg:grid-cols-2 gap-8 lg:gap-16">
+                <div class="flex flex-col justify-center">
+                    <h1 class="mb-4 text-4xl font-semibold tracking-tight leading-none text-gray-900 sm:text-1xl md:text-3xl lg:text-2xl dark:text-white">
+                        US Import Data
+                    </h1>
+                    <p class="mb-6 text-lg font-normal text-gray-500 sm:text-lg lg:text-lg dark:text-gray-400">
+                        Another type of database known as US Import Data or USA Import Data includes nearly 
+                        every piece of information with detailed analysis related to the goods that are being 
+                        imported into the nation. The major sources that help in the formation of US Import Data 
+                        or USA Import Data are the shipments that are collected from different localities across 
+                        the country via road, sea, or air. The details present in the US Import Data range from
+                        date, HS codes, and information about the product to the name of exporters, origin country, 
+                        and quantity of each product.
+                    </p>
+                </div>
+                <div>
+                    <img src="{{url('frontend/img/overview.gif')}}">
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-gradient">
+            <div class="py-8 px-4 mx-auto md:container max-w-screen-xl sm:py-20 lg:py-8 grid lg:grid-cols-2 gap-8 lg:gap-16">
+                <div class="flex flex-col justify-center">
+                    <h1 class="mb-4 text-4xl font-semibold tracking-tight leading-none text-gray-900 sm:text-1xl md:text-3xl lg:text-2xl dark:text-white">
+                        USA Export Data
+                    </h1>
+                    <p class="mb-6 text-lg font-normal text-gray-500 sm:text-lg lg:text-lg dark:text-gray-400">
+                        Another set of databases popularly known as the USA Export Data or USA Export Data 
+                        is provided by usimportdata to its clients which is equipped with information related 
+                        to the goods that are shipped from the United States to different countries via sea, 
+                        air, or road. Information fields that are present in this database range from date, 
+                        product description, and HS code to the name of the importer, destination, and 
+                        quantity of product being exported.
+                    </p>
+                </div>
+                <div>
+                    <img src="{{url('frontend/img/overview.gif')}}">
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-gradient">
+            <div class="py-8 px-4 mx-auto md:container max-w-screen-xl sm:py-20 lg:py-8 grid lg:grid-cols-2 gap-8 lg:gap-16">
+                <div class="flex flex-col justify-center">
+                    <h1 class="mb-4 text-4xl font-semibold tracking-tight leading-none text-gray-900 sm:text-1xl md:text-3xl lg:text-2xl dark:text-white">
+                        Interactive Analytical Report
+                    </h1>
+                    <p class="mb-6 text-lg font-normal text-gray-500 sm:text-lg lg:text-lg dark:text-gray-400">
+                        One of our main USPs of all is that we are capable of providing customized reports 
+                        to our clients so as to save their time and energy and encourage them to study only 
+                        the piece of information that they are looking for. Analytical reports provided by
+                        us are highly informative in all areas with respect to complete information on products 
+                        being imported or exported by the United States like the brand, type, model, quantity, 
+                        etc. Our specialists, with complete dedication, prepare these reports and bring to you 
+                        the most accurate and reliable US Analytical reports.
+                    </p>
+                </div>
+                <div>
+                    <img src="{{url('frontend/img/overview.gif')}}">
+                </div>
+            </div>
+        </section>
+
+        {{-- Why Choose Us --}}
+        <section class="bg-white">
+            <div class="py-8 px-4 mx-auto md:container max-w-screen-xl lg:py-16">
+                <h2 class="font-bold text-center lg:text-3xl">
+                    Why You Should Choose Us Over Others
+                </h2>
+                <div class="lg:py-8 flex flex-wrap justify-center lg:grid-cols-2 md:grid-cols-2 gap-6">
+                    <div class="max-w-md justify-content-center p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                        <div class="flex items-center">
+                            <img src="{{url('frontend/img/market.webp')}}" width="20%">
+                            <a href="#">
+                                <h5 class="mx-2 mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                                    Market Expertise
+                                </h5>
+                            </a>
+                        </div>                    
+                        <hr>
+                        <p class="mb-1 mt-6 font-normal text-gray-500 dark:text-gray-400">
+                            The members of usimportdata are highly skilled and equipped with the relevant skills 
+                            and expertise to provide one of the best and most informative databases to clients.
+                        </p>
+                    </div>
+                    <div class="max-w-md p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                        <div class="flex items-center">
+                            <img src="{{url('frontend/img/accurate.webp')}}" width="20%">
+                            <a href="#">
+                                <h5 class="mx-2 mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                                    Accurate & Authentic
+                                </h5>
+                            </a>
+                        </div>                    
+                        <hr>
+                        <p class="mb-1 mt-6 font-normal text-gray-500 dark:text-gray-400">
+                            The US Trade Data along with USA Export Data and US Import Data provided 
+                            by us goes through a series of checks before getting delivered to our clients. 
+                            This ensures that the database provided by us is completely error-free and 
+                            accurate in all aspects.
+                        </p>
+                    </div>
+                    <div class="max-w-md p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                        <div class="flex items-center">
+                            <img src="{{url('frontend/img/updated_database.png')}}" width="20%">
+                            <a href="#">
+                                <h5 class="mx-2 mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                                    Updated Database
+                                </h5>
+                            </a>
+                        </div>                    
+                        <hr>
+                        <p class="mb-1 mt-6 font-normal text-gray-500 dark:text-gray-400">
+                            Besides delivering accurate data, we also ensure that the contents 
+                            of the report are updated with respect to the latest trends and 
+                            insights that help our clients to stay ahead of their competitors.
+                        </p>
+                    </div>
+                    <div class="max-w-md p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                        <div class="flex items-center">
+                            <img src="{{url('frontend/img/super_fast.webp')}}" width="20%">
+                            <a href="#">
+                                <h5 class="mx-2 mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                                    Super Fast Customer Support
+                                </h5>
+                            </a>
+                        </div>                    
+                        <hr>
+                        <p class="mb-1 mt-6 font-normal text-gray-500 dark:text-gray-400">
+                            At any particular time if you face any problem or query about 
+                            the database or anything in general, then contact us via mail, 
+                            instant chat, or simply give us a call, and our next available 
+                            representative will get in touch with you to guide you further.
+                        </p>
+                    </div>
+                    <div class="max-w-md p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                        <div class="flex items-center">
+                            <img src="{{url('frontend/img/customizable.webp')}}" width="20%">
+                            <a href="#">
+                                <h5 class="mx-2 mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                                    Customizable Reports
+                                </h5>
+                            </a>
+                        </div>                    
+                        <hr>
+                        <p class="mb-1 mt-6 font-normal text-gray-500 dark:text-gray-400">
+                            Our reports are capable of getting highly customized as per 
+                            the client’s needs and wants and show them the exact detail 
+                            that they are looking for without any hassle. We can deliver 
+                            only US Import Data or USA Export Data or both databases as 
+                            per the client’s needs and requirements.
+                        </p>
+                    </div>
+                    <div class="max-w-md p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                       <div class="flex items-center">
+                            <img src="{{url('frontend/img/pocket.webp')}}" width="20%">
+                            <a href="#">
+                                <h5 class="mx-2 mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                                    Pocket-friendly Price
+                                </h5>
+                            </a>
+                        </div>                    
+                        <hr>
+                        <p class="mb-1 mt-6 font-normal text-gray-500 dark:text-gray-400">
+                            We provide US Trade Data at very affordable and low prices 
+                            as compared to market prices which will surely be light on your 
+                            pocket. We can be your go-to if you are looking for a reliable 
+                            source of US Trade Data or USA Trade data at affordable prices.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white">
+            <div class="mx-auto md:container max-w-screen-xl grid py-8 lg:grid-cols-2">
+                <div>
+                    <div class="flex">
+                        <div class="flex items-center">
+                            <img src="{{url('frontend/img/accurate.webp')}}" width="15%">
+                            <div class="px-5">
+                                <h1 class="font-bold lg:text-5xl">
+                                    Enriching Data into Intelligence
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lg:py-8">
+                        <p class="lg:text-lg font-normal">
+                            An intuitive supply chain intelligence platform with 
+                            industry-leading global trade data enrichment for granular 
+                            insights and analytics on over 1.8 billion shipments to enhance 
+                            sales, global procurement, and research.
+                        </p>
+                    </div>
+                    <div class="sm:flex">
+                        <div class="dashed-card lg:my-3 sm:mr-5 p-8 md:p-6">
+                            <h2 class="font-bold mb-3 lg:text-xl">
+                                Identify Global Trade Trends
+                            </h2>
+                            <p class="mb-2 font-normal lg:text-lg">
+                                Get graphical and numerical visibility across imports and exports in global supply chain network to gain insights into the trends and shifts in the international market.
+                            </p>
+                        </div>
+                        <div class="dashed-card lg:my-3 sm:mr-5 p-8 md:p-6">
+                            <h2 class="font-bold mb-3 lg:text-xl">
+                                Identify Global Trade Trends
+                            </h2>
+                            <p class="mb-2 font-normal lg:text-lg">
+                                Get graphical and numerical visibility across imports and exports in global supply chain network to gain insights into the trends and shifts in the international market.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="sm:flex">
+                        <div class="dashed-card lg:my-3 sm:mr-5 p-8 md:p-6">
+                            <h2 class="font-bold mb-3 lg:text-xl">
+                                Identify Global Trade Trends
+                            </h2>
+                            <p class="mb-2 font-normal lg:text-lg">
+                                Get graphical and numerical visibility across imports and exports in global supply chain network to gain insights into the trends and shifts in the international market.
+                            </p>
+                        </div>
+                        <div class="dashed-card lg:my-3 sm:mr-5 p-8 md:p-6">
+                            <h2 class="font-bold mb-3 lg:text-xl">
+                                Identify Global Trade Trends
+                            </h2>
+                            <p class="mb-2 font-normal lg:text-lg">
+                                Get graphical and numerical visibility across imports and exports in global supply chain network to gain insights into the trends and shifts in the international market.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:flex items-center md:block">
+                    <img src="{{url('frontend/img/overview.gif')}}" width="100%">
+                </div>
+            </div>
+        </section>
+
+        {{-- Browse More Data --}}
+        <section class="bg-gray-50">
+            <div class="py-8 px-4 mx-auto md:container max-w-screen-xl lg:py-16 grid lg:grid-cols-2 gap-8 lg:gap-16">
+                <div class="flex flex-col justify-center">
+                    <h1 class="mb-4 text-4xl font-semibold tracking-tight leading-none text-gray-900 md:text-3xl lg:text-3xl dark:text-white">
+                        Browse More Data
+                        TradeImeX
+                    </h1>
+                </div>
+                <div>
+                    <button type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 me-2 mb-2">
+                        <img class="w-8 h-8 me-4 -ms-1" src="{{url('frontend/flag/argentina.png')}}" width="80%">
+                        Argentina
+                        <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 me-2 mb-2">
+                        <img class="w-8 h-8 me-4 -ms-1" src="{{url('frontend/flag/brazil-.png')}}" width="80%">
+                        Brazil
+                        <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 me-2 mb-2">
+                        <img class="w-8 h-8 me-4 -ms-1" src="{{url('frontend/flag/canada.png')}}" width="80%">
+                        Canada
+                        <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 me-2 mb-2">
+                        <img class="w-8 h-8 me-4 -ms-1" src="{{url('frontend/flag/japan.png')}}" width="80%">
+                        Japan
+                        <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 me-2 mb-2">
+                        <img class="w-8 h-8 me-4 -ms-1" src="{{url('frontend/flag/malaysia.png')}}" width="80%">
+                        Malaysia
+                        <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 me-2 mb-2">
+                        <img class="w-8 h-8 me-4 -ms-1" src="{{url('frontend/flag/russia.png')}}" width="80%">
+                        Russia
+                        <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 me-2 mb-2">
+                        <img class="w-8 h-8 me-4 -ms-1" src="{{url('frontend/flag/singapore.png')}}" width="80%">
+                        Singapore
+                        <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 me-2 mb-2">
+                        <img class="w-8 h-8 me-4 -ms-1" src="{{url('frontend/flag/south-africa.png')}}" width="80%">
+                        South-Africa
+                        <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 me-2 mb-2">
+                        <img class="w-8 h-8 me-4 -ms-1" src="{{url('frontend/flag/uruguay.png')}}" width="80%">
+                        Uruguay
+                        <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        @include('footer')
+
+        @include('script')
+    </body>
+</html>
