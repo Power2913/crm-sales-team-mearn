@@ -1,5 +1,6 @@
 import React, { useEffect,useState } from 'react'
 import '../css/newlead.css';
+import { FaBackward, FaForward } from 'react-icons/fa';
 const Newlead = ({handleLeads}) => {
     const[newcreatedLeads,setNewcreatedLeads]=useState("");
     // const items = [
@@ -17,29 +18,38 @@ const Newlead = ({handleLeads}) => {
     //     },
     //     // Add more items as needed
     //   ];
-
-      useEffect(()=>{
-        const newleads =async()=>{
-           try {
-             const response = await fetch('http://192.168.1.11:3002/newclient');
-             if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-             }
-
-             const nealeads = await response.json();
-             console.log(nealeads);
-             setNewcreatedLeads(nealeads);
-           } catch (error) {
-             console.log(error);
-           }
-        };
-        newleads();
-      },[])
+    const [pageNumber, setPageNumber] = useState(1); // Current page number
+    const pageSize = 10;
+    useEffect(() => {
+      const newleads = async () => {
+          try {
+              const response = await fetch(`http://192.168.1.11:3002/newclient?pageNumber=${pageNumber}`);
+              if (!response.ok) {
+                  throw new Error(`HTTP error! Status: ${response.status}`);
+              }
+  
+              const nealeads = await response.json();
+              console.log(nealeads);
+              setNewcreatedLeads(nealeads);
+          } catch (error) {
+              console.log(error);
+          }
+      };
+      newleads();
+  }, [pageNumber]);
 
       const handleClick = (lead) => {
         // Call handleLeads function with selected lead's data
         handleLeads(lead);
     };
+
+    const goToPreviousPage = () => {
+      setPageNumber((prevPageNumber) => Math.max(prevPageNumber - 1, 1));
+  };
+
+  const goToNextPage = () => {
+      setPageNumber((prevPageNumber) => prevPageNumber + 1);
+  };
   return (
     <div className="list-container">
         <h3>New Leads</h3>
@@ -60,6 +70,7 @@ const Newlead = ({handleLeads}) => {
                         <div>{leads.requirements}</div>
 
                     </div>
+                    
                     ))
             ):(
                 <div className="list-item">
@@ -67,6 +78,9 @@ const Newlead = ({handleLeads}) => {
                 </div>
             )
         }
+        <button onClick={goToPreviousPage} disabled={pageNumber === 1}><FaBackward/></button>
+           <span>Page {pageNumber}</span>
+        <button onClick={goToNextPage}><FaForward/></button>
     </div>
   )
 }

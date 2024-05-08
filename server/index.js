@@ -43,12 +43,12 @@ app.post('/login',(req,res)=>{
 });
 // Create Leads
 app.post('/createlead',(req,res)=>{
-    const{fullname,email,phone,requirements} = req.body;
+    const{fullname,email,phone,company} = req.body;
     const leadcheck = "SELECT * FROM new_lead WHERE email = ? AND unique_id =?";
 
     // Insert Data into Database table new_lead
     const uniqueid = phone.toString().slice(0, -5);
-    const sqlInsert = "INSERT INTO new_lead (unique_id,fullname,email,number,requirements) VALUES (?,?,?,?,?)";
+    const sqlInsert = "INSERT INTO new_lead (unique_id,fullname,email,number,company) VALUES (?,?,?,?,?)";
     // Create Table for Client
     const client_table = uniqueid;
 
@@ -67,7 +67,7 @@ app.post('/createlead',(req,res)=>{
        } else if (result.length > 0) {
             res.send({ message: 'Client already exists' });
        } else{
-            con.query(sqlInsert,[uniqueid,fullname,email,phone,requirements],(dberr,dbresult)=>{
+            con.query(sqlInsert,[uniqueid,fullname,email,phone,company],(dberr,dbresult)=>{
                 if (dberr) {
                     console.error(dberr);
                     res.send({ message: "Error in creating Leads in Database" });
@@ -93,18 +93,24 @@ app.post('/createlead',(req,res)=>{
     })
 })
 
-// Get Data from Database table new_leads
-app.get('/newclient',(req,res)=>{
-  const sqlGet = "SELECT * FROM new_lead";
-  con.query(sqlGet,(err,result)=>{
-      if (err) {
-          console.error(err);
-          res.status(500).send({ message: "Internal server error" });
-      } else {
-          res.send(result);
-      }
-  })
+// Get Data from Database table new_leads with pagination
+app.get('/newclient', (req, res) => {
+    const pageNumber = req.query.pageNumber || 1; // Default to first page
+    const pageSize = 10; // Number of records per page
+    const offset = (pageNumber - 1) * pageSize;
+
+    const sqlGet = `  SELECT * FROM new_lead ORDER BY id DESC LIMIT ${pageSize} OFFSET ${offset}`;
+  
+    con.query(sqlGet, (err, result) => {
+        if (err) {
+            console.error(err);
+            res.status(500).send({ message: "Internal server error" });
+        } else {
+            res.send(result);
+        }
+    });
 });
+
 
 // New Messages
 app.post('/newmessages', (req, res) => {
@@ -139,6 +145,7 @@ app.post('/closedlead', (req, res) => {
     const { created_at, name, email, phone, finalrequirement, closingreason } = req.body;
     const sqlInsert = "INSERT INTO closed_leads (fullname,email,number,requirements,reason,created_at) VALUES (?,?,?,?,?,?)";
     const sqlDelete = `DELETE FROM new_lead WHERE email = ?`;
+    // const sqlDeletelastseen = `DELETE FROM last_message WHERE uid = ?`;
 
     con.query(sqlInsert, [name, email, phone, finalrequirement, closingreason, created_at], (insertErr, insertResult) => {
         if (insertErr) {
@@ -244,7 +251,7 @@ app.get('/notification', (req, res) => {
     });
 });
 
-
+// Notification List
 app.get('/notification-list',(req,res)=>{
     const sqlGetdata = `SELECT * FROM last_message`;
     con.query(sqlGetdata,(error,rows)=>{

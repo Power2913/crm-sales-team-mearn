@@ -9,7 +9,7 @@ import Notificationpage from './Notification';
 import SuccessfulLeads from './SuccessfulLeads';
 
 function Index() {
-const[list, setList] = useState(false);
+const[list, setList] = useState(true);
 const[newlead,setNewlead] = useState(true);
 const [message, setMessage] = useState("");
 const [leads,setLeads] = useState(false);
@@ -85,7 +85,7 @@ const[formlead,setFormlead] = useState({
     fullname:'',
     email:'',
     phone:'',
-    requirements:''
+    company:''
 }
 );
 const handleChange =(e)=>{
@@ -131,7 +131,7 @@ useEffect(() => {
     };
     getNotification();
 }, []);
-const notificationCount = notification.length;
+
 const notificationCount24HoursOld = notification.reduce((count, notification) => {
     const lastSeenTime = new Date(notification.last_seen);
     const currentTime = new Date();
@@ -175,6 +175,7 @@ const notificationCount24HoursOld = notification.reduce((count, notification) =>
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 fontSize: '14px',
+                                cursor:'pointer',
                             }}
                             >
                             {notificationCount24HoursOld}
@@ -188,15 +189,28 @@ const notificationCount24HoursOld = notification.reduce((count, notification) =>
             </div>
             <div className="hero">
                 <div className="sidebar">
+                    <div className="profile">
+                        <div className="profile-logo">
+
+                        </div>
+                        <div className="account-info">
+                            <div className="account-name">
+                                <span>info@user.com</span>
+                            </div>
+                            <div className="account-email">
+                                <span>User</span>
+                            </div>
+                        </div>
+                    </div>
                     <div className="option">
                         <li>
                            <a href="/admin">
                              <span id='leadlist'><a href="/admin">Home</a></span>
                            </a>
                         </li>
-                        <li>
+                        {/* <li>
                             <span id='leadlist' onClick={handleList}>Created Leads</span>
-                        </li>
+                        </li> */}
                         <li>
                             <span onClick={handleClosedleadlist}>Closed Leads</span>
                         </li>
@@ -211,27 +225,43 @@ const notificationCount24HoursOld = notification.reduce((count, notification) =>
                       <Notificationpage notification={notification}/>
                     }              
                     {newlead&&
-                        <div className="form-container">
-                        
-                            <h3>Create New Lead</h3>
-                            {message && <p className='message'>{message}</p>}
-                            <form className="form" method='POST' onSubmit={createLead}>
-                                <div className="form-group">
-                                <input type="text" placeholder="Enter your full name" name='fullname'value={formlead.fullname} onChange={handleChange} className="input-field" required />
+                        <div className="hero-options">
+                            <div className="form-container">                          
+                                <h3>Create New Lead</h3>
+                                {message && <p className='message'>{message}</p>}
+                                <form className="form" method='POST' onSubmit={createLead}>
+                                    <div className="form-group">
+                                    <input type="text" placeholder="Enter your full name" name='fullname'value={formlead.fullname} onChange={handleChange} className="input-field" required />
+                                    </div>
+                                    <div className="form-group">
+                                    <input type="email" placeholder="Enter your email address" name='email' value={formlead.email} onChange={handleChange} className="input-field" required/>
+                                    </div>
+                                    <div className="form-group">
+                                    <input type="tel" placeholder="Enter your phone number" name='phone' value={formlead.phone} onChange={handleChange} className="input-field" required/>
+                                    </div>
+                                    <div className="form-group">
+                                    <input type="text" name="company" id="" placeholder='Enter Company Name....' className='input-field' value={formlead.company} onChange={handleChange}/>
+                                    {/* <textarea placeholder="Enter requirements" name='requirements' value={formlead.requirements} onChange={handleChange} className="textarea-field" rows={10} required/> */}
+                                    </div>
+                                    <div className="form-group">
+                                    <button type="submit" className="submit-button">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div className="options">
+                                <div className="lead-category closed-leads">
+                                     <span>Closed Leads</span>
+                                     <span>90</span>
                                 </div>
-                                <div className="form-group">
-                                <input type="email" placeholder="Enter your email address" name='email' value={formlead.email} onChange={handleChange} className="input-field" required/>
+                                <div className="lead-category inprogrss-lead">
+                                     <span>In Progress</span>
+                                     <span>10</span>
                                 </div>
-                                <div className="form-group">
-                                <input type="tel" placeholder="Enter your phone number" name='phone' value={formlead.phone} onChange={handleChange} className="input-field" required/>
+                                <div className="lead-category successfull-leads">
+                                      <span>Successful Leads</span>
+                                      <span>10</span>
                                 </div>
-                                <div className="form-group">
-                                <textarea placeholder="Enter requirements" name='requirements' value={formlead.requirements} onChange={handleChange} className="textarea-field" rows={10} required/>
-                                </div>
-                                <div className="form-group">
-                                <button type="submit" className="submit-button">Submit</button>
-                                </div>
-                            </form>
+                            </div>
                         </div>
                     }
                     {/* New Client List */}
