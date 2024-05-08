@@ -27,8 +27,8 @@ const ClosedLeadsList = () => {
             <div>Phone Number</div>
             <div>Requirements</div>
             <div>reason</div>
-            <div>Created_at</div>
-            <div>Closed_at</div>
+            {/* <div>Created_at</div>
+            <div>Closed_at</div> */}
             {/* <div>Action</div> */}
         </div>
         {
@@ -40,8 +40,8 @@ const ClosedLeadsList = () => {
                         <div>{leads.number}</div>
                         <div>{leads.requirements}</div>
                         <div>{leads.reason}</div>
-                        <div>{leads.created_at}</div>
-                        <div>{leads.closed_at}</div>
+                        {/* <div>{leads.created_at}</div>
+                        <div>{leads.closed_at}</div> */}
                     </div>
                     ))
             ):(

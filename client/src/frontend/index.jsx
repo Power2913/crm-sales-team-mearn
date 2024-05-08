@@ -4,9 +4,10 @@ import Newlead from './Newlead'
 import Leads from './leads';
 import ClosedLeads from './ClosedLeads';
 import ClosedLeadsList from './ClosedLeadsList';
-import { FaBell } from 'react-icons/fa';
+import { FaBell,FaUser } from 'react-icons/fa';
 import Notificationpage from './Notification';
 import SuccessfulLeads from './SuccessfulLeads';
+import Invoice from './Invoice';
 
 function Index() {
 const[list, setList] = useState(true);
@@ -19,6 +20,7 @@ const [closedleaddata, setClosedleaddata] = useState(null);
 const [closedLeadlist, setClosedLeadList] = useState(false);
 const [successLeads,setSucccessLeads] = useState(false);
 const [notificationshow, setNotificationshow] = useState(false);
+
 
 const handleList = () => {
     setList(true);
@@ -194,11 +196,18 @@ const notificationCount24HoursOld = notification.reduce((count, notification) =>
 
                         </div>
                         <div className="account-info">
-                            <div className="account-name">
-                                <span>info@user.com</span>
+                            <div className="account-info-option-one">
+                                <div className="user">
+                                    <FaUser/>
+                                </div>
                             </div>
-                            <div className="account-email">
-                                <span>User</span>
+                            <div className="account-info-option-two">
+                                <div className="account-name">
+                                    <span>info.nitesh@user.com</span>
+                                </div>
+                                <div className="account-email">
+                                    <span>Nitesh Chauhan</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -211,11 +220,14 @@ const notificationCount24HoursOld = notification.reduce((count, notification) =>
                         {/* <li>
                             <span id='leadlist' onClick={handleList}>Created Leads</span>
                         </li> */}
+                        {/* <li>
+                            <span >Succesfull Leads</span>
+                        </li> */}
                         <li>
-                            <span onClick={handleClosedleadlist}>Closed Leads</span>
+                            <span>Sales Stats</span>
                         </li>
                         <li>
-                            <span onClick={handleSuccessfulleadlist}>Succesfull Leads</span>
+                            <span>Generated Invoice</span>
                         </li>
                     </div>
                 </div>
@@ -249,7 +261,7 @@ const notificationCount24HoursOld = notification.reduce((count, notification) =>
                                 </form>
                             </div>
                             <div className="options">
-                                <div className="lead-category closed-leads">
+                                <div className="lead-category closed-leads"  onClick={handleClosedleadlist}>
                                      <span>Closed Leads</span>
                                      <span>90</span>
                                 </div>
@@ -257,7 +269,7 @@ const notificationCount24HoursOld = notification.reduce((count, notification) =>
                                      <span>In Progress</span>
                                      <span>10</span>
                                 </div>
-                                <div className="lead-category successfull-leads">
+                                <div className="lead-category successfull-leads" onClick={handleSuccessfulleadlist}>
                                       <span>Successful Leads</span>
                                       <span>10</span>
                                 </div>
@@ -293,6 +305,9 @@ const notificationCount24HoursOld = notification.reduce((count, notification) =>
                             <SuccessfulLeads/>
                         </div>
                     }
+                    <div className="invoice">
+                        <Invoice/>
+                    </div>
                 </div>
             </div>
         </div>

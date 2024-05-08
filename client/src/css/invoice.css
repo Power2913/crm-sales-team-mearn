@@ -1,0 +1,97 @@
+.invoice-format{
+    margin-top: 5px;
+    background-color: white;
+    width: 60%;
+}
+
+.format-header-logo{
+ width: 100%;
+}
+.logo-left{
+
+}
+.tradeimex-logo{
+    color: skyblue;
+    width: 60%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+.tradeimex-info{
+    color: skyblue;
+}
+.fromat-header-name{
+    width: 100%;
+    display: flex;
+}
+.fromat-header-line-left{
+    width: 60%;
+    height: 40px;
+    background-color: wheat;
+}
+.name{
+    width: 10%;
+    height: 40px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+}
+.format-header-line-right{
+    width: 30%;
+    height: 40px;
+    background-color: wheat;
+}
+.format-details{
+    display: flex;
+    width: 100%;
+}
+.format-details-left{
+    width: 50%;
+    text-align: center;
+}
+.format-details-left p{
+    font-weight: 600;
+}
+.format-details-right{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    float: right;
+    text-align: center;
+}
+.format-details-right p{
+    font-weight: 600;
+}
+.format-database-table{
+
+}
+.format-database-table {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-header {
+    background-color: #92d050;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table-header th {
+    padding: 10px;
+    text-align: left;
+}
+
+.table-body tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table-body td {
+    padding: 10px;
+}
+
+.table-body tr:hover {
+    background-color: #e9ecef;
+}

@@ -185,17 +185,19 @@ function Leads({ leadData,handleClosedLead }) {
         <form   onSubmit={handleleadsuccess}>
           <button type="submit" className="action-button successful"  >Successful</button>
         </form>
-
+        <div className="generate-invoice">
+            <button type="button">Generate Invoice</button>
+          </div>
         <div className="invoice">
-          
-        <form className="styled-form" onSubmit={invoiceUpload}>
-          <label htmlFor="file-input">
-            <FaFile />
-            Choose File
-          </label>
-          <input type="file" id="file-input" name="invoice" onChange={handleFileChange} />
-          <button type="submit">Send Invoice</button>
-        </form>
+
+          <form className="styled-form" onSubmit={invoiceUpload}>
+            <label htmlFor="file-input">
+              <FaFile />
+              Choose File
+            </label>
+            <input type="file" id="file-input" name="invoice" onChange={handleFileChange} />
+            <button type="submit">Send Invoice</button>
+          </form>
         </div>      
       </div>
     
