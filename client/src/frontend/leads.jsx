@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import '../css/leads.css';
 import { FaFile } from 'react-icons/fa';
-function Leads({ leadData,handleClosedLead }) {
+function Leads({ leadData,handleClosedLead,handleInvoice }) {
 
   const [successleadmessage,setsuccessleadMessage]=useState([]);
   // console.log('Lead Data:', leadData)
@@ -186,7 +186,7 @@ function Leads({ leadData,handleClosedLead }) {
           <button type="submit" className="action-button successful"  >Successful</button>
         </form>
         <div className="generate-invoice">
-            <button type="button">Generate Invoice</button>
+            <button type="button" onClick={handleInvoice}>Generate Invoice</button>
           </div>
         <div className="invoice">
 

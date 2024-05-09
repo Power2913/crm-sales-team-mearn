@@ -20,7 +20,7 @@ const [closedleaddata, setClosedleaddata] = useState(null);
 const [closedLeadlist, setClosedLeadList] = useState(false);
 const [successLeads,setSucccessLeads] = useState(false);
 const [notificationshow, setNotificationshow] = useState(false);
-
+const [invoice, setInvoice] = useState(false);
 
 const handleList = () => {
     setList(true);
@@ -30,6 +30,7 @@ const handleList = () => {
     setClosedLeadList(false);
     setSucccessLeads(false);
     setNotificationshow(false);
+    setInvoice(false);
 }
 const handleLeads = (lead) => {
     setSelectedLead(lead);
@@ -40,6 +41,7 @@ const handleLeads = (lead) => {
     setClosedLeadList(false);
     setSucccessLeads(false);
     setNotificationshow(false);
+    setInvoice(false);
 }
 const handleClosedLeads = (closedleaddata) => {
     // setclosedlead(true);
@@ -52,6 +54,7 @@ const handleClosedLeads = (closedleaddata) => {
     setClosedLeadList(false)
     setSucccessLeads(false);
     setNotificationshow(false);
+    setInvoice(false);
 }
 
 const handleClosedleadlist = ()=>{
@@ -62,6 +65,7 @@ const handleClosedleadlist = ()=>{
     setNewlead(false);
     setSucccessLeads(false);
     setNotificationshow(false);
+    setInvoice(false);
 }
 const handleSuccessfulleadlist = ()=>{
     setSucccessLeads(true);
@@ -71,10 +75,21 @@ const handleSuccessfulleadlist = ()=>{
     setList(false);
     setNewlead(false);
     setNotificationshow(false);
+    setInvoice(false);
 }
 
 const handleNotification = () => {
     setNotificationshow(true);
+    setSucccessLeads(false);
+    setClosedLeadList(false)
+    setclosedleadform(false);
+    setLeads(false);
+    setList(false);
+    setNewlead(false);
+    setInvoice(false);
+}
+const handleInvoice = () => {
+    setInvoice(true);
     setSucccessLeads(false);
     setClosedLeadList(false)
     setclosedleadform(false);
@@ -285,7 +300,7 @@ const notificationCount24HoursOld = notification.reduce((count, notification) =>
                     {/* Selected Leads */}
                     {leads&&
                         <div className="lead">
-                            <Leads leadData={selectedLead} handleClosedLead={handleClosedLeads}/>
+                            <Leads leadData={selectedLead} handleClosedLead={handleClosedLeads} handleInvoice={handleInvoice}/>
                         </div>
                     }
                     {/* Close Leads */}
@@ -305,9 +320,11 @@ const notificationCount24HoursOld = notification.reduce((count, notification) =>
                             <SuccessfulLeads/>
                         </div>
                     }
-                    <div className="invoice">
-                        <Invoice/>
-                    </div>
+                    {invoice&&
+                        <div className="invoice">
+                            <Invoice />
+                        </div>
+                    }
                 </div>
             </div>
         </div>
