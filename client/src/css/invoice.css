@@ -61,11 +61,11 @@ select {
 .invoice-format{
     margin-top: 5px;
     background-color: white;
-    width: 55%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     margin-right: 2%;
-    margin-left: auto;
+    margin-left: 2%;
 }
 .invoice-format-inner{
     width: 90%;
@@ -246,4 +246,49 @@ select {
 .term-conditions p{
     font-size: 12px;
     margin-top: -10px;
+}
+.client-sign {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    margin-top: 20px;
+}
+.client-sign-line{
+    width: 75%;
+    height: 1px;
+    background: skyblue;
+    margin-left: auto;
+    margin-right: auto;
+}
+.deirector-sign{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.stamp{
+    width: 100%;
+}
+.stamp-img{
+    width: 30%;
+    margin-left: auto;
+    /* margin-top: -34px; */
+}
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    #invoice-container,
+    #invoice-container * {
+        visibility: visible;
+    }
+
+    #invoice-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
 }
