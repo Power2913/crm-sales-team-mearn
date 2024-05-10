@@ -14,8 +14,9 @@ function Invoice({inVoiceClientdata}) {
             console.error('Invoice container not found.');
         }
     }
+
     const [rows, setRows] = useState([{ database: '', hscode: '', period: '', currency: '', amount: '' }]);
-    console.log("Table Rows:", rows.amount);
+    console.log("Table Rows:", rows);
     
     const handleChange = (index, fieldName, value) => {
       const updatedRows = [...rows];
@@ -34,8 +35,7 @@ function Invoice({inVoiceClientdata}) {
     };
     const [invoicefields, setinvoicefields] = useState({
         addressone:'',
-        gst:'',
-        vat:'',
+        gst_vat:'',
     })
     console.log('Invoice Fields ', invoicefields);
     const handlefieldschange =(e)=>{
@@ -48,6 +48,8 @@ function Invoice({inVoiceClientdata}) {
     const invoiceGenerate =()=>{
         
     }
+
+
   return (
      <><div className="invoice-main ">
           <div className="invoice-form">
@@ -59,11 +61,11 @@ function Invoice({inVoiceClientdata}) {
                 </div>
 
                 <div className="invoice-group">
-                    <input type="text" name="gst" placeholder="GST..." value={invoicefields.gst} onChange={handlefieldschange}/>
+                    <input type="text" name="gst_vat" placeholder="GST/VAT" value={invoicefields.gst_vat} onChange={handlefieldschange}/>
                 </div>
-                <div className="invoice-group">
+                {/* <div className="invoice-group">
                     <input type="text" name="vat" placeholder="VAT..." value={invoicefields.vat} onChange={handlefieldschange}/>
-                </div>
+                </div> */}
 
                 {rows.map((row, index) => (
                     <div key={index} className="invoice-group-table">
@@ -84,6 +86,18 @@ function Invoice({inVoiceClientdata}) {
                         <option value="Euro">€</option>
                         </select>
                     </div>
+                    {row.currency === 'Rs' && (
+                        <>
+                            <div className="invoice-group">
+                                <select value={row.tax} onChange={(e) => handleChange(index, 'currency', e.target.value)}>
+                                <option value="">TAX</option>
+                                <option value="CGST">CGST</option>
+                                <option value="SGST">SGST</option>
+                                <option value="IGST">IGST</option>
+                                </select>
+                            </div>
+                        </>
+                        )}
                     <div className="invoice-group">
                         <input type="text" value={row.amount} onChange={(e) => handleChange(index, 'amount', e.target.value)} placeholder="Amount" />
                     </div>
@@ -91,7 +105,7 @@ function Invoice({inVoiceClientdata}) {
                     </div>
                 ))}
                 <button type="button" onClick={addRow}>+</button>
-                <button type="submit">Generate</button>            
+                <button onClick={handlePrint}>Print Invoice</button>            
            </form>
           </div>
           <div className="invoice-format" id='invoice-container'>
@@ -126,7 +140,7 @@ function Invoice({inVoiceClientdata}) {
                           <span>Address:{invoicefields.addressone}</span><br />
                           <span>Email:{inVoiceClientdata.email}</span><br />
                           <span>Phone:{inVoiceClientdata.number}</span><br />
-                          <span>GST:{invoicefields.gst}</span><br />
+                          <span>GST:{invoicefields.gst_vat}</span><br />
                       </div>
                       <div className="format-details-right">
                           <p>Invoice No # <span>TI/24-25/0389</span></p>
@@ -155,12 +169,14 @@ function Invoice({inVoiceClientdata}) {
                                 rows.map((tabledata,index)=>(
                                     <>
                                     <tr>
-                                        <td>1</td>
+                                        <td>{index + 1}</td>
                                         <td>{tabledata.database}</td>
                                         <td>998598</td>
                                         <td>{tabledata.hscode}</td>
                                         <td>{tabledata.period}</td>
-                                        <td>{tabledata.amount}</td>
+                                        <td>{tabledata.currency === 'Rs' ? `${tabledata.amount} rs`
+                                        :tabledata.currency === 'Doller' ? `${tabledata.amount} $`:''}</td>
+                                        
                                     </tr>
                                     </>
                                 ))
@@ -260,7 +276,7 @@ function Invoice({inVoiceClientdata}) {
                   </div>
               </div>
           </div>
-      </div><button onClick={handlePrint}>Print Invoice</button></>
+      </div></>
   )
 }
 
