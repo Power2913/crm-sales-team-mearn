@@ -1,69 +1,98 @@
-import React from 'react'
+import React,{useState}from 'react'
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/invoice.css';
 import Tradeimexlogo from '../img/logo.png';
 import Sign from '../img/Sign_of_director.png';
 import Stamp from '../img/stamp_tradeimex.png';
-function Invoice() {
-const handlePrint =()=>{
-    const invoicecontainer = document.getElementsByClassName('invoice-format');
-    if (invoicecontainer) {
-        window.print();
-    } else {
-        console.error('Invoice container not found.');
+function Invoice({inVoiceClientdata}) {
+    // console.log('Invoice Data',inVoiceClientdata);
+    const handlePrint =()=>{
+        const invoicecontainer = document.getElementsByClassName('invoice-format');
+        if (invoicecontainer) {
+            window.print();
+        } else {
+            console.error('Invoice container not found.');
+        }
     }
-}
+    const [rows, setRows] = useState([{ database: '', hscode: '', period: '', currency: '', amount: '' }]);
+    console.log("Table Rows:", rows.amount);
+    
+    const handleChange = (index, fieldName, value) => {
+      const updatedRows = [...rows];
+      updatedRows[index][fieldName] = value;
+      setRows(updatedRows);
+    };
+  
+    const addRow = () => {
+      setRows([...rows, { database: '', hscode: '', period: '', currency: '', amount: '' }]);
+    };
+  
+    const removeRow = (index) => {
+      const updatedRows = [...rows];
+      updatedRows.splice(index, 1);
+      setRows(updatedRows);
+    };
+    const [invoicefields, setinvoicefields] = useState({
+        addressone:'',
+        gst:'',
+        vat:'',
+    })
+    console.log('Invoice Fields ', invoicefields);
+    const handlefieldschange =(e)=>{
+        setinvoicefields({
+            ...invoicefields,
+            [e.target.name]:
+            e.target.value
+        })
+    }
+    const invoiceGenerate =()=>{
+        
+    }
   return (
      <><div className="invoice-main ">
           <div className="invoice-form">
               <h3>Invoice Form</h3>
-              <form action="">
-                  <div className="invoice-group">
-                      <input type="text" name="client-name" id="" placeholder='Client name...' />
-                  </div>
-                  <div className="invoice-group">
-                      <input type="text" name="company-name" id="" placeholder='Company name...' />
-                  </div>
-                  <div className="invoice-group">
-                      <input type="text" name="address-one" id="" placeholder='Address one...' />
-                  </div>
-                  <div className="invoice-group">
-                      <input type="text" name="address-two" id="" placeholder='Address two...' />
-                  </div>
-                  <div className="invoice-group">
-                      <input type="text" name="gst" id="" placeholder='GST...' />
-                  </div>
-                  <div className="invoice-group">
-                      <input type="text" name="vat" id="" placeholder='VAT...' />
-                  </div>
-                  <div className="invoice-group">
-                      <input type="text" name="email" id="" placeholder='Email...' />
-                  </div>
-                  <div className="invoice-group-table">
-                      <div className="invoice-group">
-                          <input type="text" name="database" id="" placeholder='Database' />
-                      </div>
-                      <div className="invoice-group">
-                          <input type="text" name="hscode" id="" placeholder='HS CODE...' />
-                      </div>
-                      <div className="invoice-group">
-                          <input type="month" name="period" id="" placeholder='Chose Period' />
-                      </div>
-                      <div className="invoice-group">
-                          <select name="currency" id="">
-                              <option value="">Currency</option>
-                              <option value="Doller">$</option>
-                              <option value="Rs">₹</option>
-                              <option value="Euro">€</option>
-                          </select>
-                      </div>
-                      <div className="invoice-group">
-                          <input type="text" name="Amount" id="" placeholder='Amount' />
-                      </div>
-                      <button>+</button>
-                  </div>
-                  <button type="submit">Generate</button>
-              </form>
+              <form onSubmit={invoiceGenerate}>
+
+                <div className="invoice-group">
+                    <input type="text" name="addressone" placeholder="Address one..." value={invoicefields.addressone} onChange={handlefieldschange}/>
+                </div>
+
+                <div className="invoice-group">
+                    <input type="text" name="gst" placeholder="GST..." value={invoicefields.gst} onChange={handlefieldschange}/>
+                </div>
+                <div className="invoice-group">
+                    <input type="text" name="vat" placeholder="VAT..." value={invoicefields.vat} onChange={handlefieldschange}/>
+                </div>
+
+                {rows.map((row, index) => (
+                    <div key={index} className="invoice-group-table">
+                    <div className="invoice-group">
+                        <input type="text" value={row.database} onChange={(e) => handleChange(index, 'database', e.target.value)} placeholder="Database" />
+                    </div>
+                    <div className="invoice-group">
+                        <input type="text" value={row.hscode} onChange={(e) => handleChange(index, 'hscode', e.target.value)} placeholder="HS CODE..." />
+                    </div>
+                    <div className="invoice-group">
+                        <input type="month" value={row.period} onChange={(e) => handleChange(index, 'period', e.target.value)} placeholder="Choose Period" />
+                    </div>
+                    <div className="invoice-group">
+                        <select value={row.currency} onChange={(e) => handleChange(index, 'currency', e.target.value)}>
+                        <option value="">Currency</option>
+                        <option value="Doller">$</option>
+                        <option value="Rs">₹</option>
+                        <option value="Euro">€</option>
+                        </select>
+                    </div>
+                    <div className="invoice-group">
+                        <input type="text" value={row.amount} onChange={(e) => handleChange(index, 'amount', e.target.value)} placeholder="Amount" />
+                    </div>
+                    <button type="button" onClick={() => removeRow(index)}>-</button>
+                    </div>
+                ))}
+                <button type="button" onClick={addRow}>+</button>
+                <button type="submit">Generate</button>            
+           </form>
           </div>
           <div className="invoice-format" id='invoice-container'>
               <div className="invoice-format-inner">
@@ -93,9 +122,11 @@ const handlePrint =()=>{
                   <div className="format-details">
                       <div className="format-details-left">
                           <p>Invoice To :</p><br />
-                          <span>Name:Nitesh Chauhan</span><br />
-                          <span>Address:Bhagalpur,Bihar</span><br />
-                          <span>City:Bhagalpur</span><br />
+                          <span>Name:{inVoiceClientdata.fullname}</span><br />
+                          <span>Address:{invoicefields.addressone}</span><br />
+                          <span>Email:{inVoiceClientdata.email}</span><br />
+                          <span>Phone:{inVoiceClientdata.number}</span><br />
+                          <span>GST:{invoicefields.gst}</span><br />
                       </div>
                       <div className="format-details-right">
                           <p>Invoice No # <span>TI/24-25/0389</span></p>
@@ -120,14 +151,23 @@ const handlePrint =()=>{
                               </tr>
                           </thead>
                           <tbody className="table-body">
-                              <tr>
-                                  <td>1</td>
-                                  <td>Vietnam Import Report</td>
-                                  <td>998598</td>
-                                  <td>Ch 28, 29, 38 & 9027</td>
-                                  <td>Apr-24</td>
-                                  <td>60</td>
-                              </tr>
+                            {Array.isArray(rows) && rows.length > 0 ?(
+                                rows.map((tabledata,index)=>(
+                                    <>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>{tabledata.database}</td>
+                                        <td>998598</td>
+                                        <td>{tabledata.hscode}</td>
+                                        <td>{tabledata.period}</td>
+                                        <td>{tabledata.amount}</td>
+                                    </tr>
+                                    </>
+                                ))
+                            ):(
+                                   <td>No data Inserted</td>
+                            )                               
+                            }
                           </tbody>
                       </table>
                   </div>

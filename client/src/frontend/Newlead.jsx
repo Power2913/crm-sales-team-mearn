@@ -58,7 +58,7 @@ const Newlead = ({handleLeads}) => {
             <div>Email</div>
             <div>Phone Number</div>
             <div>Requirements</div>
-            <div>Company</div>
+            {/* <div>Company</div> */}
         </div>
         {
             Array.isArray(newcreatedLeads) && newcreatedLeads.length> 0 ?(
@@ -68,7 +68,6 @@ const Newlead = ({handleLeads}) => {
                         <div>{leads.email}</div>
                         <div>{leads.number}</div>
                         <div>{leads.requirements}</div>
-
                     </div>
                     
                     ))

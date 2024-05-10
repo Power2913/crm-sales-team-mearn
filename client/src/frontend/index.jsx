@@ -21,6 +21,7 @@ const [closedLeadlist, setClosedLeadList] = useState(false);
 const [successLeads,setSucccessLeads] = useState(false);
 const [notificationshow, setNotificationshow] = useState(false);
 const [invoice, setInvoice] = useState(false);
+const [invoiceData,setinvoiceData] = useState(null);
 
 const handleList = () => {
     setList(true);
@@ -88,7 +89,8 @@ const handleNotification = () => {
     setNewlead(false);
     setInvoice(false);
 }
-const handleInvoice = () => {
+const handleInvoice = (invoiceData) => {
+    setinvoiceData(invoiceData);
     setInvoice(true);
     setSucccessLeads(false);
     setClosedLeadList(false)
@@ -271,6 +273,10 @@ const notificationCount24HoursOld = notification.reduce((count, notification) =>
                                     {/* <textarea placeholder="Enter requirements" name='requirements' value={formlead.requirements} onChange={handleChange} className="textarea-field" rows={10} required/> */}
                                     </div>
                                     <div className="form-group">
+                                   
+                                    <textarea placeholder="Enter requirements" name='requirements' value={formlead.requirements} onChange={handleChange} className="textarea-field"  required/>
+                                    </div>
+                                    <div className="form-group">
                                     <button type="submit" className="submit-button">Submit</button>
                                     </div>
                                 </form>
@@ -322,7 +328,7 @@ const notificationCount24HoursOld = notification.reduce((count, notification) =>
                     }
                     {invoice&&
                         <div className="invoice">
-                            <Invoice />
+                            <Invoice inVoiceClientdata={invoiceData}/>
                         </div>
                     }
                 </div>

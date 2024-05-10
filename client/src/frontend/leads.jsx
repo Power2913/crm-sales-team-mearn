@@ -186,7 +186,7 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
           <button type="submit" className="action-button successful"  >Successful</button>
         </form>
         <div className="generate-invoice">
-            <button type="button" onClick={handleInvoice}>Generate Invoice</button>
+            <button type="button" onClick={()=>handleInvoice(leadData)}>Generate Invoice</button>
           </div>
         <div className="invoice">
 
