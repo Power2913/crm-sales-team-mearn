@@ -1,4 +1,4 @@
-import React,{useState}from 'react'
+import React,{useState,useEffect}from 'react'
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/invoice.css';
 import Tradeimexlogo from '../img/logo.png';
@@ -14,8 +14,8 @@ function Invoice({inVoiceClientdata}) {
             console.error('Invoice container not found.');
         }
     }
-
-    const [rows, setRows] = useState([{ database: '', hscode: '', period: '', currency: '', amount: '' }]);
+//   table data
+    const [rows, setRows] = useState([{ database: '', hscode: '', period: '', currency: '',tax:'', amount: '' }]);
     console.log("Table Rows:", rows);
     
     const handleChange = (index, fieldName, value) => {
@@ -23,9 +23,9 @@ function Invoice({inVoiceClientdata}) {
       updatedRows[index][fieldName] = value;
       setRows(updatedRows);
     };
-  
+
     const addRow = () => {
-      setRows([...rows, { database: '', hscode: '', period: '', currency: '', amount: '' }]);
+      setRows([...rows, { database: '', hscode: '', period: '', currency: '',tax:'', amount: '' }]);
     };
   
     const removeRow = (index) => {
@@ -33,6 +33,8 @@ function Invoice({inVoiceClientdata}) {
       updatedRows.splice(index, 1);
       setRows(updatedRows);
     };
+
+    // Form Data
     const [invoicefields, setinvoicefields] = useState({
         addressone:'',
         gst_vat:'',
@@ -45,16 +47,48 @@ function Invoice({inVoiceClientdata}) {
             e.target.value
         })
     }
-    const invoiceGenerate =()=>{
-        
-    }
+    // Net Total of amount
+    const[nettotal,setnetTotal] = useState(0);
+    const[cgsttax,setcgstTax] = useState(0);
+    const[igsttax,setigstTax] = useState(0);
+    const[total,setTotal] = useState(0);
 
-
+    useEffect(() => {
+        const totalamount = ()=>{
+             let sum = 0;
+             let cgstTax = 0;
+             let igstTAX = 0;
+             let total = 0;
+             
+             for (const row of rows) {    
+                console.log('TAx',row.tax)          
+                sum += parseFloat(row.amount); 
+                if (row.tax==='CGST') {
+                    const tax = sum * 0.18;     
+                    cgstTax = parseFloat(tax.toFixed(2));
+                    total = (sum + cgstTax);  
+                } else if (row.tax==='IGST'){
+                    const tax = sum * 0.18;     
+                    igstTAX = parseFloat(tax.toFixed(2));
+                    total = (sum + igstTAX);  
+                }   
+                      
+             }
+             setnetTotal(sum);       
+             setcgstTax(cgstTax);
+             setTotal(total);
+             setigstTax(igstTAX)
+        }
+        totalamount();
+      }, [rows]);
+    console.log('Net Amount', nettotal);
+    console.log('Total Amount', total);
+    // Total mount after tax 
   return (
      <><div className="invoice-main ">
           <div className="invoice-form">
               <h3>Invoice Form</h3>
-              <form onSubmit={invoiceGenerate}>
+              <form >
 
                 <div className="invoice-group">
                     <input type="text" name="addressone" placeholder="Address one..." value={invoicefields.addressone} onChange={handlefieldschange}/>
@@ -89,11 +123,10 @@ function Invoice({inVoiceClientdata}) {
                     {row.currency === 'Rs' && (
                         <>
                             <div className="invoice-group">
-                                <select value={row.tax} onChange={(e) => handleChange(index, 'currency', e.target.value)}>
-                                <option value="">TAX</option>
-                                <option value="CGST">CGST</option>
-                                <option value="SGST">SGST</option>
-                                <option value="IGST">IGST</option>
+                                <select name='tax'value={row.tax} onChange={(e) => handleChange(index, 'tax', e.target.value)}>
+                                    <option value="">TAX</option>
+                                    <option value="CGST">CGST+SGST</option>
+                                    <option value="IGST">IGST</option>
                                 </select>
                             </div>
                         </>
@@ -174,8 +207,9 @@ function Invoice({inVoiceClientdata}) {
                                         <td>998598</td>
                                         <td>{tabledata.hscode}</td>
                                         <td>{tabledata.period}</td>
-                                        <td>{tabledata.currency === 'Rs' ? `${tabledata.amount} rs`
-                                        :tabledata.currency === 'Doller' ? `${tabledata.amount} $`:''}</td>
+                                        <td>{tabledata.currency === 'Rs' ? `${tabledata.amount} ₹`
+                                        :tabledata.currency === 'Doller' ? `${tabledata.amount} $`
+                                        :tabledata.currency === 'Euro' ? `${tabledata.amount} €`:''}</td>
                                         
                                     </tr>
                                     </>
@@ -205,16 +239,15 @@ function Invoice({inVoiceClientdata}) {
                           <div className="invoice-billing-right-sub">
                               <div className="invoice-billing-right-sub-left">
                                   <p><span>Net total</span>  </p>
-                                  <p><span>SGST 18%</span>  </p>
-                                  <p><span>CGST 18%</span>  </p>
+                                  <p><span>CGST+SGST 18%</span>  </p>
+                                 
                                   <p><span>IGST 18%</span>  </p>
 
                               </div>
                               <div className="invoice-billing-right-sub-right">
-                                  <p>  <span>inr 100</span></p>
-                                  <p>  <span>: 18</span></p>
-                                  <p>  <span>: 18</span></p>
-                                  <p>  <span>: 18</span></p>
+                                  <p>  <span>: {nettotal}</span></p>
+                                  <p>  <span>: {cgsttax}</span></p>
+                                  <p>  <span>: {igsttax}</span></p>
 
                               </div>
                           </div>
@@ -223,7 +256,19 @@ function Invoice({inVoiceClientdata}) {
                                   <span>TOTAL</span>
                               </div>
                               <div className="invoice-billing-total-right">
-                                  <span>: 136</span>
+                                  
+                                    {Array.isArray(rows) && rows.length > 0 ?(
+                                            rows.map((tabledata,index)=>(                                                                          
+                                                <span>:{tabledata.currency === 'Rs' ? `${total} ₹`
+                                                :tabledata.currency === 'Doller' ? `${nettotal} $`
+                                                :tabledata.currency === 'Euro' ? `${nettotal} €`:''} </span>                                
+                                            ))
+                                        ):(
+                                            <td>No data Inserted</td>
+                                        )                               
+                                    
+                                    }
+                                 
                               </div>
                           </div>
                       </div>
