@@ -239,16 +239,27 @@ function Invoice({inVoiceClientdata}) {
                           <div className="invoice-billing-right-sub">
                               <div className="invoice-billing-right-sub-left">
                                   <p><span>Net total</span>  </p>
-                                  <p><span>CGST+SGST 18%</span>  </p>
-                                 
-                                  <p><span>IGST 18%</span>  </p>
-
+                         
+                                    {
+                                        Array.isArray(rows) && rows.length > 0?(
+                                            rows.map((tabledata,index)=>(                                                                          
+                                                <p>
+                                                    {tabledata.tax === 'CGST' ? 'CGST+SGST':
+                                                    tabledata.tax === 'IGST' ? 'IGST'
+                                                :''}     </p>                       
+                                            ))                                          
+                                        ):(
+                                           <p>TAX</p>
+                                        )
+                                    }                               
                               </div>
                               <div className="invoice-billing-right-sub-right">
-                                  <p>  <span>: {nettotal}</span></p>
-                                  <p>  <span>: {cgsttax}</span></p>
-                                  <p>  <span>: {igsttax}</span></p>
-
+                                    <p>  <span>: {nettotal}</span></p>
+                                    <p>
+                                        <span>: {cgsttax !== 0 ? cgsttax :
+                                            igsttax !== 0 ? igsttax :
+                                            ''}</span>
+                                    </p>
                               </div>
                           </div>
                           <div className="invoice-billing-total">
@@ -264,9 +275,8 @@ function Invoice({inVoiceClientdata}) {
                                                 :tabledata.currency === 'Euro' ? `${nettotal} €`:''} </span>                                
                                             ))
                                         ):(
-                                            <td>No data Inserted</td>
-                                        )                               
-                                    
+                                            <span>0</span>
+                                        )                                                                  
                                     }
                                  
                               </div>

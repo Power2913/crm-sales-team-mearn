@@ -104,7 +104,8 @@ const[formlead,setFormlead] = useState({
     fullname:'',
     email:'',
     phone:'',
-    company:''
+    company:'',
+    requirements:'',
 }
 );
 const handleChange =(e)=>{
@@ -149,7 +150,7 @@ useEffect(() => {
         }
     };
     getNotification();
-}, []);
+}, []); 
 
 const notificationCount24HoursOld = notification.reduce((count, notification) => {
     const lastSeenTime = new Date(notification.last_seen);
@@ -272,9 +273,11 @@ const notificationCount24HoursOld = notification.reduce((count, notification) =>
                                     <input type="text" name="company" id="" placeholder='Enter Company Name....' className='input-field' value={formlead.company} onChange={handleChange}/>
                                     {/* <textarea placeholder="Enter requirements" name='requirements' value={formlead.requirements} onChange={handleChange} className="textarea-field" rows={10} required/> */}
                                     </div>
-                                    <div className="form-group">
-                                   
+                                    <div className="form-group">                                  
                                     <textarea placeholder="Enter requirements" name='requirements' value={formlead.requirements} onChange={handleChange} className="textarea-field"  required/>
+                                    </div>
+                                    <div className="form-group">                                  
+                                     <input type="datetime-local" name="" id="" className="textarea-field"/>
                                     </div>
                                     <div className="form-group">
                                     <button type="submit" className="submit-button">Submit</button>

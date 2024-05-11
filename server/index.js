@@ -43,12 +43,12 @@ app.post('/login',(req,res)=>{
 });
 // Create Leads
 app.post('/createlead',(req,res)=>{
-    const{fullname,email,phone,company} = req.body;
+    const{fullname,email,phone,company,requirements} = req.body;
     const leadcheck = "SELECT * FROM new_lead WHERE email = ? AND unique_id =?";
 
     // Insert Data into Database table new_lead
     const uniqueid = phone.toString().slice(0, -5);
-    const sqlInsert = "INSERT INTO new_lead (unique_id,fullname,email,number,company) VALUES (?,?,?,?,?)";
+    const sqlInsert = "INSERT INTO new_lead (unique_id,fullname,email,number,company,requirements) VALUES (?,?,?,?,?,?)";
     // Create Table for Client
     const client_table = uniqueid;
 
@@ -67,7 +67,7 @@ app.post('/createlead',(req,res)=>{
        } else if (result.length > 0) {
             res.send({ message: 'Client already exists' });
        } else{
-            con.query(sqlInsert,[uniqueid,fullname,email,phone,company],(dberr,dbresult)=>{
+            con.query(sqlInsert,[uniqueid,fullname,email,phone,company,requirements],(dberr,dbresult)=>{
                 if (dberr) {
                     console.error(dberr);
                     res.send({ message: "Error in creating Leads in Database" });
