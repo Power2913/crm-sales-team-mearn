@@ -12,7 +12,6 @@ const SuccessfulLeads = () => {
           }
           const data = await response.json();
           setSucccessLead(data);
-          console.log('Data:',data)
        } catch (error) {
           seterrormessage('Error in fetching successful leads');
        }

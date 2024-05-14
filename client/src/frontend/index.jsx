@@ -4,7 +4,7 @@ import Newlead from './Newlead'
 import Leads from './leads';
 import ClosedLeads from './ClosedLeads';
 import ClosedLeadsList from './ClosedLeadsList';
-import { FaBell,FaUser } from 'react-icons/fa';
+import { FaBell,FaUser,FaExclamationTriangle } from 'react-icons/fa';
 import Notificationpage from './Notification';
 import SuccessfulLeads from './SuccessfulLeads';
 import Invoice from './Invoice';
@@ -23,16 +23,16 @@ const [notificationshow, setNotificationshow] = useState(false);
 const [invoice, setInvoice] = useState(false);
 const [invoiceData,setinvoiceData] = useState(null);
 
-const handleList = () => {
-    setList(true);
-    setNewlead(false);
-    setLeads(false);
-    setclosedleadform(false);
-    setClosedLeadList(false);
-    setSucccessLeads(false);
-    setNotificationshow(false);
-    setInvoice(false);
-}
+// const handleList = () => {
+//     setList(true);
+//     setNewlead(false);
+//     setLeads(false);
+//     setclosedleadform(false);
+//     setClosedLeadList(false);
+//     setSucccessLeads(false);
+//     setNotificationshow(false);
+//     setInvoice(false);
+// }
 const handleLeads = (lead) => {
     setSelectedLead(lead);
     setLeads(true);
@@ -46,8 +46,8 @@ const handleLeads = (lead) => {
 }
 const handleClosedLeads = (closedleaddata) => {
     // setclosedlead(true);
-  
-    setclosedleadform(true);
+    setclosedleadform(prevState => !prevState)
+    // setclosedleadform(true);
     setLeads(true);
     setClosedleaddata(closedleaddata);
     setList(false);
@@ -80,13 +80,14 @@ const handleSuccessfulleadlist = ()=>{
 }
 
 const handleNotification = () => {
-    setNotificationshow(true);
+    setNotificationshow(prevState => !prevState);
+    setNewlead(false);
     setSucccessLeads(false);
     setClosedLeadList(false)
     setclosedleadform(false);
     setLeads(false);
     setList(false);
-    setNewlead(false);
+
     setInvoice(false);
 }
 const handleInvoice = (invoiceData) => {
@@ -109,6 +110,25 @@ const[formlead,setFormlead] = useState({
     reminder:''
 }
 );
+// Closed List Start
+const[closedLeadslist, setClosedLeadlist] = useState(['']);
+useEffect(() => {
+  const newclosedlead = async(e) => {
+      try {
+          const response = await fetch('http://192.168.1.4:3002/closedLeadlist');
+          if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`)
+          }
+          const data = await response.json();
+          setClosedLeadlist(data);
+      } catch (error) {
+          console.log('Error',error);
+      }
+  }
+  newclosedlead();
+}, []);
+
+// Closed List End
 const handleChange =(e)=>{
     setFormlead({...formlead,[e.target.name]:e.target.value});
 }
@@ -169,6 +189,16 @@ const notificationCount24HoursOld = notification.reduce((count, notification) =>
         return count;
     }
 }, 0);
+// Closed List count
+let  closeLeadcount = closedLeadslist.length||0;
+console.log("Current leads length:", closeLeadcount);
+// const closedListCount = closedLeadslist.reduce((count, closedLeadslist) => {
+//     console.log("Current leads length:", closedLeadslist.length);
+//     const closeLeadcount = closedLeadslist.length || 0; // Handle potential undefined or non-numeric values
+//     return count + closeLeadcount;
+// }, 0);
+
+
   return (
     <div className="container">
         <div className="main">
@@ -180,14 +210,14 @@ const notificationCount24HoursOld = notification.reduce((count, notification) =>
                     <div className="welcome">
                         <h2>Welcome Nitesh</h2>
                     </div>
-                    <div onClick={handleNotification} style={{ position: 'relative' }}>
+                    <div onClick={handleNotification} style={{ position: 'relative',cursor:'pointer' }}>
                         <FaBell />
                         {notificationCount24HoursOld > 0 && (
                             <span
                             style={{
                                 position: 'absolute',
-                                top: '-8px',
-                                right: '-8px',
+                                top: '-13px',
+                                right: '-15px',
                                 backgroundColor: 'red',
                                 color: 'white',
                                 borderRadius: '50%',
@@ -290,7 +320,7 @@ const notificationCount24HoursOld = notification.reduce((count, notification) =>
                             <div className="options">
                                 <div className="lead-category closed-leads"  onClick={handleClosedleadlist}>
                                      <span>Closed Leads</span>
-                                     <span>90</span>
+                                     <span>{closeLeadcount}</span>
                                 </div>
                                 <div className="lead-category inprogrss-lead">
                                      <span>In Progress</span>
@@ -324,7 +354,7 @@ const notificationCount24HoursOld = notification.reduce((count, notification) =>
                     {/* Closed Lead List */}
                     {closedLeadlist&&
                         <div className="closed-lead-list">
-                            <ClosedLeadsList/>
+                            <ClosedLeadsList closedLeadslist={closedLeadslist}/>
                         </div>
                     }
                     {successLeads&&

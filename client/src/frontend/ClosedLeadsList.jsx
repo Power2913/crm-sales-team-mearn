@@ -1,22 +1,6 @@
 import React, { useEffect,useState } from 'react'
 import '../css/closedleadlist.css'
-const ClosedLeadsList = () => {
-  const[closedLeadslist, setClosedLeadlist] = useState(['']);
-  useEffect(() => {
-    const newclosedlead = async(e) => {
-        try {
-            const response = await fetch('http://192.168.1.4:3002/closedLeadlist');
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`)
-            }
-            const data = await response.json();
-            setClosedLeadlist(data);
-        } catch (error) {
-            console.log('Error',error);
-        }
-    }
-    newclosedlead();
-  }, []);
+const ClosedLeadsList = ({closedLeadslist}) => {
 
   return (
     <div className="closed-list-container">

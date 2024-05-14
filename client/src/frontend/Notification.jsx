@@ -23,7 +23,7 @@ const Notification = ({ notification }) => {
                     <li key={index} className="notification-item">
                         <div className="notification-content">
                             <span className="notification-icon">🔔</span>
-                            <span className="notification-text">Update status of {notification.clientName}</span>
+                            <span className="notification-text">{notification.clientName}: {notification.clientMessage}</span>
                         </div>
                     </li>
                 );

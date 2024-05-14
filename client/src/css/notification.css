@@ -2,9 +2,9 @@
     padding: 20px;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
-    background-color: #ffffff;
+    background-color: #f5f5f6;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    height: 40%;
+    /* height: 40%; */
     overflow: auto;
     margin-left: auto;
     margin-top: 2%;
@@ -22,7 +22,7 @@
     padding: 0;
   }
   
-  .notification-item {
+  /* .notification-item {
     margin-bottom: 15px;
   }
   
@@ -40,5 +40,27 @@
   .notification-text {
     font-size: 18px;
     color: #333333;
-  }
-  
+  } */
+  .notification-item {
+    list-style: none;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    background-color: #e9e9ef;
+    cursor: pointer;
+    margin-bottom: 0.50rem;
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+}
+
+.notification-icon {
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.notification-text {
+    font-size: 16px;
+    color: #333;
+}

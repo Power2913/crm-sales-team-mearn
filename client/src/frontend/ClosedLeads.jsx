@@ -49,10 +49,10 @@ function ClosedLeads({ClosedLeads}) {
         {message && <p className='message'>{message}</p>}
             <form  method="post" onSubmit={handleSubmit}>
                 <div className="closedleadform-input">
-                    <textarea name="finalrequirement" id="" cols="30" rows="5" value={closingstatement.finalrequirement} onChange={handleClosingChange} placeholder='final requirement....'></textarea>
+                    <textarea name="finalrequirement" id="" cols="30" rows="5" value={closingstatement.finalrequirement} onChange={handleClosingChange} placeholder='final requirement....' required></textarea>
                 </div>
                 <div className="closedleadform-input">
-                    <textarea name="closingreason" id="" cols="30" rows="5" value={closingstatement.closingreason} onChange={handleClosingChange}placeholder='closing reason....'></textarea>
+                    <textarea name="closingreason" id="" cols="30" rows="5" value={closingstatement.closingreason} onChange={handleClosingChange}placeholder='closing reason....' required></textarea>
                 </div>
                 <div className="closedlead-submit-button">
                     <button type="submit">Close Lead</button>

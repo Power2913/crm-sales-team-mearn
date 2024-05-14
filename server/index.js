@@ -59,7 +59,7 @@ app.post('/createlead', (req, res) => {
             sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )`;
     const lastMessageInsert = "INSERT INTO last_message (uid, clientName) VALUES (?, ?)";
-    const updateReminderQuery = "UPDATE last_message SET reminder = ? WHERE uid = ?";
+    const updateReminderQuery = "UPDATE last_message SET clientMessage = ?,reminder = ? WHERE uid = ?";
     
     // Use transactions for atomicity
     con.beginTransaction(err => {
@@ -117,7 +117,7 @@ app.post('/createlead', (req, res) => {
                         }
 
                         // Update reminder
-                        con.query(updateReminderQuery, [reminder, uniqueid], (updateReminderErr, updateReminderResult) => {
+                        con.query(updateReminderQuery, [requirements, reminder, uniqueid], (updateReminderErr, updateReminderResult) => {
                             if (updateReminderErr) {
                                 console.error("Error updating reminder:", updateReminderErr);
                                 con.rollback(() => {
@@ -286,19 +286,21 @@ app.get('/notification', (req, res) => {
                 rows.forEach(row => {
                     const uniqueid = row.uid;
                     console.log('Uniqueid:', uniqueid);
-                    const last_message = `SELECT reminder, sent_at FROM \`${uniqueid}\` ORDER BY sent_at DESC LIMIT 1`;
-
-                    const updateLastSeen = `UPDATE last_message SET last_seen = ?, reminder =? WHERE uid = ?`;
+                    // Get Last Message Time and Reminder Time
+                    const last_message = `SELECT message, reminder, sent_at FROM \`${uniqueid}\` ORDER BY sent_at DESC LIMIT 1`;
+                    // Update Last Message Time and Reminder Time
+                    const updateLastSeen = `UPDATE last_message SET clientMessage = ?, last_seen = ?, reminder =? WHERE uid = ?`;
                     con.query(last_message, [uniqueid], (error, result) => {
                         if (error) {
                             console.error('Error in retrieving Message time:', error);
                             res.status(500).send({ message: 'Internal server error' });
                         } else {
                             if (result.length > 0) {
+                                const last_message = result[0].message;
                                 const last_message_time = result[0].sent_at;
                                 const reminder = result[0].reminder;
                                 console.log('Reminder Time:', reminder);
-                                con.query(updateLastSeen, [last_message_time,reminder, uniqueid], (err, result) => {
+                                con.query(updateLastSeen, [last_message, last_message_time,reminder, uniqueid], (err, result) => {
                                     if (err) {
                                         console.error('Error in updating data in Last_message:', err);
                                     }
