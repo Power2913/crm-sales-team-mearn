@@ -6,7 +6,7 @@ const SuccessfulLeads = () => {
    useEffect(() => {
     const fetchSuccessfulLeads = async () => {
        try {
-          const response = await fetch('http://192.168.1.11:3002/successfullead');
+          const response = await fetch('http://192.168.1.4:3002/successfullead');
           if (!response.ok) {
              throw new Error(`HTTP error! Status: ${response.status}`);
           }

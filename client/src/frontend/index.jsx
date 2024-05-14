@@ -106,6 +106,7 @@ const[formlead,setFormlead] = useState({
     phone:'',
     company:'',
     requirements:'',
+    reminder:''
 }
 );
 const handleChange =(e)=>{
@@ -115,7 +116,7 @@ const handleChange =(e)=>{
 const createLead = async(e) => {
     e.preventDefault();
     try {
-        const response = await fetch('http://192.168.1.11:3002/createlead',{
+        const response = await fetch('http://192.168.1.4:3002/createlead',{
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -132,12 +133,13 @@ const createLead = async(e) => {
     }
 }
 // ########################### End ################################
+// ########################### Get Notification Start ################################
 const [notification,setNotification] = useState(['']);
 
 useEffect(() => {
     const getNotification = async() => {
         try {
-            const response = await fetch('http://192.168.1.11:3002/notification-list');
+            const response = await fetch('http://192.168.1.4:3002/notification-list');
             if (!response.ok) {
                 throw new Error(`Error! status: ${response.status}`);  
             }
@@ -153,15 +155,15 @@ useEffect(() => {
 }, []); 
 
 const notificationCount24HoursOld = notification.reduce((count, notification) => {
-    const lastSeenTime = new Date(notification.last_seen);
-    const currentTime = new Date();
-    const twentyFourHoursAgo = new Date(currentTime.getTime() - (24 * 60 * 60 * 1000)); // Subtract 24 hours from the current time
+    const reminderTime = new Date(notification.reminder);
+    const currentTime = new Date();  
+    // const twentyFourHoursAgo = new Date(currentTime.getTime() - (24 * 60 * 60 * 1000)); // Subtract 24 hours from the current time
 
     // Check if last_seen time is 24 hours or more in the past
-    const is24HoursOrMore = lastSeenTime <= twentyFourHoursAgo;
-
+    // const is24HoursOrMore = lastSeenTime <= twentyFourHoursAgo;
+    const isReminderTime = reminderTime <= currentTime;
     // If the notification is 24 hours or more old, increment the count
-    if (is24HoursOrMore) {
+    if (isReminderTime) {
         return count + 1;
     } else {
         return count;
@@ -276,8 +278,9 @@ const notificationCount24HoursOld = notification.reduce((count, notification) =>
                                     <div className="form-group">                                  
                                     <textarea placeholder="Enter requirements" name='requirements' value={formlead.requirements} onChange={handleChange} className="textarea-field"  required/>
                                     </div>
-                                    <div className="form-group">                                  
-                                     <input type="datetime-local" name="" id="" className="textarea-field"/>
+                                    <div className="form-group">     
+                                     <label htmlFor="">Set Reminder</label>                             
+                                     <input type="datetime-local" name="reminder" id="" className="input-field" value={formlead.reminder} onChange={handleChange}/>
                                     </div>
                                     <div className="form-group">
                                     <button type="submit" className="submit-button">Submit</button>

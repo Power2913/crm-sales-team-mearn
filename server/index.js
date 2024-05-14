@@ -43,12 +43,12 @@ app.post('/login',(req,res)=>{
 });
 // Create Leads
 app.post('/createlead',(req,res)=>{
-    const{fullname,email,phone,company,requirements} = req.body;
+    const{fullname,email,phone,company,requirements,reminder} = req.body;
     const leadcheck = "SELECT * FROM new_lead WHERE email = ? AND unique_id =?";
 
     // Insert Data into Database table new_lead
     const uniqueid = phone.toString().slice(0, -5);
-    const sqlInsert = "INSERT INTO new_lead (unique_id,fullname,email,number,company,requirements) VALUES (?,?,?,?,?,?)";
+    const sqlInsert = "INSERT INTO new_lead (unique_id,fullname,email,number,company,requirements,reminder) VALUES (?,?,?,?,?,?,?)";
     // Create Table for Client
     const client_table = uniqueid;
 
@@ -58,8 +58,10 @@ app.post('/createlead',(req,res)=>{
         uid SERIAL PRIMARY KEY,
         clientid VARCHAR(30) NOT NULL,
         message LONGTEXT NOT NULL,
+        reminder VARCHAR(100) NOT NULL,
         sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )`);
+    const reminderQuery = `UPDATE last_message SET reminder =? WHERE uid =?`;
     con.query(leadcheck,[email,uniqueid],(err,result)=>{
        if (err) {
             console.error(err);
@@ -67,7 +69,7 @@ app.post('/createlead',(req,res)=>{
        } else if (result.length > 0) {
             res.send({ message: 'Client already exists' });
        } else{
-            con.query(sqlInsert,[uniqueid,fullname,email,phone,company,requirements],(dberr,dbresult)=>{
+            con.query(sqlInsert,[uniqueid,fullname,email,phone,company,requirements,reminder],(dberr,dbresult)=>{
                 if (dberr) {
                     console.error(dberr);
                     res.send({ message: "Error in creating Leads in Database" });
@@ -81,7 +83,13 @@ app.post('/createlead',(req,res)=>{
                                 if (last_message_error) {
                                     res.send({ message: "Error in storing data in last_message table" });
                                 } else {
-                                    res.send({ message: 'Lead created successfully.' });
+                                    con.query(reminderQuery,[reminder,uniqueid],(remindererr,reminder)=>{
+                                        if (remindererr) {
+                                            res.send({ message: "Error in storing reminder in last_message table" });
+                                        }else{
+                                            res.send({ message: 'Lead created successfully.' });
+                                        }
+                                    })                                  
                                 }
                             })
                           
@@ -111,21 +119,31 @@ app.get('/newclient', (req, res) => {
     });
 });
 
-
 // New Messages
 app.post('/newmessages', (req, res) => {
-    const { uniqueid, message } = req.body;
-    const sqlInsert = `INSERT INTO \`${uniqueid}\` (clientid,message) VALUES (?,?)`;
-    console.log('Lead Data',uniqueid)
-    con.query(sqlInsert, [uniqueid, message], (err, result) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send({ message: "Internal server error" });
-      } else {
-        res.status(200).send({ message: 'Message sent successfully.' }); // Use res.status(status).send(body)
-      }
+    const { uniqueid, message, reminder } = req.body;
+    
+    // Validate input data
+    if (!uniqueid || !message) {
+        return res.status(400).send({ message: "Missing required fields." });
+    }
+    
+    console.log("Reminder", reminder);
+    
+    // Use parameterized query to avoid SQL injection
+    const sqlInsert = `INSERT INTO \`${uniqueid}\` (clientid, message, reminder) VALUES (?, ?, ?)`;
+    
+    // Execute the query
+    con.query(sqlInsert, [uniqueid, message, reminder], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send({ message: "Internal server error" });
+        } else {
+            return res.status(200).send({ message: 'Message sent successfully.' }); 
+        }
     });
-  });
+});
+
 
 // Get New Messges from Database table 
 app.get('/clientmessage/:uniqueid',(req,res)=>{
@@ -221,9 +239,9 @@ app.get('/notification', (req, res) => {
                 rows.forEach(row => {
                     const uniqueid = row.uid;
                     console.log('Uniqueid:', uniqueid);
-                    const last_message = `SELECT sent_at FROM \`${uniqueid}\` ORDER BY sent_at DESC LIMIT 1`;
+                    const last_message = `SELECT reminder, sent_at FROM \`${uniqueid}\` ORDER BY sent_at DESC LIMIT 1`;
 
-                    const updateLastSeen = `UPDATE last_message SET last_seen = ? WHERE uid = ?`;
+                    const updateLastSeen = `UPDATE last_message SET last_seen = ?, reminder =? WHERE uid = ?`;
                     con.query(last_message, [uniqueid], (error, result) => {
                         if (error) {
                             console.error('Error in retrieving Message time:', error);
@@ -231,10 +249,14 @@ app.get('/notification', (req, res) => {
                         } else {
                             if (result.length > 0) {
                                 const last_message_time = result[0].sent_at;
-                                console.log('Message Time:', last_message_time);
-                                con.query(updateLastSeen, [last_message_time, uniqueid], (err, result) => {
+                                const reminder = result[0].reminder;
+                                console.log('Reminder Time:', reminder);
+                                con.query(updateLastSeen, [last_message_time,reminder, uniqueid], (err, result) => {
                                     if (err) {
                                         console.error('Error in updating data in Last_message:', err);
+                                    }
+                                    else{
+                                        res.send({ message: 'Message Timing Updated for all UIDs' });
                                     }
                                 });
                             } else {
@@ -243,17 +265,17 @@ app.get('/notification', (req, res) => {
                         }
                     });
                 });
-                res.send({ message: 'Message Timing Updated for all UIDs' });
+               
             } else {
                 res.status(404).send({ message: 'No last message found' });
             }
         }
     });
 });
-
 // Notification List
 app.get('/notification-list',(req,res)=>{
     const sqlGetdata = `SELECT * FROM last_message`;
+    // const getfromnewlead = `SELECT * FROM new_leads where unique_id=?`;
     con.query(sqlGetdata,(error,rows)=>{
         if (error) {
             res.status(500).send({ message: 'Internal server error' });
@@ -298,7 +320,7 @@ app.post('/mail', upload.single('invoice'), async (req, res) => {
     }
 });
   
-app.listen(3002,'192.168.1.11',()=>{
+app.listen(3002,'192.168.1.4',()=>{
      console.log('Server is successfully runnig on 3002 port')
 });
 

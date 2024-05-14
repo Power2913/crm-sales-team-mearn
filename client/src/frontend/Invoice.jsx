@@ -83,6 +83,8 @@ function Invoice({inVoiceClientdata}) {
       }, [rows]);
     console.log('Net Amount', nettotal);
     console.log('Total Amount', total);
+    let todaydate = new Date();
+    console.log('Todays Date:',todaydate)
     // Total mount after tax 
   return (
      <><div className="invoice-main ">

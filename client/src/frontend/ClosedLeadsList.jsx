@@ -5,7 +5,7 @@ const ClosedLeadsList = () => {
   useEffect(() => {
     const newclosedlead = async(e) => {
         try {
-            const response = await fetch('http://192.168.1.11:3002/closedLeadlist');
+            const response = await fetch('http://192.168.1.4:3002/closedLeadlist');
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`)
             }

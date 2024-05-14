@@ -8,6 +8,7 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
   // console.log('Lead Data:', leadData)
   const [formData, setFormData] = useState({
     requirements: '',
+    reminder:'',
   });
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -15,7 +16,7 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://192.168.1.11:3002/newmessages', {
+      const response = await fetch('http://192.168.1.4:3002/newmessages', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -23,6 +24,7 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
         body: JSON.stringify({
           uniqueid: leadData.unique_id,
           message: formData.requirements,
+          reminder: formData.reminder,
         }),
       });
       if (!response.ok) {
@@ -42,7 +44,7 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
   const fetchMessages = async () => {
     try {
       const uniqueid = leadData.unique_id;
-      const response = await fetch(`http://192.168.1.11:3002/clientmessage/${uniqueid}`);
+      const response = await fetch(`http://192.168.1.4:3002/clientmessage/${uniqueid}`);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -69,7 +71,7 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
   const handleleadsuccess = async (e)=>{
     e.preventDefault();
     try {
-      const response = await fetch('http://192.168.1.11:3002/successlead',{
+      const response = await fetch('http://192.168.1.4:3002/successlead',{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -98,7 +100,7 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
   const handlelastmessage = async (e)=>{
   
     try {
-      const response = await fetch('http://192.168.1.11:3002/notification');
+      const response = await fetch('http://192.168.1.4:3002/notification');
       if (!response.ok) {
         throw new Error(`Error! status: ${response.status}`);
       }
@@ -123,7 +125,7 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
           formData.append('to', leadData.email);
           formData.append('subject', 'Invoice');
           formData.append('message', 'Please find the attached invoice');
-          const response = await fetch('http://192.168.1.11:3002/mail', {
+          const response = await fetch('http://192.168.1.4:3002/mail', {
               method: 'POST',
               body: formData
           });
@@ -162,6 +164,7 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
                       Choose File
                     </label>
                     <input type="file" id="file-input" name="invoice" onChange={handleFileChange} />
+                    
                     <button type="submit">Send Invoice</button>
                   </form>
                 </div>      
@@ -180,6 +183,7 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
             </div>
               <div className="sales-chat">
                 {leadData.requirements}
+               
               </div>
               {messages.map((message, index) => (
                 <div className="sales-chat"  key={index}> {message.message} <span>{new Date(message.sent_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
@@ -204,6 +208,7 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
                 placeholder="Enter requirements..."
                 required
               ></textarea>
+               <input type="datetime-local"  name="reminder" id="" value={formData.reminder} onChange={handleChange}/>
             </div>
             <button type="submit" onClick={()=>handlelastmessage()}>Send</button>
           </form>
