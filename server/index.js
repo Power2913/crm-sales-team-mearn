@@ -42,64 +42,110 @@ app.post('/login',(req,res)=>{
     
 });
 // Create Leads
-app.post('/createlead',(req,res)=>{
-    const{fullname,email,phone,company,requirements,reminder} = req.body;
-    const leadcheck = "SELECT * FROM new_lead WHERE email = ? AND unique_id =?";
-
-    // Insert Data into Database table new_lead
+app.post('/createlead', (req, res) => {
+    const { fullname, email, phone, company, requirements, reminder } = req.body;
     const uniqueid = phone.toString().slice(0, -5);
-    const sqlInsert = "INSERT INTO new_lead (unique_id,fullname,email,number,company,requirements,reminder) VALUES (?,?,?,?,?,?,?)";
-    // Create Table for Client
     const client_table = uniqueid;
-
-    const last_message = "INSERT INTO last_message (uid,clientName) VALUES (?,?)";
-
-    const query = (`CREATE TABLE IF NOT EXISTS \`${client_table}\` (
-        uid SERIAL PRIMARY KEY,
-        clientid VARCHAR(30) NOT NULL,
-        message LONGTEXT NOT NULL,
-        reminder VARCHAR(100) NOT NULL,
-        sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      )`);
-    const reminderQuery = `UPDATE last_message SET reminder =? WHERE uid =?`;
-    con.query(leadcheck,[email,uniqueid],(err,result)=>{
-       if (err) {
-            console.error(err);
+    
+    // Parameterized queries
+    const leadcheck = "SELECT * FROM new_lead WHERE email = ? OR number = ?";
+    const sqlInsert = "INSERT INTO new_lead (unique_id, fullname, email, number, company, requirements, reminder) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    const createTableQuery = `
+        CREATE TABLE IF NOT EXISTS \`${client_table}\` (
+            uid SERIAL PRIMARY KEY,
+            clientid VARCHAR(30) NOT NULL,
+            message LONGTEXT NOT NULL,
+            reminder VARCHAR(100) NOT NULL,
+            sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )`;
+    const lastMessageInsert = "INSERT INTO last_message (uid, clientName) VALUES (?, ?)";
+    const updateReminderQuery = "UPDATE last_message SET reminder = ? WHERE uid = ?";
+    
+    // Use transactions for atomicity
+    con.beginTransaction(err => {
+        if (err) {
+            console.error("Error starting transaction:", err);
             res.status(500).send({ message: "Internal server error" });
-       } else if (result.length > 0) {
-            res.send({ message: 'Client already exists' });
-       } else{
-            con.query(sqlInsert,[uniqueid,fullname,email,phone,company,requirements,reminder],(dberr,dbresult)=>{
-                if (dberr) {
-                    console.error(dberr);
-                    res.send({ message: "Error in creating Leads in Database" });
-                } else {
-                    con.query(query, (clienterr, result) => {
-                        if (clienterr) {
-                            console.error(clienterr);
-                            res.send({ message: "Error in creating Clients Table in Database" });
-                        } else {
-                            con.query(last_message,[uniqueid,fullname],(last_message_error,result)=>{
-                                if (last_message_error) {
-                                    res.send({ message: "Error in storing data in last_message table" });
-                                } else {
-                                    con.query(reminderQuery,[reminder,uniqueid],(remindererr,reminder)=>{
-                                        if (remindererr) {
-                                            res.send({ message: "Error in storing reminder in last_message table" });
-                                        }else{
-                                            res.send({ message: 'Lead created successfully.' });
-                                        }
-                                    })                                  
-                                }
-                            })
-                          
-                        }
-                    });                 
+            return;
+        }
+        
+        // Check if lead already exists
+        con.query(leadcheck, [email, phone], (leadCheckErr, leadCheckResult) => {
+            if (leadCheckErr) {
+                console.error("Error checking for existing lead:", leadCheckErr);
+                con.rollback(() => {
+                    res.status(500).send({ message: "Internal server error" });
+                });
+                return;
+            }
+
+            if (leadCheckResult.length > 0) {
+                con.rollback(() => {
+                    res.send({ message: 'Client already exists' });
+                });
+                return;
+            }
+
+            // Insert new lead
+            con.query(sqlInsert, [uniqueid, fullname, email, phone, company, requirements, reminder], (leadInsertErr, leadInsertResult) => {
+                if (leadInsertErr) {
+                    console.error("Error inserting new lead:", leadInsertErr);
+                    con.rollback(() => {
+                        res.status(500).send({ message: "Error creating lead" });
+                    });
+                    return;
                 }
+
+                // Create client table
+                con.query(createTableQuery, (createTableErr, createTableResult) => {
+                    if (createTableErr) {
+                        console.error("Error creating client table:", createTableErr);
+                        con.rollback(() => {
+                            res.status(500).send({ message: "Error creating client table" });
+                        });
+                        return;
+                    }
+
+                    // Insert into last_message table
+                    con.query(lastMessageInsert, [uniqueid, fullname], (lastMessageInsertErr, lastMessageInsertResult) => {
+                        if (lastMessageInsertErr) {
+                            console.error("Error inserting into last_message table:", lastMessageInsertErr);
+                            con.rollback(() => {
+                                res.status(500).send({ message: "Error inserting into last_message table" });
+                            });
+                            return;
+                        }
+
+                        // Update reminder
+                        con.query(updateReminderQuery, [reminder, uniqueid], (updateReminderErr, updateReminderResult) => {
+                            if (updateReminderErr) {
+                                console.error("Error updating reminder:", updateReminderErr);
+                                con.rollback(() => {
+                                    res.status(500).send({ message: "Error updating reminder" });
+                                });
+                                return;
+                            }
+
+                            // Commit the transaction
+                            con.commit(commitErr => {
+                                if (commitErr) {
+                                    console.error("Error committing transaction:", commitErr);
+                                    con.rollback(() => {
+                                        res.status(500).send({ message: "Internal server error" });
+                                    });
+                                    return;
+                                }
+
+                                res.send({ message: 'Lead created successfully.' });
+                            });
+                        });
+                    });
+                });
             });
-       }
-    })
-})
+        });
+    });
+});
+
 
 // Get Data from Database table new_leads with pagination
 app.get('/newclient', (req, res) => {
@@ -236,6 +282,7 @@ app.get('/notification', (req, res) => {
             res.status(500).send({ message: 'Internal server error' });
         } else {
             if (rows.length > 0) {
+                let completedUpdates = 0;
                 rows.forEach(row => {
                     const uniqueid = row.uid;
                     console.log('Uniqueid:', uniqueid);
@@ -256,7 +303,10 @@ app.get('/notification', (req, res) => {
                                         console.error('Error in updating data in Last_message:', err);
                                     }
                                     else{
-                                        res.send({ message: 'Message Timing Updated for all UIDs' });
+                                        completedUpdates++;
+                                        if (completedUpdates === rows.length) {
+                                            res.send({ message: 'Message Timing Updated for all UIDs' });
+                                        }
                                     }
                                 });
                             } else {
@@ -272,6 +322,7 @@ app.get('/notification', (req, res) => {
         }
     });
 });
+
 // Notification List
 app.get('/notification-list',(req,res)=>{
     const sqlGetdata = `SELECT * FROM last_message`;
