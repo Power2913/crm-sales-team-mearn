@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react';
 import '../css/leads.css';
 import { FaFile } from 'react-icons/fa';
 function Leads({ leadData,handleClosedLead,handleInvoice }) {
-
+  //  console.log('Lead data',leadData);
   const [successleadmessage,setsuccessleadMessage]=useState([]);
   const [closingsuccess, setclosingsuccess]=useState(false);
   // console.log('Lead Data:', leadData)

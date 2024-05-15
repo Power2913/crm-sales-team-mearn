@@ -3,7 +3,7 @@ import '../css/closedlead.css'
 function ClosedLeads({ClosedLeads}) {
   const [message, setMessage] = useState('');
   
-//   console.log('Closed Lead:',ClosedLeads)
+  console.log('Closed Lead:',ClosedLeads)
     const [closingstatement, setClosingStatement]=useState({
         finalrequirement: '',
         closingreason: ''
@@ -22,6 +22,7 @@ function ClosedLeads({ClosedLeads}) {
                 },
                 body:JSON.stringify({
                     created_at: ClosedLeads.created_at,
+                    clientid:  ClosedLeads.unique_id,
                     name: ClosedLeads.fullname,
                     email: ClosedLeads.email,
                     phone: ClosedLeads.number,

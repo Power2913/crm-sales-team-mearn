@@ -1,24 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import '../css/closedleadlist.css'
-const SuccessfulLeads = () => {
-   const[successLead,setSucccessLead] = useState([]);
-   const[errormessage,seterrormessage] = useState("");
-   useEffect(() => {
-    const fetchSuccessfulLeads = async () => {
-       try {
-          const response = await fetch('http://192.168.1.4:3002/successfullead');
-          if (!response.ok) {
-             throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-          const data = await response.json();
-          setSucccessLead(data);
-       } catch (error) {
-          seterrormessage('Error in fetching successful leads');
-       }
-    };
+const SuccessfulLeads = ({successLead,errormessage}) => {
 
-    fetchSuccessfulLeads();
- }, []);
 
   return (
     <div className="closed-list-container">

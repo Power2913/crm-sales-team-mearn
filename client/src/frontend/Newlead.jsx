@@ -19,7 +19,7 @@ const Newlead = ({handleLeads}) => {
     //     // Add more items as needed
     //   ];
     const [pageNumber, setPageNumber] = useState(1); // Current page number
-    const pageSize = 10;
+
     useEffect(() => {
       const newleads = async () => {
           try {
@@ -38,18 +38,18 @@ const Newlead = ({handleLeads}) => {
       newleads();
   }, [pageNumber]);
 
-      const handleClick = (lead) => {
+    const handleClick = (lead) => {
         // Call handleLeads function with selected lead's data
         handleLeads(lead);
     };
 
     const goToPreviousPage = () => {
       setPageNumber((prevPageNumber) => Math.max(prevPageNumber - 1, 1));
-  };
+    };
 
-  const goToNextPage = () => {
+    const goToNextPage = () => {
       setPageNumber((prevPageNumber) => prevPageNumber + 1);
-  };
+    };
   return (
     <div className="list-container">
         <h3>New Leads</h3>

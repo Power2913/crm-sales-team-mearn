@@ -206,12 +206,12 @@ app.get('/clientmessage/:uniqueid',(req,res)=>{
 })
 // Lead Closing Form
 app.post('/closedlead', (req, res) => {
-    const { created_at, name, email, phone, finalrequirement, closingreason } = req.body;
-    const sqlInsert = "INSERT INTO closed_leads (fullname,email,number,requirements,reason,created_at) VALUES (?,?,?,?,?,?)";
+    const { created_at,clientid, name, email, phone, finalrequirement, closingreason } = req.body;
+    const sqlInsert = "INSERT INTO closed_leads (unique_id,fullname,email,number,requirements,reason,created_at) VALUES (?,?,?,?,?,?,?)";
     const sqlDelete = `DELETE FROM new_lead WHERE email = ?`;
     // const sqlDeletelastseen = `DELETE FROM last_message WHERE uid = ?`;
 
-    con.query(sqlInsert, [name, email, phone, finalrequirement, closingreason, created_at], (insertErr, insertResult) => {
+    con.query(sqlInsert, [clientid,name, email, phone, finalrequirement, closingreason, created_at], (insertErr, insertResult) => {
         if (insertErr) {
             console.error(insertErr);
             res.status(500).send({ message: "Internal server error in inserting data" });
@@ -336,6 +336,47 @@ app.get('/notification-list',(req,res)=>{
             res.send(rows);
         }
     })
+});
+// Restore closed  leads
+app.get('/restore-closed-leads/:clientid',(req,res)=>{
+    const {clientid} = req.params;
+    console.log('Client ID:',clientid);
+
+    const sqlGetdata = `SELECT * FROM closed_leads WHERE unique_id = '${clientid}'`;
+    
+    con.query(sqlGetdata,(error,rows)=>{
+        if (error) {
+            res.status(500).send({ message: 'Internal server error in getting data from closed lead' });
+        } else {
+            let clientid =  rows[0].unique_id;
+            let fullname =  rows[0].fullname;
+            let email    =  rows[0].email;
+            let phone    =  rows[0].number;
+            let company  =  rows[0].company;
+            let requirements =   rows[0].requirements;
+      
+
+            // Restore data into  new_leads table
+            sqlInsert  = `INSERT INTO new_lead (unique_id,fullname,email,number,company,requirements) VALUES ('${clientid}','${fullname}','${email}','${phone}','${company}','${requirements}')`;
+            con.query(sqlInsert,(restoreerror,rows)=>{
+                if (restoreerror) {
+                    res.status(500).send({ message: 'Internal server error in restoring  data' });
+                }else{
+                    //  Delete data from closed_leads table
+                    sqlDelete = `DELETE  FROM closed_leads WHERE clientid = '${clientid}'`;
+                    con.query(sqlDelete,(error,rows)=>{
+                        if (error) {
+                            res.status(500).send({message:'Error in deleting closed lead'});
+                        }else{
+                            res.send({message:'Lead restored successfully and  deleted from closed leads table'});
+
+                        }
+                    });
+                }       
+            });
+        }
+    });
+
 });
 
 // MAil

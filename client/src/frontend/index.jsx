@@ -110,25 +110,7 @@ const[formlead,setFormlead] = useState({
     reminder:''
 }
 );
-// Closed List Start
-const[closedLeadslist, setClosedLeadlist] = useState(['']);
-useEffect(() => {
-  const newclosedlead = async(e) => {
-      try {
-          const response = await fetch('http://192.168.1.4:3002/closedLeadlist');
-          if (!response.ok) {
-              throw new Error(`HTTP error! Status: ${response.status}`)
-          }
-          const data = await response.json();
-          setClosedLeadlist(data);
-      } catch (error) {
-          console.log('Error',error);
-      }
-  }
-  newclosedlead();
-}, []);
 
-// Closed List End
 const handleChange =(e)=>{
     setFormlead({...formlead,[e.target.name]:e.target.value});
 }
@@ -153,6 +135,46 @@ const createLead = async(e) => {
     }
 }
 // ########################### End ################################
+// ########################### Closed List Start ##################
+
+const[closedLeadslist, setClosedLeadlist] = useState(['']);
+useEffect(() => {
+  const newclosedlead = async(e) => {
+      try {
+          const response = await fetch('http://192.168.1.4:3002/closedLeadlist');
+          if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`)
+          }
+          const data = await response.json();
+          setClosedLeadlist(data);
+      } catch (error) {
+          console.log('Error',error);
+      }
+  }
+  newclosedlead();
+}, []);
+
+// ########################### Closed List End #######################
+//  ########################## Successful lead List Start ######################
+const[successLead,setSucccessLead] = useState([]);
+const[errormessage,seterrormessage] = useState("");
+useEffect(() => {
+ const fetchSuccessfulLeads = async () => {
+    try {
+       const response = await fetch('http://192.168.1.4:3002/successfullead');
+       if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+       }
+       const data = await response.json();
+       setSucccessLead(data);
+    } catch (error) {
+       seterrormessage('Error in fetching successful leads');
+    }
+ };
+
+ fetchSuccessfulLeads();
+}, []);
+//  ########################## Successful lead List End ######################
 // ########################### Get Notification Start ################################
 const [notification,setNotification] = useState(['']);
 
@@ -191,12 +213,8 @@ const notificationCount24HoursOld = notification.reduce((count, notification) =>
 }, 0);
 // Closed List count
 let  closeLeadcount = closedLeadslist.length||0;
-console.log("Current leads length:", closeLeadcount);
-// const closedListCount = closedLeadslist.reduce((count, closedLeadslist) => {
-//     console.log("Current leads length:", closedLeadslist.length);
-//     const closeLeadcount = closedLeadslist.length || 0; // Handle potential undefined or non-numeric values
-//     return count + closeLeadcount;
-// }, 0);
+let successLeadcount =  successLead.length||0;
+
 
 
   return (
@@ -328,7 +346,7 @@ console.log("Current leads length:", closeLeadcount);
                                 </div>
                                 <div className="lead-category successfull-leads" onClick={handleSuccessfulleadlist}>
                                       <span>Successful Leads</span>
-                                      <span>10</span>
+                                      <span>{successLeadcount}</span>
                                 </div>
                             </div>
                         </div>
@@ -354,12 +372,12 @@ console.log("Current leads length:", closeLeadcount);
                     {/* Closed Lead List */}
                     {closedLeadlist&&
                         <div className="closed-lead-list">
-                            <ClosedLeadsList closedLeadslist={closedLeadslist}/>
+                            <ClosedLeadsList closedLeadslist={closedLeadslist} handleLeads={handleLeads}/>
                         </div>
                     }
                     {successLeads&&
                         <div className="SuccessfulLeads">
-                            <SuccessfulLeads/>
+                            <SuccessfulLeads successLead={successLead} errormessage={errormessage}/>
                         </div>
                     }
                     {invoice&&
