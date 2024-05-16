@@ -1,0 +1,160 @@
+/* Container for the entire chat section */
+
+.chat-container{
+    width: 100% !important;
+}
+.conversation{
+    width: 80%;
+    margin: 0 auto;
+  }
+  .old-message {
+    display: flex;
+    flex-direction: column;
+    /* gap: 20px; */
+  }
+  
+  /* Style for the client name */
+  .old-message p {
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+  
+  /* Container for the chat messages */
+  .chat {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  /* Style for admin messages */
+  .admin-chat {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 5px;
+    margin-left: 5px;
+  }
+  
+  /* Style for sales messages */
+  .sales-chat {
+    background-color: #d9f7e6;
+    padding: 10px;
+    border-radius: 10px;
+    margin-right: 5px;
+  }
+  
+  /* Style for message timestamps */
+  .sales-chat span {
+    font-size: 0.8rem;
+    color: #888;
+  }
+  
+  /* Style for the form section */
+  .new-conversation {
+    display: flex;
+    gap: 10px;
+  }
+  
+  /* Style for the textarea input */
+  .new-conversation textarea {
+    flex: 1;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    resize: vertical;
+  }
+  
+  /* Style for the send button */
+  .new-conversation button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .new-conversation button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* ConversationPage.css */
+  .chat{
+    background-image: url(../img/chat-background.png);
+    height: 50vh;
+    overflow: auto;
+  }
+  /* Main container */
+  .conversation-page {
+      display: flex;
+      /* width: 100%; */
+      height: 100vh;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      background-color: #f0f8ff; /* Light blue background */
+    }
+    
+    /* Old Message */
+    .old-message {
+      background-color: #f0f8ff; /* Light blue background */
+      padding: 10px;
+      width: 90%;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
+    }
+    
+    /* New Conversation form */
+    .new-conversation {
+      background-color: #f0fff0; /* Light green background */
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      width: 90%;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
+    }
+    .new-conversation form{
+      width: 100%;
+      display: flex;
+    }
+  
+    /* Form group (label + input) */
+    .form-groups {
+      margin-bottom: 15px;
+      width: 95%;
+      display: flex;
+    }
+    
+    /* Text input fields */
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      width: 95%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    /* Text input fields */
+    input[type="datetime-local"] {
+      /* width: 22%; */
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    /* Submit button */
+    button[type="submit"] {
+      padding: 10px 20px;
+      background-color: #007bff; /* Blue button color */
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      height: 75%;
+    }
+    .restore{
+        width: 12%;
+        margin: 0 auto;
+    }

@@ -4,6 +4,7 @@ import '../css/invoice.css';
 import Tradeimexlogo from '../img/logo.png';
 import Sign from '../img/Sign_of_director.png';
 import Stamp from '../img/stamp_tradeimex.png';
+import {FaArrowLeft} from  'react-icons/fa'
 function Invoice({inVoiceClientdata}) {
     // console.log('Invoice Data',inVoiceClientdata);
     const handlePrint =()=>{
@@ -87,8 +88,12 @@ function Invoice({inVoiceClientdata}) {
 
     // Total mount after tax 
   return (
-     <><div className="invoice-main ">
+     <>
+       <button type='button'><FaArrowLeft/></button>
+     <div className="invoice-main ">
+       
           <div className="invoice-form">
+        
               <h3>Invoice Form</h3>
               <form >
 

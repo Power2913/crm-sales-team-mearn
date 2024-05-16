@@ -8,6 +8,7 @@ import { FaBell,FaUser,FaExclamationTriangle } from 'react-icons/fa';
 import Notificationpage from './Notification';
 import SuccessfulLeads from './SuccessfulLeads';
 import Invoice from './Invoice';
+import ClosedLeadChat from './ClosedLeadChat';
 
 function Index() {
 const[list, setList] = useState(true);
@@ -22,6 +23,8 @@ const [successLeads,setSucccessLeads] = useState(false);
 const [notificationshow, setNotificationshow] = useState(false);
 const [invoice, setInvoice] = useState(false);
 const [invoiceData,setinvoiceData] = useState(null);
+const [closedChat, setClosedChat ] = useState( false );
+const [closedleadschat,setClosedleadschat] = useState( null );
 
 // const handleList = () => {
 //     setList(true);
@@ -43,6 +46,7 @@ const handleLeads = (lead) => {
     setSucccessLeads(false);
     setNotificationshow(false);
     setInvoice(false);
+    setClosedChat(false);
 }
 const handleClosedLeads = (closedleaddata) => {
     // setclosedlead(true);
@@ -56,6 +60,7 @@ const handleClosedLeads = (closedleaddata) => {
     setSucccessLeads(false);
     setNotificationshow(false);
     setInvoice(false);
+    setClosedChat(false);
 }
 
 const handleClosedleadlist = ()=>{
@@ -67,6 +72,7 @@ const handleClosedleadlist = ()=>{
     setSucccessLeads(false);
     setNotificationshow(false);
     setInvoice(false);
+    setClosedChat(false);
 }
 const handleSuccessfulleadlist = ()=>{
     setSucccessLeads(true);
@@ -77,6 +83,7 @@ const handleSuccessfulleadlist = ()=>{
     setNewlead(false);
     setNotificationshow(false);
     setInvoice(false);
+    setClosedChat(false);
 }
 
 const handleNotification = () => {
@@ -87,10 +94,11 @@ const handleNotification = () => {
     setclosedleadform(false);
     setLeads(false);
     setList(false);
-
+    setClosedChat(false);
     setInvoice(false);
 }
 const handleInvoice = (invoiceData) => {
+    setClosedChat(false);
     setinvoiceData(invoiceData);
     setInvoice(true);
     setSucccessLeads(false);
@@ -100,6 +108,18 @@ const handleInvoice = (invoiceData) => {
     setList(false);
     setNewlead(false);
 }
+const handleClosedLeadsChat = (leads) => {
+    setClosedleadschat(leads);
+    setClosedChat(true);
+    setInvoice(false);
+    setSucccessLeads(false);
+    setClosedLeadList(false)
+    setclosedleadform(false);
+    setLeads(false);
+    setList(false);
+    setNewlead(false);
+}
+console.log('closedleadschat',closedleadschat);
 //##################### New Lead Api Call Start ###########################
 const[formlead,setFormlead] = useState({
     fullname:'',
@@ -372,7 +392,7 @@ let successLeadcount =  successLead.length||0;
                     {/* Closed Lead List */}
                     {closedLeadlist&&
                         <div className="closed-lead-list">
-                            <ClosedLeadsList closedLeadslist={closedLeadslist} handleLeads={handleLeads}/>
+                            <ClosedLeadsList closedLeadslist={closedLeadslist} handleLeads={handleLeads} handleClosedLeadsChat={handleClosedLeadsChat} />
                         </div>
                     }
                     {successLeads&&
@@ -383,6 +403,11 @@ let successLeadcount =  successLead.length||0;
                     {invoice&&
                         <div className="invoice">
                             <Invoice inVoiceClientdata={invoiceData}/>
+                        </div>
+                    }
+                    {closedChat&&
+                        <div className="closedchat">
+                            <ClosedLeadChat closedLeadchat={closedleadschat}/>
                         </div>
                     }
                 </div>

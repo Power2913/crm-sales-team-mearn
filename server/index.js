@@ -239,7 +239,19 @@ app.get('/closedLeadlist', (req, res) => {
         }
     });
 });
-
+// Closed Lead Message
+app.get('/closedLeadMessage/:uniqueid',(req,res)=>{
+    const {uniqueid} = req.params;
+    const sqlGet = `SELECT * FROM \`${uniqueid}\``;
+    con.query(sqlGet,(err,result)=>{
+        if (err) {
+            console.error(err);
+            res.status(500).send({ message: "Internal server error" });
+        } else {
+            res.send(result);
+        }
+    })
+});
 // Set Lead Status to set
 app.post('/successlead',(req,res)=>{
     const {uniqueid,name,email,phone} = req.body;
@@ -378,6 +390,8 @@ app.get('/restore-closed-leads/:clientid',(req,res)=>{
     });
 
 });
+
+// Get Generated invoice Information
 
 // MAil
 app.post('/mail', upload.single('invoice'), async (req, res) => {
