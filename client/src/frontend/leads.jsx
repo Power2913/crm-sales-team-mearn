@@ -142,7 +142,7 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
           // Handle error, show error message, etc.
       }
   };
-
+ 
   return (
     <div className="conversation-page">
             <div className="lead-actions">

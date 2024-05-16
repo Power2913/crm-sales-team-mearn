@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import '../css/closedleadchats.css'
+import {FaArrowLeft} from  'react-icons/fa'
 const ClosedLeadChat = ({closedLeadchat}) => {
     console.log('closedLeadchat:',closedLeadchat);
     const [formData, setFormData] = useState({
@@ -86,7 +87,7 @@ const handleRestore = async (closedLeadchat,e)  => {
 }
   return (
     <div className="chat-container">
-        {/* <div className="chat-header">Chat</div> */}
+        <div className="chat-back"><button><FaArrowLeft/></button></div>
         <div className="chat-body">
             <div className="conversation">
                 <div className="old-message">

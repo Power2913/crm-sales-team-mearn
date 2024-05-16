@@ -9,6 +9,7 @@ import Notificationpage from './Notification';
 import SuccessfulLeads from './SuccessfulLeads';
 import Invoice from './Invoice';
 import ClosedLeadChat from './ClosedLeadChat';
+import GeneratedInvoice from './GeneratedInvoice';
 
 function Index() {
 const[list, setList] = useState(true);
@@ -25,6 +26,7 @@ const [invoice, setInvoice] = useState(false);
 const [invoiceData,setinvoiceData] = useState(null);
 const [closedChat, setClosedChat ] = useState( false );
 const [closedleadschat,setClosedleadschat] = useState( null );
+const [generatedInvoice, setGeneratedInvoice] = useState( false );
 
 // const handleList = () => {
 //     setList(true);
@@ -47,6 +49,7 @@ const handleLeads = (lead) => {
     setNotificationshow(false);
     setInvoice(false);
     setClosedChat(false);
+    setGeneratedInvoice(false);
 }
 const handleClosedLeads = (closedleaddata) => {
     // setclosedlead(true);
@@ -61,6 +64,7 @@ const handleClosedLeads = (closedleaddata) => {
     setNotificationshow(false);
     setInvoice(false);
     setClosedChat(false);
+    setGeneratedInvoice(false);
 }
 
 const handleClosedleadlist = ()=>{
@@ -73,6 +77,7 @@ const handleClosedleadlist = ()=>{
     setNotificationshow(false);
     setInvoice(false);
     setClosedChat(false);
+    setGeneratedInvoice(false);
 }
 const handleSuccessfulleadlist = ()=>{
     setSucccessLeads(true);
@@ -84,6 +89,7 @@ const handleSuccessfulleadlist = ()=>{
     setNotificationshow(false);
     setInvoice(false);
     setClosedChat(false);
+    setGeneratedInvoice(false);
 }
 
 const handleNotification = () => {
@@ -96,6 +102,7 @@ const handleNotification = () => {
     setList(false);
     setClosedChat(false);
     setInvoice(false);
+    setGeneratedInvoice(false);
 }
 const handleInvoice = (invoiceData) => {
     setClosedChat(false);
@@ -107,9 +114,11 @@ const handleInvoice = (invoiceData) => {
     setLeads(false);
     setList(false);
     setNewlead(false);
+    setGeneratedInvoice(false);
 }
 const handleClosedLeadsChat = (leads) => {
     setClosedleadschat(leads);
+    setGeneratedInvoice(false);
     setClosedChat(true);
     setInvoice(false);
     setSucccessLeads(false);
@@ -119,7 +128,17 @@ const handleClosedLeadsChat = (leads) => {
     setList(false);
     setNewlead(false);
 }
-console.log('closedleadschat',closedleadschat);
+const handleGeneratedInvoice = () =>{
+    setGeneratedInvoice(true);
+    setClosedChat(false);
+    setInvoice(false);
+    setSucccessLeads(false);
+    setClosedLeadList(false)
+    setclosedleadform(false);
+    setLeads(false);
+    setList(false);
+    setNewlead(false);
+}
 //##################### New Lead Api Call Start ###########################
 const[formlead,setFormlead] = useState({
     fullname:'',
@@ -315,7 +334,9 @@ let successLeadcount =  successLead.length||0;
                             <span>Sales Stats</span>
                         </li>
                         <li>
-                            <span>Generated Invoice</span>
+                            <a href="#generated-invoices" >
+                               <span onClick={handleGeneratedInvoice}>Generated Invoice</span>
+                            </a>
                         </li>
                     </div>
                 </div>
@@ -408,6 +429,11 @@ let successLeadcount =  successLead.length||0;
                     {closedChat&&
                         <div className="closedchat">
                             <ClosedLeadChat closedLeadchat={closedleadschat}/>
+                        </div>
+                    }
+                    {generatedInvoice&&
+                        <div className="generatedinvoice">
+                           < GeneratedInvoice/>
                         </div>
                     }
                 </div>

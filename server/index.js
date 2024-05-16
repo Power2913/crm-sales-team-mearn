@@ -392,6 +392,18 @@ app.get('/restore-closed-leads/:clientid',(req,res)=>{
 });
 
 // Get Generated invoice Information
+app.post('/invoice-info', (req, res) => {
+    const {unique_id,invoice_num,invoice_date,invoice_field}  = req.body;
+    sqlInvoice = `INSERT  INTO invoice (unique_id,invoice_num,invoice_date,invoice_field) VALUES ('${unique_id}','${invoice_num}','${invoice_date}','${invoice_field}')`;
+    
+    con.query( sqlInvoice,(error,rows)=>{
+        if (error) {
+              res.status(500).send({ message: 'Internal server error in getting data from closed lead' });
+            } else {                
+              res.send({message:'Invoice information saved successfully'});
+            }
+    });
+});
 
 // MAil
 app.post('/mail', upload.single('invoice'), async (req, res) => {

@@ -6,7 +6,7 @@ import Sign from '../img/Sign_of_director.png';
 import Stamp from '../img/stamp_tradeimex.png';
 import {FaArrowLeft} from  'react-icons/fa'
 function Invoice({inVoiceClientdata}) {
-    // console.log('Invoice Data',inVoiceClientdata);
+    console.log('Invoice Data',inVoiceClientdata);
     const handlePrint =()=>{
         const invoicecontainer = document.getElementsByClassName('invoice-format');
         if (invoicecontainer) {
@@ -84,6 +84,26 @@ function Invoice({inVoiceClientdata}) {
       }, [rows]);
     console.log('Net Amount', nettotal);
     console.log('Total Amount', total);
+    // Invoice information 
+
+    const handleInvoiceInfo = async(e) => {
+        try {
+            const response =  await fetch('http://localhost:5000//invoice-info', {
+              method:'POST',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({
+                unique_id: inVoiceClientdata.unique_id,
+                // invoice_no: invoice_no,
+                // invoice_date: invoice_date,
+                // invoice_file: invoice_file,
+              }),
+            });
+
+        } catch (error) {
+            console.log('Error', error);
+
+        }
+    }
 
 
     // Total mount after tax 
@@ -117,7 +137,8 @@ function Invoice({inVoiceClientdata}) {
                         <input type="text" value={row.hscode} onChange={(e) => handleChange(index, 'hscode', e.target.value)} placeholder="HS CODE..." />
                     </div>
                     <div className="invoice-group">
-                        <input type="month" value={row.period} onChange={(e) => handleChange(index, 'period', e.target.value)} placeholder="Choose Period" />
+                        <input type="text"  value={row.period} onChange={(e) => handleChange(index, 'period', e.target.value)} placeholder="Choose Period"/>
+
                     </div>
                     <div className="invoice-group">
                         <select value={row.currency} onChange={(e) => handleChange(index, 'currency', e.target.value)}>
