@@ -393,8 +393,10 @@ app.get('/restore-closed-leads/:clientid',(req,res)=>{
 
 // Get Generated invoice Information
 app.post('/invoice-info', (req, res) => {
-    const {unique_id,invoice_num,invoice_date,invoice_field}  = req.body;
-    sqlInvoice = `INSERT  INTO invoice (unique_id,invoice_num,invoice_date,invoice_field) VALUES ('${unique_id}','${invoice_num}','${invoice_date}','${invoice_field}')`;
+    const {unique_id,company,invoice_date,invoice_no}  = req.body;
+
+    sqlInvoice = `INSERT  INTO invoice (unique_id,invoice_number,company,invoice_date) VALUES ('${unique_id}','${invoice_no}','${company}','${invoice_date}')`;
+
     
     con.query( sqlInvoice,(error,rows)=>{
         if (error) {
@@ -404,7 +406,16 @@ app.post('/invoice-info', (req, res) => {
             }
     });
 });
-
+app.get('/invoice-details',(req,res) =>{
+   sqlGetInvoice = 'SELECT * FROM invoice';
+   con.query( sqlGetInvoice,(error,rows)=>{
+    if (error) {
+        res.status(500).send({ message: 'Internal server error in getting data from Invoice' });
+        } else {
+            res.send(rows);
+        }
+   });
+});
 // MAil
 app.post('/mail', upload.single('invoice'), async (req, res) => {
     try {

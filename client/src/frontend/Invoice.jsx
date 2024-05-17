@@ -5,6 +5,9 @@ import Tradeimexlogo from '../img/logo.png';
 import Sign from '../img/Sign_of_director.png';
 import Stamp from '../img/stamp_tradeimex.png';
 import {FaArrowLeft} from  'react-icons/fa'
+
+
+
 function Invoice({inVoiceClientdata}) {
     console.log('Invoice Data',inVoiceClientdata);
     const handlePrint =()=>{
@@ -39,6 +42,8 @@ function Invoice({inVoiceClientdata}) {
     const [invoicefields, setinvoicefields] = useState({
         addressone:'',
         gst_vat:'',
+        invoice_date:'',
+        invoice_serial:'',
     })
     console.log('Invoice Fields ', invoicefields);
     const handlefieldschange =(e)=>{
@@ -87,24 +92,28 @@ function Invoice({inVoiceClientdata}) {
     // Invoice information 
 
     const handleInvoiceInfo = async(e) => {
+        let  invoice_no = "TI/24-25/"+invoicefields.invoice_serial
         try {
-            const response =  await fetch('http://localhost:5000//invoice-info', {
+            const response =  await fetch('http://192.168.1.4:3002/invoice-info', {
               method:'POST',
               headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({
                 unique_id: inVoiceClientdata.unique_id,
-                // invoice_no: invoice_no,
-                // invoice_date: invoice_date,
-                // invoice_file: invoice_file,
+                company :  inVoiceClientdata.company,
+                invoice_date: invoicefields.invoice_date,
+                invoice_no: invoice_no,
               }),
             });
-
+            const data = await response.json();
         } catch (error) {
             console.log('Error', error);
 
         }
     }
-
+    function handleButtonClick() {
+        handleInvoiceInfo();
+        handlePrint();
+      }
 
     // Total mount after tax 
   return (
@@ -124,9 +133,12 @@ function Invoice({inVoiceClientdata}) {
                 <div className="invoice-group">
                     <input type="text" name="gst_vat" placeholder="GST/VAT" value={invoicefields.gst_vat} onChange={handlefieldschange}/>
                 </div>
-                {/* <div className="invoice-group">
-                    <input type="text" name="vat" placeholder="VAT..." value={invoicefields.vat} onChange={handlefieldschange}/>
-                </div> */}
+                <div className="invoice-group">
+                    <input type="number" name="invoice_serial" placeholder="Invoice no..." value={invoicefields.invoice_serial} onChange={handlefieldschange}/>
+                </div>
+                <div className="invoice-group">
+                    <input type="date" name="invoice_date" placeholder="Date..." value={invoicefields.invoice_date} onChange={handlefieldschange}/>
+                </div>
 
                 {rows.map((row, index) => (
                     <div key={index} className="invoice-group-table">
@@ -166,8 +178,9 @@ function Invoice({inVoiceClientdata}) {
                     </div>
                 ))}
                 <button type="button" onClick={addRow}>+</button>
-                <button onClick={handlePrint}>Print Invoice</button>            
+                      
            </form>
+           <button onClick={handleButtonClick}>Download Invoice</button>     
           </div>
           <div className="invoice-format" id='invoice-container'>
               <div className="invoice-format-inner">
@@ -204,8 +217,8 @@ function Invoice({inVoiceClientdata}) {
                           <span>GST:{invoicefields.gst_vat}</span><br />
                       </div>
                       <div className="format-details-right">
-                          <p>Invoice No # <span>TI/24-25/0389</span></p>
-                          <span>Date : 1-May-2024</span>
+                          <p>Invoice No # <span>TI/24-25/{invoicefields.invoice_serial}</span></p>
+                          <span>Date : {invoicefields.invoice_date}</span>
                           <span>TradeImeX Info Solution Private Limited</span><br />
                           <span>367-368, 3rd Floor, Pocket 11 B,</span><br />
                           <span>Rohini Sector 23, New Delhi -110085</span><br />
