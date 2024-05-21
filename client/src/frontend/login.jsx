@@ -1,28 +1,60 @@
-import React from 'react'
-import "bootstrap/dist/css/bootstrap.min.css";
+import React,{useState} from 'react'
+// import "bootstrap/dist/css/bootstrap.min.css";
 import '../css/login.css'
-const login = () => {
+// import { Navigate } from 'react-router-dom';
+import  { useNavigate } from 'react-router-dom';
+
+const Login = () => {
+const navigate = useNavigate();
+// Login
+const [login, setLogin] = useState({
+    username:'',
+    password:'',
+});
+const handleChange  = (e) => {
+   setLogin({...login, [e.target.name] : e.target.value});
+}
+const handleLogin = async (e) => {
+    e.preventDefault();
+    // const { email, password } = e.target.elements;
+    // const data = { email: email.value, password: password.value };
+    console.log('Login cred',login);
+    try {
+        const response = await fetch('http://192.168.1.3:3002/login',{
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(login)
+        });
+        const res = await response.json();
+        console.log(res);
+        if(res.ok){
+            navigate(`/sales-dashboard`)
+        }
+    } catch (error) {
+        console.log( 'Connection failure',error );
+
+    }
+}
   return (
     <div className="wrapper">
-        <div className="container-fluid">
-            <div className="row">
-                <div className="col-md-4 login-bg">
+        <div className="container">
+                <div className="login-bg-left">
                     <div className="login-overlay">
                         <div className="login-left">
                             {/* <!-- Additional content if needed --> */}
                         </div>
                     </div>
                 </div>
-                <div className="col-md-8 login-form">
-                    <form action="" className="av-valid">
+                <div className="login-form-right">
+                    <form action="" className="av-valid" onSubmit={handleLogin}>
                         <div className="login-form-body">
                             <div className="form-group">
                                 <label htmlFor="username">Username</label>
-                                <input type="text" className="form-control" id="username" placeholder="Username" />
+                                <input type="text" name='username' value={login.username} onChange={handleChange} className="form-control" id="username" placeholder="Username" />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="password">Password</label>
-                                <input type="password" name="password" className="form-control" id="password" placeholder="Password" />
+                                <input type="password" name="password" value={login.password} onChange={handleChange} className="form-control" id="password" placeholder="Password" />
                             </div>
                             <div className="form-group">
                                 <button type="submit" className='btn btn-primary btn btn-primary'>Login</button>
@@ -30,10 +62,9 @@ const login = () => {
                         </div>
                     </form>
                 </div>
-            </div>
         </div>
     </div>
   )
 }
 
-export default login
+export default Login

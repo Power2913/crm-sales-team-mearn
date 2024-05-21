@@ -6,9 +6,16 @@ const nodemailer = require('nodemailer');
 const multer  = require('multer');
 const upload = multer({ dest: 'uploads/' });
 const fs = require('fs');
+const session = require('express-session');
+
 
 const app = express();
 
+app.use(session({
+    secret: 'super secret',
+    resave: false,
+    saveUninitialized:true,
+}))
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -34,12 +41,22 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-
-
-
 // Use Login
 app.post('/login',(req,res)=>{
-    
+    const{username,password} = req.body;
+    const  sql = `SELECT * FROM sales_team WHERE unique_id = '${username}' AND password = '${password}'`;
+    con.query( sql,(err,result)=>{
+        if (err) {
+            res.status(500).send({message:"Internal server error."});
+        }
+        else if(result.length > 0){
+            const user =  result[0];
+            req.session.user = user;
+            res.status(200).send({message:"Login Successful.",user:user});
+        }else{
+            res.send({message: "Invalid username or password."});
+        }
+    });
 });
 // Create Leads
 app.post('/createlead', (req, res) => {

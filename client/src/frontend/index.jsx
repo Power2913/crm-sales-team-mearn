@@ -139,6 +139,8 @@ const handleGeneratedInvoice = () =>{
     setList(false);
     setNewlead(false);
 }
+
+
 //##################### New Lead Api Call Start ###########################
 const[formlead,setFormlead] = useState({
     fullname:'',
@@ -257,7 +259,7 @@ let successLeadcount =  successLead.length||0;
 
 
   return (
-    <div className="container">
+    <div className="containers">
         <div className="main">
             <div className="header">
                 <div className="nav">

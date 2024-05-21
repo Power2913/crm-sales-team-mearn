@@ -1,14 +1,26 @@
 .wrapper {
     display: flex;
-    height: 100%;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: #f7f7f7;
 }
 
-.login-bg {
-    /* background: url('path_to_your_image.jpg') no-repeat center center; */
-    background-color: blue;
+.container {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    height: 80%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.login-bg-left {
+    flex: 1;
+    background: url('../img/login-bg.jpg') no-repeat center center;
     background-size: cover;
     position: relative;
-    height: 100vh;
 }
 
 .login-overlay {
@@ -23,46 +35,54 @@
     justify-content: center;
 }
 
-.login-form {
+.login-left {
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+.login-form-right {
+    flex: 1;
+    background: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh;
-    background: #fff;
 }
 
 .login-form-body {
-    padding: 20px;
     width: 100%;
-    max-width: 500px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
+    max-width: 400px;
+    padding: 40px;
 }
 
-.login-form-body .form-group {
-    margin-bottom: 15px;
+.form-group {
+    margin-bottom: 20px;
 }
 
-.login-form-body .form-group label {
+.form-group label {
     font-weight: bold;
     margin-bottom: 5px;
     display: block;
 }
 
-.login-form-body .form-group .form-control {
+.form-group .form-control {
     border-radius: 4px;
     padding: 10px;
     border: 1px solid #ccc;
+    width: 100%;
 }
 
-.login-form-body .form-group .btn {
+.form-group .btn {
     width: 100%;
     padding: 10px;
     border-radius: 4px;
+    font-size: 16px;
+    background: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
 }
-.form-control{
-    width: 100% !important;
-}
-.av-valid{
-    width: 500px;
+
+.form-group .btn:hover {
+    background: #0056b3;
 }

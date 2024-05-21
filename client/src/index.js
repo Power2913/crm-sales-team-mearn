@@ -8,7 +8,7 @@ export default function Index() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/admin" element={<Dashboard/>}></Route>
+        <Route path="/sales-dashboard" element={<Dashboard/>}></Route>
         <Route path="/erp-login" element={<Login/>}></Route>
         {/* <Route path='/notification' element={<Notification/>}></Route> */}
         {/* <Route path="/Login" element={<Login/>}></Route>
