@@ -16,7 +16,7 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://192.168.1.4:3002/newmessages', {
+      const response = await fetch('http://192.168.1.11:3002/newmessages', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
   const fetchMessages = async () => {
     try {
       const uniqueid = leadData.unique_id;
-      const response = await fetch(`http://192.168.1.4:3002/clientmessage/${uniqueid}`);
+      const response = await fetch(`http://192.168.1.11:3002/clientmessage/${uniqueid}`);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -71,7 +71,7 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
   const handleleadsuccess = async (e)=>{
     e.preventDefault();
     try {
-      const response = await fetch('http://192.168.1.4:3002/successlead',{
+      const response = await fetch('http://192.168.1.11:3002/successlead',{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -100,7 +100,7 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
   const handlelastmessage = async (e)=>{
   
     try {
-      const response = await fetch('http://192.168.1.4:3002/notification');
+      const response = await fetch('http://192.168.1.11:3002/notification');
       if (!response.ok) {
         throw new Error(`Error! status: ${response.status}`);
       }
@@ -125,7 +125,7 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
           formData.append('to', leadData.email);
           formData.append('subject', 'Invoice');
           formData.append('message', 'Please find the attached invoice');
-          const response = await fetch('http://192.168.1.4:3002/mail', {
+          const response = await fetch('http://192.168.1.11:3002/mail', {
               method: 'POST',
               body: formData
           });

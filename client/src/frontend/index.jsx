@@ -157,7 +157,7 @@ const handleChange =(e)=>{
 const createLead = async(e) => {
     e.preventDefault();
     try {
-        const response = await fetch('http://192.168.1.4:3002/createlead',{
+        const response = await fetch('http://192.168.1.11:3002/createlead',{
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -428,7 +428,7 @@ let successLeadcount =  successLead.length||0;
                     }
                     {closedChat&&
                         <div className="closedchat">
-                            <ClosedLeadChat closedLeadchat={closedleadschat}/>
+                            <ClosedLeadChat closedLeadchat={closedleadschat}  handleClosedleadlist={handleClosedleadlist}/>
                         </div>
                     }
                     {generatedInvoice&&

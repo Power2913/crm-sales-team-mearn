@@ -94,7 +94,7 @@ function Invoice({inVoiceClientdata}) {
     const handleInvoiceInfo = async(e) => {
         let  invoice_no = "TI/24-25/"+invoicefields.invoice_serial
         try {
-            const response =  await fetch('http://192.168.1.4:3002/invoice-info', {
+            const response =  await fetch('http://192.168.1.11:3002/invoice-info', {
               method:'POST',
               headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({

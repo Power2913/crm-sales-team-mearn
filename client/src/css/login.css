@@ -1,0 +1,68 @@
+.wrapper {
+    display: flex;
+    height: 100%;
+}
+
+.login-bg {
+    /* background: url('path_to_your_image.jpg') no-repeat center center; */
+    background-color: blue;
+    background-size: cover;
+    position: relative;
+    height: 100vh;
+}
+
+.login-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: #fff;
+}
+
+.login-form-body {
+    padding: 20px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+.login-form-body .form-group {
+    margin-bottom: 15px;
+}
+
+.login-form-body .form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.login-form-body .form-group .form-control {
+    border-radius: 4px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.login-form-body .form-group .btn {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+}
+.form-control{
+    width: 100% !important;
+}
+.av-valid{
+    width: 500px;
+}
