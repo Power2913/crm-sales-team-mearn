@@ -19,11 +19,12 @@ const Newlead = ({handleLeads}) => {
     //     // Add more items as needed
     //   ];
     const [pageNumber, setPageNumber] = useState(1); // Current page number
-
+    const sperson_unique_id = sessionStorage.getItem( 'unique_id');
+    console.log('Sales Person Table',sperson_unique_id);
     useEffect(() => {
       const newleads = async () => {
           try {
-              const response = await fetch(`http://192.168.1.11:3002/newclient?pageNumber=${pageNumber}`);
+              const response = await fetch(`http://192.168.1.3:3002/newclient/${sperson_unique_id}?pageNumber=${pageNumber}`);
               if (!response.ok) {
                   throw new Error(`HTTP error! Status: ${response.status}`);
               }

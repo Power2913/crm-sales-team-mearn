@@ -26,10 +26,16 @@ const handleLogin = async (e) => {
             body: JSON.stringify(login)
         });
         const res = await response.json();
-        console.log(res);
-        if(res.ok){
-            navigate(`/sales-dashboard`)
-        }
+        console.log('Result:',res);
+        const user =  res.user;
+        console.log('User:',user);
+
+        sessionStorage.setItem('unique_id',user.unique_id);
+        sessionStorage.setItem('password',user.password);
+        // if(res.ok){
+           
+        // }
+        navigate(`/sales-dashboard`)
     } catch (error) {
         console.log( 'Connection failure',error );
 
@@ -50,11 +56,11 @@ const handleLogin = async (e) => {
                         <div className="login-form-body">
                             <div className="form-group">
                                 <label htmlFor="username">Username</label>
-                                <input type="text" name='username' value={login.username} onChange={handleChange} className="form-control" id="username" placeholder="Username" />
+                                <input type="text" name='username' value={login.username} onChange={handleChange} className="form-control input" id="username" placeholder="Username" />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="password">Password</label>
-                                <input type="password" name="password" value={login.password} onChange={handleChange} className="form-control" id="password" placeholder="Password" />
+                                <input type="password" name="password" value={login.password} onChange={handleChange} className="form-control input" id="password" placeholder="Password" />
                             </div>
                             <div className="form-group">
                                 <button type="submit" className='btn btn-primary btn btn-primary'>Login</button>

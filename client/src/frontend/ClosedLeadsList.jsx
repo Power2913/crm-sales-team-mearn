@@ -13,7 +13,7 @@ const handleClick =  (leads,e) =>{
   return (
     <div className="closed-list-container">
  
-        <a href="/admin"><button type='button'><FaArrowLeft/></button></a>
+        <a href="/sales-dashboard"><button type='button'><FaArrowLeft/></button></a>
         <h3>Closed Lead</h3>
         <div className="closed-list-header">
             <div>Full Name</div>

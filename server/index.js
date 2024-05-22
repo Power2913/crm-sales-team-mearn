@@ -60,13 +60,13 @@ app.post('/login',(req,res)=>{
 });
 // Create Leads
 app.post('/createlead', (req, res) => {
-    const { fullname, email, phone, company, requirements, reminder } = req.body;
+    const {sales_person_table, fullname, email, phone, company, requirements, reminder } = req.body;
     const uniqueid = phone.toString().slice(0, -5);
     const client_table = uniqueid;
-    
+    console.log('sperson_unique_id',sales_person_table)
     // Parameterized queries
-    const leadcheck = "SELECT * FROM new_lead WHERE email = ? OR number = ?";
-    const sqlInsert = "INSERT INTO new_lead (unique_id, fullname, email, number, company, requirements, reminder) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    const leadcheck = `SELECT * FROM \`${sales_person_table}\` WHERE email = ? OR number = ?`;
+    const sqlInsert = `INSERT INTO \`${sales_person_table}\` (unique_id, fullname, email, number, company, requirements, reminder) VALUES (?, ?, ?, ?, ?, ?, ?)`;
     const createTableQuery = `
         CREATE TABLE IF NOT EXISTS \`${client_table}\` (
             uid SERIAL PRIMARY KEY,
@@ -165,12 +165,13 @@ app.post('/createlead', (req, res) => {
 
 
 // Get Data from Database table new_leads with pagination
-app.get('/newclient', (req, res) => {
+app.get('/newclient/:sperson_unique_id', (req, res) => {
+    const{sperson_unique_id}=req.params;
     const pageNumber = req.query.pageNumber || 1; // Default to first page
     const pageSize = 10; // Number of records per page
     const offset = (pageNumber - 1) * pageSize;
 
-    const sqlGet = `  SELECT * FROM new_lead ORDER BY id DESC LIMIT ${pageSize} OFFSET ${offset}`;
+    const sqlGet = `  SELECT * FROM \`${sperson_unique_id}\` ORDER BY id DESC LIMIT ${pageSize} OFFSET ${offset}`;
   
     con.query(sqlGet, (err, result) => {
         if (err) {
@@ -225,7 +226,7 @@ app.get('/clientmessage/:uniqueid',(req,res)=>{
 app.post('/closedlead', (req, res) => {
     const { created_at,clientid, name, email, phone, finalrequirement, closingreason } = req.body;
     const sqlInsert = "INSERT INTO closed_leads (unique_id,fullname,email,number,requirements,reason,created_at) VALUES (?,?,?,?,?,?,?)";
-    const sqlDelete = `DELETE FROM new_lead WHERE email = ?`;
+    const sqlDelete = `DELETE FROM \`${sperson_unique_id}\` WHERE email = ?`;
     // const sqlDeletelastseen = `DELETE FROM last_message WHERE uid = ?`;
 
     con.query(sqlInsert, [clientid,name, email, phone, finalrequirement, closingreason, created_at], (insertErr, insertResult) => {
@@ -274,7 +275,7 @@ app.post('/successlead',(req,res)=>{
     const {uniqueid,name,email,phone} = req.body;
 
     const sqlsuccesslead = "INSERT INTO successful_lead (unique_id,fullname,email,phone) VALUES(?,?,?,?)";
-    const sqlDelete = "DELETE FROM new_lead WHERE unique_id = ?";
+    const sqlDelete = `DELETE FROM \`${sperson_unique_id}\` WHERE unique_id = ?`;
     con.query(sqlsuccesslead,[uniqueid,name,email,phone],(err)=>{
        if (err) {
            res.status(500).send({Message:'Error in SQL query in successlead API'});

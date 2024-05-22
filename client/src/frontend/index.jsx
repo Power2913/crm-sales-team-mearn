@@ -27,6 +27,7 @@ const [invoiceData,setinvoiceData] = useState(null);
 const [closedChat, setClosedChat ] = useState( false );
 const [closedleadschat,setClosedleadschat] = useState( null );
 const [generatedInvoice, setGeneratedInvoice] = useState( false );
+const [isLogedin,setisLogedin] = useState( false );
 
 // const handleList = () => {
 //     setList(true);
@@ -139,10 +140,21 @@ const handleGeneratedInvoice = () =>{
     setList(false);
     setNewlead(false);
 }
-
-
+// Login
+const sperson_unique_id = sessionStorage.getItem( 'unique_id');
+const password = sessionStorage.getItem( 'password');
+useEffect(() => {
+    // console.log('User Details',sperson_unique_id,password);
+    if (sperson_unique_id&&password) {
+        setisLogedin(!!sperson_unique_id);
+        } else {
+            console.log('No user found');
+        }
+}, []);
+console.log('User Details',sperson_unique_id,password);
 //##################### New Lead Api Call Start ###########################
 const[formlead,setFormlead] = useState({
+    sales_person_table:sperson_unique_id,
     fullname:'',
     email:'',
     phone:'',
@@ -159,7 +171,7 @@ const handleChange =(e)=>{
 const createLead = async(e) => {
     e.preventDefault();
     try {
-        const response = await fetch('http://192.168.1.11:3002/createlead',{
+        const response = await fetch('http://192.168.1.3:3002/createlead',{
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -177,7 +189,6 @@ const createLead = async(e) => {
 }
 // ########################### End ################################
 // ########################### Closed List Start ##################
-
 const[closedLeadslist, setClosedLeadlist] = useState(['']);
 useEffect(() => {
   const newclosedlead = async(e) => {
@@ -259,189 +270,194 @@ let successLeadcount =  successLead.length||0;
 
 
   return (
-    <div className="containers">
-        <div className="main">
-            <div className="header">
-                <div className="nav">
-                    <div className="tradeimex">
-                        <h2>tradeimex</h2>
-                    </div>
-                    <div className="welcome">
-                        <h2>Welcome Nitesh</h2>
-                    </div>
-                    <div onClick={handleNotification} style={{ position: 'relative',cursor:'pointer' }}>
-                        <FaBell />
-                        {notificationCount24HoursOld > 0 && (
-                            <span
-                            style={{
-                                position: 'absolute',
-                                top: '-13px',
-                                right: '-15px',
-                                backgroundColor: 'red',
-                                color: 'white',
-                                borderRadius: '50%',
-                                width: '20px',
-                                height: '20px',
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                fontSize: '14px',
-                                cursor:'pointer',
-                            }}
-                            >
-                            {notificationCount24HoursOld}
-                            </span>
-                        )}
+    <>
+    {isLogedin&&
+        <div className="containers">
+            <div className="main">
+                <div className="header">
+                    <div className="nav">
+                        <div className="tradeimex">
+                            <h2>tradeimex</h2>
                         </div>
-                    <div className="logout">
-                        <button>Logout</button>
+                        <div className="welcome">
+                            <h2>Welcome Nitesh</h2>
+                        </div>
+                        <div onClick={handleNotification} style={{ position: 'relative',cursor:'pointer' }}>
+                            <FaBell />
+                            {notificationCount24HoursOld > 0 && (
+                                <span
+                                style={{
+                                    position: 'absolute',
+                                    top: '-13px',
+                                    right: '-15px',
+                                    backgroundColor: 'red',
+                                    color: 'white',
+                                    borderRadius: '50%',
+                                    width: '20px',
+                                    height: '20px',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    fontSize: '14px',
+                                    cursor:'pointer',
+                                }}
+                                >
+                                {notificationCount24HoursOld}
+                                </span>
+                            )}
+                            </div>
+                        <div className="logout">
+                            <button>Logout</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className="hero">
-                <div className="sidebar">
-                    <div className="profile">
-                        <div className="profile-logo">
+                <div className="hero">
+                    <div className="sidebar">
+                        <div className="profile">
+                            <div className="profile-logo">
 
-                        </div>
-                        <div className="account-info">
-                            <div className="account-info-option-one">
-                                <div className="user">
-                                    <FaUser/>
+                            </div>
+                            <div className="account-info">
+                                <div className="account-info-option-one">
+                                    <div className="user">
+                                        <FaUser/>
+                                    </div>
+                                </div>
+                                <div className="account-info-option-two">
+                                    <div className="account-name">
+                                        <span>info.nitesh@user.com</span>
+                                    </div>
+                                    <div className="account-email">
+                                        <span>Nitesh Chauhan</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="account-info-option-two">
-                                <div className="account-name">
-                                    <span>info.nitesh@user.com</span>
-                                </div>
-                                <div className="account-email">
-                                    <span>Nitesh Chauhan</span>
-                                </div>
-                            </div>
                         </div>
-                    </div>
-                    <div className="option">
-                        <li>
-                           <a href="/admin">
-                             <span id='leadlist'><a href="/admin">Home</a></span>
-                           </a>
-                        </li>
-                        {/* <li>
-                            <span id='leadlist' onClick={handleList}>Created Leads</span>
-                        </li> */}
-                        {/* <li>
-                            <span >Succesfull Leads</span>
-                        </li> */}
-                        <li>
-                            <span>Sales Stats</span>
-                        </li>
-                        <li>
-                            <a href="#generated-invoices" >
-                               <span onClick={handleGeneratedInvoice}>Generated Invoice</span>
+                        <div className="option">
+                            <li>
+                            <a href="/sales-dashboard">
+                                <span id='leadlist'><a href="/sales-dashboard">Home</a></span>
                             </a>
-                        </li>
+                            </li>
+                            {/* <li>
+                                <span id='leadlist' onClick={handleList}>Created Leads</span>
+                            </li> */}
+                            {/* <li>
+                                <span >Succesfull Leads</span>
+                            </li> */}
+                            <li>
+                                <span>Sales Stats</span>
+                            </li>
+                            <li>
+                                <a href="#generated-invoices" >
+                                <span onClick={handleGeneratedInvoice}>Generated Invoice</span>
+                                </a>
+                            </li>
+                        </div>
                     </div>
-                </div>
-                {/* Create New Lead */}
-                <div className="hero-content">
-                    { notificationshow&&
-                      <Notificationpage notification={notification}/>
-                    }              
-                    {newlead&&
-                        <div className="hero-options">
-                            <div className="form-container">                          
-                                <h3>Create New Lead</h3>
-                                {message && <p className='message'>{message}</p>}
-                                <form className="form" method='POST' onSubmit={createLead}>
-                                    <div className="form-group">
-                                    <input type="text" placeholder="Enter your full name" name='fullname'value={formlead.fullname} onChange={handleChange} className="input-field" required />
+                    {/* Create New Lead */}
+                    <div className="hero-content">
+                        { notificationshow&&
+                        <Notificationpage notification={notification}/>
+                        }              
+                        {newlead&&
+                            <div className="hero-options">
+                                <div className="form-container">                          
+                                    <h3>Create New Lead</h3>
+                                    {message && <p className='message'>{message}</p>}
+                                    <form className="form" method='POST' onSubmit={createLead}>
+                                        <div className="form-group">
+                                        <input type="text" placeholder="Enter your full name" name='fullname'value={formlead.fullname} onChange={handleChange} className="input-field" required />
+                                        </div>
+                                        <div className="form-group">
+                                        <input type="email" placeholder="Enter your email address" name='email' value={formlead.email} onChange={handleChange} className="input-field" required/>
+                                        </div>
+                                        <div className="form-group">
+                                        <input type="tel" placeholder="Enter your phone number" name='phone' value={formlead.phone} onChange={handleChange} className="input-field" required/>
+                                        </div>
+                                        <div className="form-group">
+                                        <input type="text" name="company" id="" placeholder='Enter Company Name....' className='input-field' value={formlead.company} onChange={handleChange}/>
+                                        {/* <textarea placeholder="Enter requirements" name='requirements' value={formlead.requirements} onChange={handleChange} className="textarea-field" rows={10} required/> */}
+                                        </div>
+                                        <div className="form-group">                                  
+                                        <textarea placeholder="Enter requirements" name='requirements' value={formlead.requirements} onChange={handleChange} className="textarea-field"  required/>
+                                        </div>
+                                        <div className="form-group">     
+                                        <label htmlFor="">Set Reminder</label>                             
+                                        <input type="datetime-local" name="reminder" id="" className="input-field" value={formlead.reminder} onChange={handleChange}/>
+                                        </div>
+                                        <div className="form-group">
+                                        <button type="submit" className="submit-button">Submit</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div className="options">
+                                    <div className="lead-category closed-leads"  onClick={handleClosedleadlist}>
+                                        <span>Closed Leads</span>
+                                        <span>{closeLeadcount}</span>
                                     </div>
-                                    <div className="form-group">
-                                    <input type="email" placeholder="Enter your email address" name='email' value={formlead.email} onChange={handleChange} className="input-field" required/>
+                                    <div className="lead-category inprogrss-lead">
+                                        <span>In Progress</span>
+                                        <span>10</span>
                                     </div>
-                                    <div className="form-group">
-                                    <input type="tel" placeholder="Enter your phone number" name='phone' value={formlead.phone} onChange={handleChange} className="input-field" required/>
+                                    <div className="lead-category successfull-leads" onClick={handleSuccessfulleadlist}>
+                                        <span>Successful Leads</span>
+                                        <span>{successLeadcount}</span>
                                     </div>
-                                    <div className="form-group">
-                                    <input type="text" name="company" id="" placeholder='Enter Company Name....' className='input-field' value={formlead.company} onChange={handleChange}/>
-                                    {/* <textarea placeholder="Enter requirements" name='requirements' value={formlead.requirements} onChange={handleChange} className="textarea-field" rows={10} required/> */}
-                                    </div>
-                                    <div className="form-group">                                  
-                                    <textarea placeholder="Enter requirements" name='requirements' value={formlead.requirements} onChange={handleChange} className="textarea-field"  required/>
-                                    </div>
-                                    <div className="form-group">     
-                                     <label htmlFor="">Set Reminder</label>                             
-                                     <input type="datetime-local" name="reminder" id="" className="input-field" value={formlead.reminder} onChange={handleChange}/>
-                                    </div>
-                                    <div className="form-group">
-                                    <button type="submit" className="submit-button">Submit</button>
-                                    </div>
-                                </form>
+                                </div>
                             </div>
-                            <div className="options">
-                                <div className="lead-category closed-leads"  onClick={handleClosedleadlist}>
-                                     <span>Closed Leads</span>
-                                     <span>{closeLeadcount}</span>
-                                </div>
-                                <div className="lead-category inprogrss-lead">
-                                     <span>In Progress</span>
-                                     <span>10</span>
-                                </div>
-                                <div className="lead-category successfull-leads" onClick={handleSuccessfulleadlist}>
-                                      <span>Successful Leads</span>
-                                      <span>{successLeadcount}</span>
-                                </div>
+                        }
+                        {/* New Client List */}
+                        {list&&
+                            <div className="new-lead">
+                                <Newlead handleLeads={handleLeads}/>
                             </div>
-                        </div>
-                    }
-                    {/* New Client List */}
-                    {list&&
-                        <div className="new-lead">
-                            <Newlead handleLeads={handleLeads}/>
-                        </div>
-                    }
-                    {/* Selected Leads */}
-                    {leads&&
-                        <div className="lead">
-                            <Leads leadData={selectedLead} handleClosedLead={handleClosedLeads} handleInvoice={handleInvoice}/>
-                        </div>
-                    }
-                    {/* Close Leads */}
-                    {closedleadform&&
-                        <div className="closedlead">
-                            <ClosedLeads ClosedLeads={closedleaddata}/>
-                        </div>
-                    }
-                    {/* Closed Lead List */}
-                    {closedLeadlist&&
-                        <div className="closed-lead-list">
-                            <ClosedLeadsList closedLeadslist={closedLeadslist} handleLeads={handleLeads} handleClosedLeadsChat={handleClosedLeadsChat} />
-                        </div>
-                    }
-                    {successLeads&&
-                        <div className="SuccessfulLeads">
-                            <SuccessfulLeads successLead={successLead} errormessage={errormessage}/>
-                        </div>
-                    }
-                    {invoice&&
-                        <div className="invoice">
-                            <Invoice inVoiceClientdata={invoiceData}/>
-                        </div>
-                    }
-                    {closedChat&&
-                        <div className="closedchat">
-                            <ClosedLeadChat closedLeadchat={closedleadschat}  handleClosedleadlist={handleClosedleadlist}/>
-                        </div>
-                    }
-                    {generatedInvoice&&
-                        <div className="generatedinvoice">
-                           < GeneratedInvoice/>
-                        </div>
-                    }
+                        }
+                        {/* Selected Leads */}
+                        {leads&&
+                            <div className="lead">
+                                <Leads leadData={selectedLead} handleClosedLead={handleClosedLeads} handleInvoice={handleInvoice}/>
+                            </div>
+                        }
+                        {/* Close Leads */}
+                        {closedleadform&&
+                            <div className="closedlead">
+                                <ClosedLeads ClosedLeads={closedleaddata}/>
+                            </div>
+                        }
+                        {/* Closed Lead List */}
+                        {closedLeadlist&&
+                            <div className="closed-lead-list">
+                                <ClosedLeadsList closedLeadslist={closedLeadslist} handleLeads={handleLeads} handleClosedLeadsChat={handleClosedLeadsChat} />
+                            </div>
+                        }
+                        {successLeads&&
+                            <div className="SuccessfulLeads">
+                                <SuccessfulLeads successLead={successLead} errormessage={errormessage}/>
+                            </div>
+                        }
+                        {invoice&&
+                            <div className="invoice">
+                                <Invoice inVoiceClientdata={invoiceData}/>
+                            </div>
+                        }
+                        {closedChat&&
+                            <div className="closedchat">
+                                <ClosedLeadChat closedLeadchat={closedleadschat}  handleClosedleadlist={handleClosedleadlist}/>
+                            </div>
+                        }
+                        {generatedInvoice&&
+                            <div className="generatedinvoice">
+                            < GeneratedInvoice/>
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    }
+    </>
+
   )
 }
 
