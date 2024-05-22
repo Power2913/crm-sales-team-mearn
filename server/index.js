@@ -58,6 +58,16 @@ app.post('/login',(req,res)=>{
         }
     });
 });
+// Logout
+app.post('/logout',(req,res)=>{
+    req.session.destroy((err)=>{
+       if (err) {
+          res.status(500).send( {message:"Internal server error in looging out."});
+       } else {
+          res.status(200).send( {message:"Logout Successful."});
+       }
+    })
+});
 // Create Leads
 app.post('/createlead', (req, res) => {
     const {sales_person_table, fullname, email, phone, company, requirements, reminder } = req.body;

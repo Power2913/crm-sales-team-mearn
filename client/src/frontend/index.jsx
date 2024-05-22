@@ -10,6 +10,8 @@ import SuccessfulLeads from './SuccessfulLeads';
 import Invoice from './Invoice';
 import ClosedLeadChat from './ClosedLeadChat';
 import GeneratedInvoice from './GeneratedInvoice';
+import  { useNavigate } from 'react-router-dom';
+// import axios from 'axios';
 
 function Index() {
 const[list, setList] = useState(true);
@@ -28,6 +30,8 @@ const [closedChat, setClosedChat ] = useState( false );
 const [closedleadschat,setClosedleadschat] = useState( null );
 const [generatedInvoice, setGeneratedInvoice] = useState( false );
 const [isLogedin,setisLogedin] = useState( false );
+
+const navigate =  useNavigate();
 
 // const handleList = () => {
 //     setList(true);
@@ -151,6 +155,26 @@ useEffect(() => {
             console.log('No user found');
         }
 }, []);
+// Logout
+const handleLogout = async () => {
+    try {
+        const response = await fetch('http://192.168.1.3:3002/logout', {
+            method: 'POST', // Change to POST
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await response.json();
+        if (data.message === 'Logout Successful.') {
+            sessionStorage.removeItem('unique_id');
+            sessionStorage.removeItem('password');
+            navigate('/erp-login');
+        }
+    } catch (error) {
+        console.error('Logout failed:', error);
+    }
+}
+
 console.log('User Details',sperson_unique_id,password);
 //##################### New Lead Api Call Start ###########################
 const[formlead,setFormlead] = useState({
@@ -193,7 +217,7 @@ const[closedLeadslist, setClosedLeadlist] = useState(['']);
 useEffect(() => {
   const newclosedlead = async(e) => {
       try {
-          const response = await fetch('http://192.168.1.4:3002/closedLeadlist');
+          const response = await fetch('http://192.168.1.3:3002/closedLeadlist');
           if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`)
           }
@@ -213,7 +237,7 @@ const[errormessage,seterrormessage] = useState("");
 useEffect(() => {
  const fetchSuccessfulLeads = async () => {
     try {
-       const response = await fetch('http://192.168.1.4:3002/successfullead');
+       const response = await fetch('http://192.168.1.3:3002/successfullead');
        if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
        }
@@ -233,7 +257,7 @@ const [notification,setNotification] = useState(['']);
 useEffect(() => {
     const getNotification = async() => {
         try {
-            const response = await fetch('http://192.168.1.4:3002/notification-list');
+            const response = await fetch('http://192.168.1.3:3002/notification-list');
             if (!response.ok) {
                 throw new Error(`Error! status: ${response.status}`);  
             }
@@ -307,7 +331,7 @@ let successLeadcount =  successLead.length||0;
                             )}
                             </div>
                         <div className="logout">
-                            <button>Logout</button>
+                           <button onClick={handleLogout}>Logout</button>
                         </div>
                     </div>
                 </div>

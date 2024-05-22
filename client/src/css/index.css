@@ -296,10 +296,6 @@ body {
     margin-top: 10px; /* Spacing from elements above */
     border-radius: 5px; /* Rounded corners */
   }
-  .lead{
-    /* width: 97%; */
-    /* margin: auto; */
-  }
   .closedlead{
     width: 30%;
     margin: -10% auto auto;
