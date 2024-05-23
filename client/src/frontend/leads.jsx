@@ -32,6 +32,7 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
       }
       // Clear the textarea after successful submission
       setFormData({ requirements: '' });
+      setFormData({ reminder: '' });
     } catch (error) {
       console.error('Error:', error);
       // Optionally, you can display an error message to the user
@@ -178,16 +179,27 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
             <p>Client Name: {leadData.fullname}</p>
           </div>
           <div className="chat">
-            <div className="admin-chat">
-              <span>Hi, who sent this?</span>
-            </div>
+
               <div className="sales-chat">
                 {leadData.requirements}
                
               </div>
               {messages.map((message, index) => (
-                <div className="sales-chat"  key={index}> {message.message} <span>{new Date(message.sent_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                </div>
+                <>
+                {message.adminmessage&&               
+                  <div className="admin-chat">
+                    {message.adminmessage} <br />
+                    <span>{new Date(message.sent_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                  </div>
+                }
+                {message.message&&
+                  <div className="sales-chat" key={index}> 
+                      {message.message} <br />
+                      <span>{new Date(message.sent_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                  </div>
+                }
+
+                </>
               ))}
           </div>
           

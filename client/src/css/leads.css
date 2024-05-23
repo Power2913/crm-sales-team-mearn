@@ -29,7 +29,10 @@
   margin-top: 5px;
   margin-left: 5px;
 }
-
+.admin-chat span {
+  font-size: 0.8rem;
+  color: #888;
+}
 /* Style for sales messages */
 .sales-chat {
   background-color: #d9f7e6;

@@ -198,11 +198,11 @@ app.post('/newmessages', (req, res) => {
     const { uniqueid, message, reminder } = req.body;
     
     // Validate input data
-    if (!uniqueid || !message) {
+    if (!uniqueid || !message || !reminder) {
         return res.status(400).send({ message: "Missing required fields." });
     }
     
-    console.log("Reminder", reminder);
+    // console.log("Reminder", reminder);
     
     // Use parameterized query to avoid SQL injection
     const sqlInsert = `INSERT INTO \`${uniqueid}\` (clientid, message, reminder) VALUES (?, ?, ?)`;
