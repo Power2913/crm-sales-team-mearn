@@ -82,6 +82,7 @@ app.post('/createlead', (req, res) => {
             uid SERIAL PRIMARY KEY,
             clientid VARCHAR(30) NOT NULL,
             message LONGTEXT NOT NULL,
+            adminmessage LONGTEXT  NULL,
             reminder VARCHAR(100) NOT NULL,
             sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )`;
