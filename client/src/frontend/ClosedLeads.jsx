@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import '../css/closedlead.css'
 function ClosedLeads({ClosedLeads}) {
+  const sales_person_id = sessionStorage.getItem('unique_id');
+  console.log('sales_person_id:', sales_person_id);
   const [message, setMessage] = useState('');
   
   console.log('Closed Lead:',ClosedLeads)
@@ -22,6 +24,7 @@ function ClosedLeads({ClosedLeads}) {
                 },
                 body:JSON.stringify({
                     created_at: ClosedLeads.created_at,
+                    sales_person_id: sales_person_id,
                     clientid:  ClosedLeads.unique_id,
                     name: ClosedLeads.fullname,
                     email: ClosedLeads.email,

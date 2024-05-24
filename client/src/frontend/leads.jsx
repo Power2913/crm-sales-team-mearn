@@ -5,7 +5,8 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
   //  console.log('Lead data',leadData);
   const [successleadmessage,setsuccessleadMessage]=useState([]);
   const [closingsuccess, setclosingsuccess]=useState(false);
-  // console.log('Lead Data:', leadData)
+
+
   const [formData, setFormData] = useState({
     requirements: '',
     reminder:'',
@@ -22,6 +23,7 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+         
           uniqueid: leadData.unique_id,
           message: formData.requirements,
           reminder: formData.reminder,

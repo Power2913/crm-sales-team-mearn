@@ -104,7 +104,8 @@ const handleRestore = async (closedLeadchat,e)  => {
                         
                         </div>
                         {messages.map((message, index) => (
-                            <div className="sales-chat"  key={index}> {message.message} <span>{new Date(message.sent_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                            <div className="sales-chat"  key={index}> {message.message}
+                             <span>{new Date(message.sent_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                             </div>
                         ))}
                     </div>    

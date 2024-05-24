@@ -10,6 +10,8 @@ import {FaArrowLeft} from  'react-icons/fa'
 
 function Invoice({inVoiceClientdata}) {
     console.log('Invoice Data',inVoiceClientdata);
+    const sales_person_id = sessionStorage.getItem('unique_id');
+    console.log('sales_person_id:', sales_person_id);
     const handlePrint =()=>{
         const invoicecontainer = document.getElementsByClassName('invoice-format');
         if (invoicecontainer) {
@@ -98,6 +100,7 @@ function Invoice({inVoiceClientdata}) {
               method:'POST',
               headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({
+                sales_person_id:sales_person_id,
                 unique_id: inVoiceClientdata.unique_id,
                 company :  inVoiceClientdata.company,
                 invoice_date: invoicefields.invoice_date,

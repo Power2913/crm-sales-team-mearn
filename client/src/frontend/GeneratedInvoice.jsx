@@ -1,23 +1,6 @@
 import React, { useState,useEffect } from 'react'
 import '../css/generatedInvoice.css'
 const GeneratedInvoice = () => {
-    // const Generateddata =[
-    //     {
-    //         Unique_id: '001',
-    //         invoice_number: 'INV-1001',
-    //         Invoice_date: '2024-01-01'
-    //     },
-    //     {
-    //         Unique_id: '002',
-    //         invoice_number: 'INV-1002',
-    //         Invoice_date: '2024-01-01'
-    //     },
-    //     {
-    //         Unique_id: '003',
-    //         invoice_number: 'INV-1003',
-    //         Invoice_date: '2024-01-01'
-    //     }
-    // ];
 
     const  [invoicedata, setinvoiceData] = useState([]);
     useEffect(() => {

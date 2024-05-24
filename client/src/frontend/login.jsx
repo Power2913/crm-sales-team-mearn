@@ -52,8 +52,11 @@ const handleLogin = async (e) => {
                     </div>
                 </div>
                 <div className="login-form-right">
+                   
                     <form action="" className="av-valid" onSubmit={handleLogin}>
+                  
                         <div className="login-form-body">
+                        <h3>Tradeimex ERP Sales Person Login</h3>
                             <div className="form-group">
                                 <label htmlFor="username">Username</label>
                                 <input type="text" name='username' value={login.username} onChange={handleChange} className="form-control input" id="username" placeholder="Username" />

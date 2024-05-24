@@ -235,12 +235,12 @@ app.get('/clientmessage/:uniqueid',(req,res)=>{
 })
 // Lead Closing Form
 app.post('/closedlead', (req, res) => {
-    const { created_at,clientid, name, email, phone, finalrequirement, closingreason } = req.body;
-    const sqlInsert = "INSERT INTO closed_leads (unique_id,fullname,email,number,requirements,reason,created_at) VALUES (?,?,?,?,?,?,?)";
-    const sqlDelete = `DELETE FROM \`${sperson_unique_id}\` WHERE email = ?`;
+    const { created_at,sales_person_id,clientid, name, email, phone, finalrequirement, closingreason } = req.body;
+    const sqlInsert = "INSERT INTO closed_leads (sales_person_id,unique_id,fullname,email,number,requirements,reason,created_at) VALUES (?,?,?,?,?,?,?,?)";
+    const sqlDelete = `DELETE FROM \`${sales_person_id}\` WHERE email = ?`;
     // const sqlDeletelastseen = `DELETE FROM last_message WHERE uid = ?`;
 
-    con.query(sqlInsert, [clientid,name, email, phone, finalrequirement, closingreason, created_at], (insertErr, insertResult) => {
+    con.query(sqlInsert, [sales_person_id,clientid,name, email, phone, finalrequirement, closingreason, created_at], (insertErr, insertResult) => {
         if (insertErr) {
             console.error(insertErr);
             res.status(500).send({ message: "Internal server error in inserting data" });
@@ -422,11 +422,10 @@ app.get('/restore-closed-leads/:clientid',(req,res)=>{
 
 // Get Generated invoice Information
 app.post('/invoice-info', (req, res) => {
-    const {unique_id,company,invoice_date,invoice_no}  = req.body;
+    const {sales_person_id,unique_id,company,invoice_date,invoice_no}  = req.body;
 
-    sqlInvoice = `INSERT  INTO invoice (unique_id,invoice_number,company,invoice_date) VALUES ('${unique_id}','${invoice_no}','${company}','${invoice_date}')`;
+    sqlInvoice = `INSERT  INTO invoice (unique_id,sales_person_id,invoice_number,company,invoice_date) VALUES ('${unique_id}','${sales_person_id}','${invoice_no}','${company}','${invoice_date}')`;
 
-    
     con.query( sqlInvoice,(error,rows)=>{
         if (error) {
               res.status(500).send({ message: 'Internal server error in getting data from closed lead' });
