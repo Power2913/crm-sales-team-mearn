@@ -158,7 +158,7 @@ useEffect(() => {
 // Logout
 const handleLogout = async () => {
     try {
-        const response = await fetch('http://192.168.1.3:3002/logout', {
+        const response = await fetch('http://192.168.1.10:3002/logout', {
             method: 'POST', // Change to POST
             headers: {
                 'Content-Type': 'application/json'
@@ -195,7 +195,7 @@ const handleChange =(e)=>{
 const createLead = async(e) => {
     e.preventDefault();
     try {
-        const response = await fetch('http://192.168.1.3:3002/createlead',{
+        const response = await fetch('http://192.168.1.10:3002/createlead',{
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -217,7 +217,7 @@ const[closedLeadslist, setClosedLeadlist] = useState(['']);
 useEffect(() => {
   const newclosedlead = async(e) => {
       try {
-          const response = await fetch('http://192.168.1.3:3002/closedLeadlist');
+          const response = await fetch('http://192.168.1.10:3002/closedLeadlist');
           if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`)
           }
@@ -237,7 +237,7 @@ const[errormessage,seterrormessage] = useState("");
 useEffect(() => {
  const fetchSuccessfulLeads = async () => {
     try {
-       const response = await fetch('http://192.168.1.3:3002/successfullead');
+       const response = await fetch('http://192.168.1.10:3002/successfullead');
        if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
        }
@@ -257,7 +257,7 @@ const [notification,setNotification] = useState(['']);
 useEffect(() => {
     const getNotification = async() => {
         try {
-            const response = await fetch('http://192.168.1.3:3002/notification-list');
+            const response = await fetch('http://192.168.1.10:3002/notification-list');
             if (!response.ok) {
                 throw new Error(`Error! status: ${response.status}`);  
             }

@@ -75,8 +75,8 @@ app.post('/createlead', (req, res) => {
     const client_table = uniqueid;
     console.log('sperson_unique_id',sales_person_table)
     // Parameterized queries
-    const leadcheck = `SELECT * FROM \`${sales_person_table}\` WHERE email = ? OR number = ?`;
-    const sqlInsert = `INSERT INTO \`${sales_person_table}\` (unique_id, fullname, email, number, company, requirements, reminder) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+    const leadcheck = `SELECT * FROM new_table WHERE email = ? OR number = ?`;
+    const sqlInsert = `INSERT INTO new_lead (sales_person_id, unique_id, fullname, email, number, company, requirements, reminder) VALUES (?,?, ?, ?, ?, ?, ?, ?)`;
     const createTableQuery = `
         CREATE TABLE IF NOT EXISTS \`${client_table}\` (
             uid SERIAL PRIMARY KEY,
@@ -115,7 +115,7 @@ app.post('/createlead', (req, res) => {
             }
 
             // Insert new lead
-            con.query(sqlInsert, [uniqueid, fullname, email, phone, company, requirements, reminder], (leadInsertErr, leadInsertResult) => {
+            con.query(sqlInsert, [sales_person_table,uniqueid, fullname, email, phone, company, requirements, reminder], (leadInsertErr, leadInsertResult) => {
                 if (leadInsertErr) {
                     console.error("Error inserting new lead:", leadInsertErr);
                     con.rollback(() => {
@@ -182,8 +182,10 @@ app.get('/newclient/:sperson_unique_id', (req, res) => {
     const pageSize = 10; // Number of records per page
     const offset = (pageNumber - 1) * pageSize;
 
-    const sqlGet = `  SELECT * FROM \`${sperson_unique_id}\` ORDER BY id DESC LIMIT ${pageSize} OFFSET ${offset}`;
-  
+    // const sqlGet = `  SELECT * FROM new_lead ORDER BY id DESC LIMIT ${pageSize} OFFSET ${offset} WHERE sales_person_id =  ${sperson_unique_id}`;
+
+    const sqlGet = `SELECT * FROM new_lead WHERE sales_person_id = '${sperson_unique_id}' ORDER BY id DESC LIMIT ${pageSize} OFFSET ${offset}`;
+
     con.query(sqlGet, (err, result) => {
         if (err) {
             console.error(err);
@@ -237,7 +239,7 @@ app.get('/clientmessage/:uniqueid',(req,res)=>{
 app.post('/closedlead', (req, res) => {
     const { created_at,sales_person_id,clientid, name, email, phone, finalrequirement, closingreason } = req.body;
     const sqlInsert = "INSERT INTO closed_leads (sales_person_id,unique_id,fullname,email,number,requirements,reason,created_at) VALUES (?,?,?,?,?,?,?,?)";
-    const sqlDelete = `DELETE FROM \`${sales_person_id}\` WHERE email = ?`;
+    const sqlDelete = `DELETE FROM new_lead WHERE email = ?`;
     // const sqlDeletelastseen = `DELETE FROM last_message WHERE uid = ?`;
 
     con.query(sqlInsert, [sales_person_id,clientid,name, email, phone, finalrequirement, closingreason, created_at], (insertErr, insertResult) => {
@@ -425,12 +427,19 @@ app.post('/invoice-info', (req, res) => {
     const {sales_person_id,unique_id,company,invoice_date,invoice_no}  = req.body;
 
     sqlInvoice = `INSERT  INTO invoice (unique_id,sales_person_id,invoice_number,company,invoice_date) VALUES ('${unique_id}','${sales_person_id}','${invoice_no}','${company}','${invoice_date}')`;
+    sqlSetInvoiceData = `UPDATE  new_lead SET invoice_number = ?,invoice_date = ? WHERE unique_id = ?`;
 
     con.query( sqlInvoice,(error,rows)=>{
         if (error) {
               res.status(500).send({ message: 'Internal server error in getting data from closed lead' });
-            } else {                
-              res.send({message:'Invoice information saved successfully'});
+            } else { 
+              con.query(sqlSetInvoiceData,[invoice_no,invoice_date,unique_id],(err,result)=>{
+                if (err) {
+                    res.status(500).send({ message: 'Internal server error in getting data from closed lead' });
+                    } else {
+                        res.send({message:'Invoice information saved successfully'});
+                    }
+              })                            
             }
     });
 });
@@ -479,7 +488,7 @@ app.post('/mail', upload.single('invoice'), async (req, res) => {
     }
 });
   
-app.listen(3002,'192.168.1.3',()=>{
+app.listen(3002,'192.168.1.10',()=>{
      console.log('Server is successfully runnig on 3002 port')
 });
 

@@ -6,7 +6,7 @@ const GeneratedInvoice = () => {
     useEffect(() => {
         const getinvoicedata = async()=>{
             try {
-                const response = await fetch('http://192.168.1.3:3002/invoice-details');
+                const response = await fetch('http://192.168.1.10:3002/invoice-details');
                 const data = await response.json();
                 setinvoiceData(data);
             } catch (error) {
