@@ -4,7 +4,7 @@ import { FaStepBackward, FaArrowLeft } from 'react-icons/fa'
 const ClosedLeadsList = ({handleClosedLeadsChat,closedLeadslist}) => {
 const handleClick =  (leads,e) =>{
     console.log('Leads',leads);
-
+    
     handleClosedLeadsChat(leads);
 }
 
