@@ -1,6 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import '../css/leads.css';
 import { FaFile } from 'react-icons/fa';
+import {FaArrowLeft} from  'react-icons/fa'
 function Leads({ leadData,handleClosedLead,handleInvoice }) {
   //  console.log('Lead data',leadData);
   const [successleadmessage,setsuccessleadMessage]=useState([]);
@@ -147,33 +148,33 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
   };
  
   return (
-    <div className="conversation-page">
-            <div className="lead-actions">
-              {closingsuccess&& <p className='message'>{successleadmessage.Message}</p>}
-              {emailsentmessage&& <p className='message'>{emailsentmessage.emailsentmessage}</p>}
-              <div className="action">
-                <button type="button" className="action-button close" onClick={()=> handleClosedLead(leadData)}>Close</button>
-                <form   onSubmit={handleleadsuccess}>
-                  <button type="submit" className="action-button successful"  >Successful</button>
-                </form>
-                <div className="generate-invoice">
-                    <button type="button" onClick={()=>handleInvoice(leadData)}>Generate Invoice</button>
-                  </div>
-                <div className="invoice">
+    <><a href="/sales-dashboard"><button type='button'><FaArrowLeft /></button></a><div className="conversation-page">
 
-                  <form className="styled-form" onSubmit={invoiceUpload}>
-                    <label htmlFor="file-input">
-                      <FaFile />
-                      Choose File
-                    </label>
-                    <input type="file" id="file-input" name="invoice" onChange={handleFileChange} />
-                    
-                    <button type="submit">Send Invoice</button>
-                  </form>
-                </div>      
-              </div>
+      <div className="lead-actions">
+        {closingsuccess && <p className='message'>{successleadmessage.Message}</p>}
+        {emailsentmessage && <p className='message'>{emailsentmessage.emailsentmessage}</p>}
+        <div className="action">
+          <button type="button" className="action-button close" onClick={() => handleClosedLead(leadData)}>Close</button>
+          {/* <form   onSubmit={handleleadsuccess}>
+      <button type="submit" className="action-button successful"  >Successful</button>
+    </form> */}
+          <div className="generate-invoice">
+            <button type="button" onClick={() => handleInvoice(leadData)}>Generate Invoice</button>
           </div>
-          
+          <div className="invoice">
+            <form className="styled-form" onSubmit={invoiceUpload}>
+              <label htmlFor="file-input">
+                <FaFile />
+                Choose File
+              </label>
+              <input type="file" id="file-input" name="invoice" onChange={handleFileChange} />
+
+              <button type="submit">Send Invoice</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
       <div className="conversation">
         <div className="old-message">
           {/* Display the previous message or conversation */}
@@ -182,37 +183,35 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
           </div>
           <div className="chat">
 
-              <div className="sales-chat">
-                {leadData.requirements}
-               
-              </div>
-              {messages.map((message, index) => (
-                <>
-                {message.adminmessage&&               
+            <div className="sales-chat">
+              {leadData.requirements}
+
+            </div>
+            {messages.map((message, index) => (
+              <>
+                {message.adminmessage &&
                   <div className="admin-chat">
                     {message.adminmessage} <br />
                     <span>{new Date(message.sent_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                  </div>
-                }
-                {message.message&&
-                  <div className="sales-chat" key={index}> 
-                      {message.message} <br />
-                      <span>{new Date(message.sent_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                  </div>
-                }
+                  </div>}
+                {message.message &&
+                  <div className="sales-chat" key={index}>
+                    {message.message} <br />
+                    <span>{new Date(message.sent_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                  </div>}
 
-                </>
-              ))}
+              </>
+            ))}
           </div>
-          
+
         </div>
         <div className="new-conversation">
           {/* Form for new conversation */}
           <form onSubmit={(e) => {
-                e.preventDefault(); // Prevent default form submission behavior
-                handleSubmit(e); // Call the handleSubmit function
-                handlelastmessage(); // Call the handlelastmessage function
-            }}>
+            e.preventDefault(); // Prevent default form submission behavior
+            handleSubmit(e); // Call the handleSubmit function
+            handlelastmessage(); // Call the handlelastmessage function
+          } }>
             <div className="form-groups">
               <textarea
                 id="requirements"
@@ -222,16 +221,16 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
                 placeholder="Enter requirements..."
                 required
               ></textarea>
-               <input type="datetime-local"  name="reminder" id="" value={formData.reminder} onChange={handleChange}/>
+              <input type="datetime-local" name="reminder" id="" value={formData.reminder} onChange={handleChange} />
             </div>
-            <button type="submit" onClick={()=>handlelastmessage()}>Send</button>
+            <button type="submit" onClick={() => handlelastmessage()}>Send</button>
           </form>
         </div>
       </div>
 
 
-    
-    </div>
+
+    </div></>
   );
 }
 

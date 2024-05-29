@@ -462,7 +462,7 @@ let successLeadcount =  successLead.length||0;
                         }
                         {invoice&&
                             <div className="invoice">
-                                <Invoice inVoiceClientdata={invoiceData}/>
+                                <Invoice leadData={selectedLead} inVoiceClientdata={invoiceData} handleLeads={handleLeads}/>
                             </div>
                         }
                         {closedChat&&

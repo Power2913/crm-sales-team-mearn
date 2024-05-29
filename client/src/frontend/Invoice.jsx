@@ -8,7 +8,7 @@ import {FaArrowLeft} from  'react-icons/fa'
 
 
 
-function Invoice({inVoiceClientdata}) {
+function Invoice({leadData,inVoiceClientdata,handleLeads}) {
     console.log('Invoice Data',inVoiceClientdata);
     const sales_person_id = sessionStorage.getItem('unique_id');
     console.log('sales_person_id:', sales_person_id);
@@ -121,8 +121,8 @@ function Invoice({inVoiceClientdata}) {
     // Total mount after tax 
   return (
      <>
-       <button type='button'><FaArrowLeft/></button>
-     <div className="invoice-main ">
+        <div className="chat-back" onClick={()=>handleLeads(leadData)}><button><FaArrowLeft/></button></div>
+     <div className="invoice-main ">.
        
           <div className="invoice-form">
         

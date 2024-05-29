@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import '../css/closedleadlist.css'
+import {FaArrowLeft} from  'react-icons/fa'
 const SuccessfulLeads = ({successLead,errormessage}) => {
 
 
   return (
     <div className="closed-list-container">
+        <a href="/sales-dashboard"><button type='button'><FaArrowLeft/></button></a>
         <h3>Successful Leads</h3>
         <div className="closed-list-header">
             <div>Invoice No.</div>
