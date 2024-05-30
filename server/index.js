@@ -426,7 +426,8 @@ app.get('/restore-closed-leads/:clientid',(req,res)=>{
 app.post('/invoice-info', (req, res) => {
     const {sales_person_id,unique_id,company,invoice_date,invoice_no}  = req.body;
 
-    sqlInvoice = `INSERT  INTO invoice (unique_id,sales_person_id,invoice_number,company,invoice_date) VALUES ('${unique_id}','${sales_person_id}','${invoice_no}','${company}','${invoice_date}')`;
+    sqlInvoice = `INSERT  INTO invoice (unique_id,sales_person_id,invoice_number,company,invoice_date,seen,reminded) VALUES ('${unique_id}','${sales_person_id}','${invoice_no}','${company}','${invoice_date}',1,1)`;
+
     sqlSetInvoiceData = `UPDATE  new_lead SET invoice_number = ?,invoice_date = ? WHERE unique_id = ?`;
 
     con.query( sqlInvoice,(error,rows)=>{
