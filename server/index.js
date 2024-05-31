@@ -75,7 +75,7 @@ app.post('/createlead', (req, res) => {
     const client_table = uniqueid;
     console.log('sperson_unique_id',sales_person_table)
     // Parameterized queries
-    const leadcheck = `SELECT * FROM new_table WHERE email = ? OR number = ?`;
+    const leadcheck = `SELECT * FROM new_lead WHERE email = ? OR number = ?`;
     const sqlInsert = `INSERT INTO new_lead (sales_person_id, unique_id, fullname, email, number, company, requirements, reminder) VALUES (?,?, ?, ?, ?, ?, ?, ?)`;
     const createTableQuery = `
         CREATE TABLE IF NOT EXISTS \`${client_table}\` (
@@ -426,7 +426,7 @@ app.get('/restore-closed-leads/:clientid',(req,res)=>{
 app.post('/invoice-info', (req, res) => {
     const {sales_person_id,unique_id,company,invoice_date,invoice_no}  = req.body;
 
-    sqlInvoice = `INSERT  INTO invoice (unique_id,sales_person_id,invoice_number,company,invoice_date,seen,reminded) VALUES ('${unique_id}','${sales_person_id}','${invoice_no}','${company}','${invoice_date}',1,1)`;
+    sqlInvoice = `INSERT  INTO invoice (unique_id,sales_person_id,invoice_number,company,invoice_date,seen,reminded) VALUES ('${unique_id}','${sales_person_id}','${invoice_no}','${company}','${invoice_date}',0,0)`;
 
     sqlSetInvoiceData = `UPDATE  new_lead SET invoice_number = ?,invoice_date = ? WHERE unique_id = ?`;
 
@@ -444,9 +444,10 @@ app.post('/invoice-info', (req, res) => {
             }
     });
 });
-app.get('/invoice-details',(req,res) =>{
-   sqlGetInvoice = 'SELECT * FROM invoice';
-   con.query( sqlGetInvoice,(error,rows)=>{
+app.get('/invoice-details/:sales_person_id',(req,res) =>{
+    const {sales_person_id} = req.params;
+   sqlGetInvoice = 'SELECT * FROM invoice WHERE sales_person_id = ?';
+   con.query( sqlGetInvoice,[sales_person_id],(error,rows)=>{
     if (error) {
         res.status(500).send({ message: 'Internal server error in getting data from Invoice' });
         } else {

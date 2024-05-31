@@ -14,8 +14,8 @@ import  { useNavigate } from 'react-router-dom';
 // import axios from 'axios';
 
 function Index() {
-const[list, setList] = useState(true);
-const[newlead,setNewlead] = useState(true);
+const [list, setList] = useState(true);
+const [newlead,setNewlead] = useState(true);
 const [message, setMessage] = useState("");
 const [leads,setLeads] = useState(false);
 const [selectedLead, setSelectedLead] = useState(null);
@@ -147,6 +147,9 @@ const handleGeneratedInvoice = () =>{
 // Login
 const sperson_unique_id = sessionStorage.getItem( 'unique_id');
 const password = sessionStorage.getItem( 'password');
+const first_name = sessionStorage.getItem('first_name');
+const last_name = sessionStorage.getItem('last_name');
+const sales_person_name = first_name+" "+last_name;
 useEffect(() => {
     // console.log('User Details',sperson_unique_id,password);
     if (sperson_unique_id&&password) {
@@ -304,7 +307,7 @@ let successLeadcount =  successLead.length||0;
                             <h2>tradeimex</h2>
                         </div>
                         <div className="welcome">
-                            <h2>Welcome Nitesh</h2>
+                            <h2>Welcome {sales_person_name}</h2>
                         </div>
                         <div onClick={handleNotification} style={{ position: 'relative',cursor:'pointer' }}>
                             <FaBell />

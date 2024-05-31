@@ -91,12 +91,22 @@ select {
     width: 180px;
 }
 .tradeimex-info{
-    color: skyblue;
+    color: #00b0f0;
     width: 95%;
     margin: auto;
     text-align: center;
     line-height: 1.5;
     margin-bottom: 15px;  
+}
+.span-one{
+    font-size: large;
+    font-weight: 700;
+}
+.span-two{
+    font-weight: 600;
+}
+.span-three{
+    font-weight: 600;
 }
 .fromat-header-name {
     width: 100%;
@@ -119,7 +129,7 @@ select {
   }
   
   .name h2 {
-    color: skyblue;
+    color: #00b0f0;
   }
   
   .format-header-line-right {
@@ -139,6 +149,7 @@ select {
     display: flex;
     flex-direction: column;
     line-height: 1;
+    font-size: 15px;
 }
 .format-details-left p{
     font-weight: 600;
@@ -150,6 +161,7 @@ select {
     float: right;
     text-align: center;
     line-height: 1;
+    font-size: 15px;
 }
 .format-details-right p{
     font-weight: 600;

@@ -193,13 +193,13 @@ function Invoice({leadData,inVoiceClientdata,handleLeads}) {
                               <img src={Tradeimexlogo} alt="" srcset="" />
                           </div>
                           <div className="tradeimex-info">
-                              <span>
+                              <span className='span-one'>
                                   Tradeimex Info Solution Private Limited
                               </span><br />
-                              <span>
+                              <span className='span-two'>
                                   CIN Number : U72900DL2019PTC352374
                               </span><br />
-                              <span>
+                              <span className='span-three'>
                                   GST Number : 07AAHCT4138N1ZWIN
                               </span><br />
                           </div>
@@ -213,15 +213,15 @@ function Invoice({leadData,inVoiceClientdata,handleLeads}) {
                   <div className="format-details">
                       <div className="format-details-left">
                           <p>Invoice To :</p><br />
-                          <span>Name:{inVoiceClientdata.fullname}</span><br />
-                          <span>Address:{invoicefields.addressone}</span><br />
-                          <span>Email:{inVoiceClientdata.email}</span><br />
-                          <span>Phone:{inVoiceClientdata.number}</span><br />
-                          <span>GST:{invoicefields.gst_vat}</span><br />
+                          <span>{inVoiceClientdata.fullname}</span><br />
+                          <span>{invoicefields.addressone}</span><br />
+                          <span>{inVoiceClientdata.email}</span><br />
+                          <span>{inVoiceClientdata.number}</span><br />
+                          <span>{invoicefields.gst_vat}</span><br />
                       </div>
                       <div className="format-details-right">
                           <p>Invoice No # <span>TI/24-25/{invoicefields.invoice_serial}</span></p>
-                          <span>Date : {invoicefields.invoice_date}</span>
+                          <span>Date : {invoicefields.invoice_date}</span><br />
                           <span>TradeImeX Info Solution Private Limited</span><br />
                           <span>367-368, 3rd Floor, Pocket 11 B,</span><br />
                           <span>Rohini Sector 23, New Delhi -110085</span><br />
@@ -269,7 +269,6 @@ function Invoice({leadData,inVoiceClientdata,handleLeads}) {
                       <div className="invoice-billing-left">
                           <p className='invoice-account-details-header'>Account Details</p>
                           <div className="invoice-billing-left-sub">
-
                               <p><span>ACCOUNT NUMBER: </span><span></span><span>036705004479</span></p>
                               <p><span>ACCOUNT NAME:   </span><span></span><span>TRADEIMEX INFO SOLUTION PRIVATE LIMITED</span></p>
                               <p><span>BANK NAME:      </span><span></span><span>ICICI BANK</span></p>
@@ -352,7 +351,7 @@ function Invoice({leadData,inVoiceClientdata,handleLeads}) {
                           </p>
                           <p>
                               (6) Payment should be 100% advance by TTR
-                              **I have read the above terms & conditions, and agree to the sam
+                              **I have read the above terms & conditions, and agree to the same
                           </p>
                       </div>
                       <div className="sign">

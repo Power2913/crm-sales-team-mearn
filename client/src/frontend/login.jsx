@@ -32,6 +32,8 @@ const handleLogin = async (e) => {
 
         sessionStorage.setItem('unique_id',user.unique_id);
         sessionStorage.setItem('password',user.password);
+        sessionStorage.setItem('first_name',user.first_name);
+        sessionStorage.setItem('last_name',user.last_name);
         // if(res.ok){
            
         // }
