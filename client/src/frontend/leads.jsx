@@ -2,8 +2,9 @@ import React, { useState,useEffect } from 'react';
 import '../css/leads.css';
 import { FaFile } from 'react-icons/fa';
 import {FaArrowLeft} from  'react-icons/fa'
+import "bootstrap/dist/css/bootstrap.min.css";
 function Leads({ leadData,handleClosedLead,handleInvoice }) {
-  //  console.log('Lead data',leadData);
+   console.log('Lead data',leadData);
   const [successleadmessage,setsuccessleadMessage]=useState([]);
   const [closingsuccess, setclosingsuccess]=useState(false);
 
@@ -155,9 +156,9 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
         {emailsentmessage && <p className='message'>{emailsentmessage.emailsentmessage}</p>}
         <div className="action">
           <button type="button" className="action-button close" onClick={() => handleClosedLead(leadData)}>Close</button>
-          {/* <form   onSubmit={handleleadsuccess}>
-      <button type="submit" className="action-button successful"  >Successful</button>
-    </form> */}
+                {/* <form   onSubmit={handleleadsuccess}>
+            <button type="submit" className="action-button successful"  >Successful</button>
+          </form> */}
           <div className="generate-invoice">
             <button type="button" onClick={() => handleInvoice(leadData)}>Generate Invoice</button>
           </div>
@@ -175,61 +176,71 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
         </div>
       </div>
 
-      <div className="conversation">
-        <div className="old-message">
-          {/* Display the previous message or conversation */}
-          <div className="chat-header">
-            <p>Client Name: {leadData.fullname}</p>
-          </div>
-          <div className="chat">
-
-            <div className="sales-chat">
-              {leadData.requirements}
-
+      <div className="client-conversation-info d-flex col-md-8 gap-2">
+        <div className="client-info col-md-5">
+          <div className="card">
+            <div className="card-body">
+              <h5 className="card-title">{leadData.fullname}</h5>
+              <p className="card-text">Primary Requirements:{leadData.requirements}</p>
+              <p className="card-text">Email:{leadData.email}</p>
+              <p className='card-text'>Phone:{leadData.number}</p>
+              <p className='card-text'>Commpany:{leadData.company}</p>
             </div>
-            {messages.map((message, index) => (
-              <>
-                {message.adminmessage &&
-                  <div className="admin-chat">
-                    {message.adminmessage} <br />
-                    <span>{new Date(message.sent_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                  </div>}
-                {message.message &&
-                  <div className="sales-chat" key={index}>
-                    {message.message} <br />
-                    <span>{new Date(message.sent_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                  </div>}
-
-              </>
-            ))}
           </div>
-
         </div>
-        <div className="new-conversation">
-          {/* Form for new conversation */}
-          <form onSubmit={(e) => {
-            e.preventDefault(); // Prevent default form submission behavior
-            handleSubmit(e); // Call the handleSubmit function
-            handlelastmessage(); // Call the handlelastmessage function
-          } }>
-            <div className="form-groups">
-              <textarea
-                id="requirements"
-                name="requirements"
-                value={formData.requirements}
-                onChange={handleChange}
-                placeholder="Enter requirements..."
-                required
-              ></textarea>
-              <input type="datetime-local" name="reminder" id="" value={formData.reminder} onChange={handleChange} />
+        <div className="conversation col-md-6">
+          <div className="old-message">
+            {/* Display the previous message or conversation */}
+            <div className="chat-header">
+              <p>Client Name: {leadData.fullname}</p>
             </div>
-            <button type="submit" onClick={() => handlelastmessage()}>Send</button>
-          </form>
+            <div className="chat">
+
+              <div className="sales-chat">
+                {leadData.requirements}
+
+              </div>
+              {messages.map((message, index) => (
+                <>
+                  {message.adminmessage &&
+                    <div className="admin-chat">
+                      {message.adminmessage} <br />
+                      <span>{new Date(message.sent_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                    </div>}
+                  {message.message &&
+                    <div className="sales-chat" key={index}>
+                      {message.message} <br />
+                      <span>{new Date(message.sent_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                    </div>}
+
+                </>
+              ))}
+            </div>
+
+          </div>
+          <div className="new-conversation">
+            {/* Form for new conversation */}
+            <form onSubmit={(e) => {
+              e.preventDefault(); // Prevent default form submission behavior
+              handleSubmit(e); // Call the handleSubmit function
+              handlelastmessage(); // Call the handlelastmessage function
+            } }>
+              <div className="form-groups">
+                <textarea
+                  id="requirements"
+                  name="requirements"
+                  value={formData.requirements}
+                  onChange={handleChange}
+                  placeholder="Enter requirements..."
+                  required
+                ></textarea>
+                <input type="datetime-local" name="reminder" id="" value={formData.reminder} onChange={handleChange} />
+              </div>
+              <button type="submit" onClick={() => handlelastmessage()}>Send</button>
+            </form>
+          </div>
         </div>
       </div>
-
-
-
     </div></>
   );
 }

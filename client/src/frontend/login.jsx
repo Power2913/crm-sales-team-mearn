@@ -34,6 +34,7 @@ const handleLogin = async (e) => {
         sessionStorage.setItem('password',user.password);
         sessionStorage.setItem('first_name',user.first_name);
         sessionStorage.setItem('last_name',user.last_name);
+        sessionStorage.setItem('email',user.email);
         // if(res.ok){
            
         // }

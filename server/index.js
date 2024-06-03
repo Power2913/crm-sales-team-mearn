@@ -86,8 +86,8 @@ app.post('/createlead', (req, res) => {
             reminder VARCHAR(100) NOT NULL,
             sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )`;
-    const lastMessageInsert = "INSERT INTO last_message (uid, clientName) VALUES (?, ?)";
-    const updateReminderQuery = "UPDATE last_message SET clientMessage = ?,reminder = ? WHERE uid = ?";
+    const lastMessageInsert = "INSERT INTO last_message (sales_person_id,unique_id, fullname, email, number,company, requirements) VALUES (?, ?,?,?,?,?,?)";
+    const updateReminderQuery = "UPDATE last_message SET message = ?,reminder = ? WHERE unique_id = ?";
     
     // Use transactions for atomicity
     con.beginTransaction(err => {
@@ -135,7 +135,7 @@ app.post('/createlead', (req, res) => {
                     }
 
                     // Insert into last_message table
-                    con.query(lastMessageInsert, [uniqueid, fullname], (lastMessageInsertErr, lastMessageInsertResult) => {
+                    con.query(lastMessageInsert, [sales_person_table,uniqueid, fullname,email, phone,company,requirements], (lastMessageInsertErr, lastMessageInsertResult) => {
                         if (lastMessageInsertErr) {
                             console.error("Error inserting into last_message table:", lastMessageInsertErr);
                             con.rollback(() => {
@@ -260,9 +260,10 @@ app.post('/closedlead', (req, res) => {
 });
 
 // Closed Client List
-app.get('/closedLeadlist', (req, res) => {
-    const sqlClosedLead = "SELECT * FROM closed_leads";
-    con.query(sqlClosedLead, (err, result) => {
+app.get('/closedLeadlist/:sperson_unique_id', (req, res) => {
+    const { sperson_unique_id } = req.params;
+    const sqlClosedLead = "SELECT * FROM closed_leads WHERE sales_person_id = ?";
+    con.query(sqlClosedLead,[sperson_unique_id], (err, result) => {
         if (err) {
             res.send({ Message: "Error in SQL Query in /closedLeadlist API" });
         } else {
@@ -283,31 +284,32 @@ app.get('/closedLeadMessage/:uniqueid',(req,res)=>{
         }
     })
 });
-// Set Lead Status to set
-app.post('/successlead',(req,res)=>{
-    const {uniqueid,name,email,phone} = req.body;
+// // Set Lead Status to set
+// app.post('/successlead',(req,res)=>{
+//     const {uniqueid,name,email,phone} = req.body;
 
-    const sqlsuccesslead = "INSERT INTO successful_lead (unique_id,fullname,email,phone) VALUES(?,?,?,?)";
-    const sqlDelete = `DELETE FROM \`${sperson_unique_id}\` WHERE unique_id = ?`;
-    con.query(sqlsuccesslead,[uniqueid,name,email,phone],(err)=>{
-       if (err) {
-           res.status(500).send({Message:'Error in SQL query in successlead API'});
-       } else {
-           con.query(sqlDelete,[uniqueid],(err)=>{
-             if (err) {
-                console.error(deleteErr);
-                res.status(500).send({ Message: "Internal Server error in deleting" });
-             } else {
-                res.send({Message:"Lead Status Success"});
-             }
-           });
-       }
-    })
-});
+//     const sqlsuccesslead = "INSERT INTO successful_lead (unique_id,fullname,email,phone) VALUES(?,?,?,?)";
+//     const sqlDelete = `DELETE FROM \`${sperson_unique_id}\` WHERE unique_id = ?`;
+//     con.query(sqlsuccesslead,[uniqueid,name,email,phone],(err)=>{
+//        if (err) {
+//            res.status(500).send({Message:'Error in SQL query in successlead API'});
+//        } else {
+//            con.query(sqlDelete,[uniqueid],(err)=>{
+//              if (err) {
+//                 console.error(deleteErr);
+//                 res.status(500).send({ Message: "Internal Server error in deleting" });
+//              } else {
+//                 res.send({Message:"Lead Status Success"});
+//              }
+//            });
+//        }
+//     })
+// });
 // Get Successful lead data
-app.get('/successfullead', (req, res) => {
-    const sqlsuccessleads = "SELECT * FROM successful_lead";
-    con.query(sqlsuccessleads, (err, result) => {
+app.get('/successfullead/:sperson_unique_id', (req, res) => {
+    const {sperson_unique_id} = req.params;
+    const sqlsuccessleads = "SELECT * FROM successful_lead WHERE sales_person_id = ?";
+    con.query(sqlsuccessleads,[sperson_unique_id], (err, result) => {
        if (err) {
           res.send({ Message: "Error in SQL Query in successfullead API" });
        } else {
@@ -327,12 +329,12 @@ app.get('/notification', (req, res) => {
             if (rows.length > 0) {
                 let completedUpdates = 0;
                 rows.forEach(row => {
-                    const uniqueid = row.uid;
+                    const uniqueid = row.unique_id;
                     console.log('Uniqueid:', uniqueid);
                     // Get Last Message Time and Reminder Time
                     const last_message = `SELECT message, reminder, sent_at FROM \`${uniqueid}\` ORDER BY sent_at DESC LIMIT 1`;
                     // Update Last Message Time and Reminder Time
-                    const updateLastSeen = `UPDATE last_message SET clientMessage = ?, last_seen = ?, reminder =? WHERE uid = ?`;
+                    const updateLastSeen = `UPDATE last_message SET requirements = ?, last_seen = ?, reminder =? WHERE unique_id = ?`;
                     con.query(last_message, [uniqueid], (error, result) => {
                         if (error) {
                             console.error('Error in retrieving Message time:', error);
@@ -369,10 +371,11 @@ app.get('/notification', (req, res) => {
 });
 
 // Notification List
-app.get('/notification-list',(req,res)=>{
-    const sqlGetdata = `SELECT * FROM last_message`;
+app.get('/notification-list/:sperson_unique_id',(req,res)=>{
+    const sperson_unique_id = req.params.sperson_unique_id;
+    const sqlGetdata = `SELECT * FROM last_message WHERE sales_person_id = ?`;
     // const getfromnewlead = `SELECT * FROM new_leads where unique_id=?`;
-    con.query(sqlGetdata,(error,rows)=>{
+    con.query(sqlGetdata,[sperson_unique_id],(error,rows)=>{
         if (error) {
             res.status(500).send({ message: 'Internal server error' });
         } else {
@@ -380,6 +383,19 @@ app.get('/notification-list',(req,res)=>{
         }
     })
 });
+// Update reminder
+// app.get('/reminder-update/:unique_id',(req,res)=>{
+//     const unique_id = req.params.unique_id;
+//     const uodateQuery = `UPDATE last_message SET reminder='0' WHERE unique_id=?`;
+
+//     con.query(uodateQuery,[unique_id],(err,result)=>{
+//         if(err){
+//              res.status(500).send({message:'Internal server error'});
+//              }else{
+//                  res.send({message:'Reminder Updated'});
+//              }
+//     })
+// })
 // Restore closed  leads
 app.get('/restore-closed-leads/:clientid',(req,res)=>{
     const {clientid} = req.params;

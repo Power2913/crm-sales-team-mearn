@@ -150,6 +150,7 @@ const password = sessionStorage.getItem( 'password');
 const first_name = sessionStorage.getItem('first_name');
 const last_name = sessionStorage.getItem('last_name');
 const sales_person_name = first_name+" "+last_name;
+const sales_person_email = sessionStorage.getItem('email');
 useEffect(() => {
     // console.log('User Details',sperson_unique_id,password);
     if (sperson_unique_id&&password) {
@@ -220,7 +221,7 @@ const[closedLeadslist, setClosedLeadlist] = useState(['']);
 useEffect(() => {
   const newclosedlead = async(e) => {
       try {
-          const response = await fetch('http://192.168.1.10:3002/closedLeadlist');
+          const response = await fetch(`http://192.168.1.10:3002/closedLeadlist/${sperson_unique_id}`);
           if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`)
           }
@@ -240,7 +241,7 @@ const[errormessage,seterrormessage] = useState("");
 useEffect(() => {
  const fetchSuccessfulLeads = async () => {
     try {
-       const response = await fetch('http://192.168.1.10:3002/successfullead');
+       const response = await fetch(`http://192.168.1.10:3002/successfullead/${sperson_unique_id}`);
        if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
        }
@@ -260,7 +261,7 @@ const [notification,setNotification] = useState(['']);
 useEffect(() => {
     const getNotification = async() => {
         try {
-            const response = await fetch('http://192.168.1.10:3002/notification-list');
+            const response = await fetch(`http://192.168.1.10:3002/notification-list/${sperson_unique_id}`);
             if (!response.ok) {
                 throw new Error(`Error! status: ${response.status}`);  
             }
@@ -300,7 +301,7 @@ let successLeadcount =  successLead.length||0;
     <>
     {isLogedin&&
         <div className="containers">
-            <div className="main">
+            <div className="main col-md-12 col-sm-12">
                 <div className="header">
                     <div className="nav">
                         <div className="tradeimex">
@@ -338,8 +339,8 @@ let successLeadcount =  successLead.length||0;
                         </div>
                     </div>
                 </div>
-                <div className="hero">
-                    <div className="sidebar">
+                <div className="hero col-md-12 col-sm-12">
+                    <div className="sidebar col-md-2 col-sm-2">
                         <div className="profile">
                             <div className="profile-logo">
 
@@ -352,10 +353,10 @@ let successLeadcount =  successLead.length||0;
                                 </div>
                                 <div className="account-info-option-two">
                                     <div className="account-name">
-                                        <span>info.nitesh@user.com</span>
+                                    <span>{sales_person_email}</span>
                                     </div>
                                     <div className="account-email">
-                                        <span>Nitesh Chauhan</span>
+                                        <span>{sales_person_name}</span>
                                     </div>
                                 </div>
                             </div>
@@ -383,9 +384,9 @@ let successLeadcount =  successLead.length||0;
                         </div>
                     </div>
                     {/* Create New Lead */}
-                    <div className="hero-content">
+                    <div className="hero-content col-md-10 colsm-10">
                         { notificationshow&&
-                        <Notificationpage notification={notification}/>
+                        <Notificationpage notification={notification} handleLeads={handleLeads}/>
                         }              
                         {newlead&&
                             <div className="hero-options">
