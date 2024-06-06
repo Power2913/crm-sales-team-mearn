@@ -6,7 +6,7 @@
     background: #f7f7f7;
 }
 
-.container {
+/* .container {
     display: flex;
     width: 100%;
     max-width: 1200px;
@@ -14,7 +14,7 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     overflow: hidden;
-}
+} */
 
 .login-bg-left {
     flex: 1;

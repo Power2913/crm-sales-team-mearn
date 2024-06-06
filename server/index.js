@@ -4,9 +4,10 @@ const cors    = require('cors');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 const multer  = require('multer');
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ dest: 'downloads/' });
 const fs = require('fs');
 const session = require('express-session');
+const path = require('path');
 
 
 const app = express();
@@ -32,19 +33,20 @@ const con = mysql.createConnection(
 // Mail transporter
 
 const transporter = nodemailer.createTransport({
-    host: 'email-smtp.ap-south-1.amazonaws.com',
-    port: 587,
-    secure: false,
+    host: 'smtp.hostinger.com',
+    port: 465,
+    secure: true,
     auth: {
-        user: 'AKIARG6CI77DA4R656X3',
-        pass: 'BKM6KD1eSstN4ElabXK0mLsQ5xfqomVPyuHvirlX6a8m'
+        user: 'info@tradeimex.in',
+        pass: 'Anuj@Tradeimex290605'
     },
+
 });
 
 // Use Login
 app.post('/login',(req,res)=>{
     const{username,password} = req.body;
-    const  sql = `SELECT * FROM sales_team WHERE unique_id = '${username}' AND password = '${password}'`;
+    const  sql = `SELECT * FROM sales_team WHERE sales_person_id = '${username}' AND password = '${password}'`;
     con.query( sql,(err,result)=>{
         if (err) {
             res.status(500).send({message:"Internal server error."});
@@ -440,9 +442,9 @@ app.get('/restore-closed-leads/:clientid',(req,res)=>{
 
 // Get Generated invoice Information
 app.post('/invoice-info', (req, res) => {
-    const {sales_person_id,unique_id,company,invoice_date,invoice_no}  = req.body;
+    const {sales_person_id,unique_id,company,invoice_date,invoice_no,fullname,email,phone}  = req.body;
 
-    sqlInvoice = `INSERT  INTO invoice (unique_id,sales_person_id,invoice_number,company,invoice_date,seen,reminded) VALUES ('${unique_id}','${sales_person_id}','${invoice_no}','${company}','${invoice_date}',0,0)`;
+    sqlInvoice = `INSERT  INTO invoice (unique_id,sales_person_id,invoice_number,fullname,email,number,company,invoice_date,seen,reminded) VALUES ('${unique_id}','${sales_person_id}','${invoice_no}','${fullname}','${email}','${phone}','${company}','${invoice_date}',0,0)`;
 
     sqlSetInvoiceData = `UPDATE  new_lead SET invoice_number = ?,invoice_date = ? WHERE unique_id = ?`;
 
@@ -472,41 +474,75 @@ app.get('/invoice-details/:sales_person_id',(req,res) =>{
    });
 });
 // MAil
-app.post('/mail', upload.single('invoice'), async (req, res) => {
+app.use('/downloads', express.static(path.join(__dirname, 'downloads')));
+app.post('/mail/:uniqueid', upload.single('invoice'), async (req, res) => {
+    const { uniqueid } = req.params;
     try {
         // Read uploaded file
         const { to, subject, message } = req.body;
-        const invoiceFilePath = req.file.path;
-        const invoiceFileName = req.file.originalname;
+        const invoiceFile = req.file;
+        const downloadDir = path.join(__dirname, 'downloads');
 
-        // Construct mail options
-        const mailOptions = {
-            from: 'info@tradeimex.in',
-            to,
-            subject,
-            text: message,
-            attachments: [
-                {
-                    filename: invoiceFileName,
-                    path: invoiceFilePath
+        // Check if the uploaded file is a PDF
+        if (invoiceFile.mimetype !== 'application/pdf') {    
+            return res.status(400).json({ error: 'Uploaded file is not a PDF' });
+        }
+
+        // Generate the new file name with the unique ID and .pdf extension
+        const newFileName = `${uniqueid}.pdf`;
+        
+        // Construct the full file path for the new file
+        const newFilePath = path.join(downloadDir, newFileName);
+
+        // Ensure the download directory exists
+        if (!fs.existsSync(downloadDir)) {
+            fs.mkdirSync(downloadDir);
+        }
+
+        // Move the file to the download directory with the new file name
+        fs.renameSync(invoiceFile.path, newFilePath);
+        console.log(`File moved to ${newFilePath}`);
+
+        // Update Invoice name in the database
+        con.query('UPDATE invoice SET invoice_file = ?, status = ? WHERE unique_id = ?', [newFileName, 'Sent', uniqueid], (err, result) => {
+            if (err) {
+                console.error('Error updating database:', err);
+                return res.status(500).json({ error: 'Failed to update database' });
+            }
+
+            // Construct mail options
+            const mailOptions = {
+                from: 'info@tradeimex.in',
+                to,
+                subject,
+                text: message,
+                attachments: [
+                    {
+                        filename: newFileName,
+                        path: newFilePath
+                    }
+                ]
+            };
+
+            // Send email with attachment
+            transporter.sendMail(mailOptions, (err, info) => {
+                if (err) {
+                    console.error('Error sending email:', err);
+                    return res.status(500).json({ error: 'Failed to send email' });
                 }
-            ]
-        };
 
-        // Send email with attachment
-        const info = await transporter.sendMail(mailOptions);
-
-        // Delete uploaded file after sending email
-        fs.unlinkSync(invoiceFilePath);
-
-        res.status(200).json({ emailsentmessage: 'Email sent successfully' });
-    }  catch (error) {
-        console.error('Error sending email:', error);
+                res.status(200).json({ emailsentmessage: 'Email sent successfully' });
+            });
+        });
+    } catch (error) {
+        console.error('Error:', error);
         res.status(500).json({ error: 'Failed to send email' });
     }
 });
+
+
   
-app.listen(3002,'192.168.1.10',()=>{
+app.listen(3002,'192.168.1.11',()=>{
      console.log('Server is successfully runnig on 3002 port')
 });
 

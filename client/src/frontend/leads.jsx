@@ -4,6 +4,7 @@ import { FaFile } from 'react-icons/fa';
 import {FaArrowLeft} from  'react-icons/fa'
 import "bootstrap/dist/css/bootstrap.min.css";
 function Leads({ leadData,handleClosedLead,handleInvoice }) {
+  const uniqueid = leadData.unique_id;
    console.log('Lead data',leadData);
   const [successleadmessage,setsuccessleadMessage]=useState([]);
   const [closingsuccess, setclosingsuccess]=useState(false);
@@ -19,7 +20,7 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://192.168.1.10:3002/newmessages', {
+      const response = await fetch('http://192.168.1.11:3002/newmessages', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -48,8 +49,8 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
 
   const fetchMessages = async () => {
     try {
-      const uniqueid = leadData.unique_id;
-      const response = await fetch(`http://192.168.1.10:3002/clientmessage/${uniqueid}`);
+   
+      const response = await fetch(`http://192.168.1.11:3002/clientmessage/${uniqueid}`);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -76,7 +77,7 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
   const handleleadsuccess = async (e)=>{
     e.preventDefault();
     try {
-      const response = await fetch('http://192.168.1.10:3002/successlead',{
+      const response = await fetch('http://192.168.1.11:3002/successlead',{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -105,7 +106,7 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
   const handlelastmessage = async (e)=>{
   
     try {
-      const response = await fetch('http://192.168.1.10:3002/notification');
+      const response = await fetch('http://192.168.1.11:3002/notification');
       if (!response.ok) {
         throw new Error(`Error! status: ${response.status}`);
       }
@@ -122,31 +123,34 @@ function Leads({ leadData,handleClosedLead,handleInvoice }) {
   };
 
   const invoiceUpload = async (e) => {
-      e.preventDefault();
+    e.preventDefault();
 
-      try {
-          const formData = new FormData();
-          formData.append('invoice', invoiceFile);
-          formData.append('to', leadData.email);
-          formData.append('subject', 'Invoice');
-          formData.append('message', 'Please find the attached invoice');
-          const response = await fetch('http://192.168.1.10:3002/mail', {
-              method: 'POST',
-              body: formData
-          });
+    try {
+        const formData = new FormData();
+        formData.append('invoice', invoiceFile);
+        formData.append('to', leadData.email);
+        formData.append('subject', 'Invoice');
+        formData.append('message', 'Please find the attached invoice');
 
-          if (!response.ok) {
-              throw new Error(`Error! status: ${response.status}`);
-          }
-          const result = await response.json();
-          Setemailsentmessage(result);
-          console.log('Email sent successfully');
-          // Handle success, reset form, show success message, etc.
-      } catch (error) {
-          console.error('Error in sending mail:', error);
-          // Handle error, show error message, etc.
-      }
-  };
+        const response = await fetch(`http://192.168.1.11:3002/mail/${uniqueid}`, {
+            method: 'POST',
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        Setemailsentmessage(result);
+        console.log('Email sent successfully');
+        // Handle success, reset form, show success message, etc.
+    } catch (error) {
+        console.error('Error in sending mail:', error);
+        // Handle error, show error message, etc.
+    }
+};
+
  
   return (
     <><a href="/sales-dashboard"><button type='button'><FaArrowLeft /></button></a><div className="conversation-page">

@@ -20,7 +20,7 @@ const handleLogin = async (e) => {
     // const data = { email: email.value, password: password.value };
     console.log('Login cred',login);
     try {
-        const response = await fetch('http://192.168.1.10:3002/login',{
+        const response = await fetch('http://192.168.1.11:3002/login',{
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(login)
@@ -30,7 +30,7 @@ const handleLogin = async (e) => {
         const user =  res.user;
         console.log('User:',user);
 
-        sessionStorage.setItem('unique_id',user.unique_id);
+        sessionStorage.setItem('unique_id',user.sales_person_id);
         sessionStorage.setItem('password',user.password);
         sessionStorage.setItem('first_name',user.first_name);
         sessionStorage.setItem('last_name',user.last_name);

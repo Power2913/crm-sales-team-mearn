@@ -3,28 +3,14 @@ import '../css/newlead.css';
 import { FaBackward, FaForward } from 'react-icons/fa';
 const Newlead = ({handleLeads}) => {
     const[newcreatedLeads,setNewcreatedLeads]=useState("");
-    // const items = [
-    //     {
-    //       fullName: 'John Doe',
-    //       email: 'john@example.com',
-    //       phoneNumber: '123-456-7890',
-    //       requirements: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
-    //     },
-    //     {
-    //       fullName: 'Jane Smith',
-    //       email: 'jane@example.com',
-    //       phoneNumber: '987-654-3210',
-    //       requirements: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-    //     },
-    //     // Add more items as needed
-    //   ];
+
     const [pageNumber, setPageNumber] = useState(1); // Current page number
     const sperson_unique_id = sessionStorage.getItem( 'unique_id');
     console.log('Sales Person Table',sperson_unique_id);
     useEffect(() => {
       const newleads = async () => {
           try {
-              const response = await fetch(`http://192.168.1.10:3002/newclient/${sperson_unique_id}?pageNumber=${pageNumber}`);
+              const response = await fetch(`http://192.168.1.11:3002/newclient/${sperson_unique_id}?pageNumber=${pageNumber}`);
               if (!response.ok) {
                   throw new Error(`HTTP error! Status: ${response.status}`);
               }

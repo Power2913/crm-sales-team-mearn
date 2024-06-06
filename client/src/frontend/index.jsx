@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from 'react'
+import React,{ useEffect, useRef, useState } from 'react'
 import '../css/index.css'
 import Newlead from './Newlead'
 import Leads from './leads';
@@ -11,6 +11,7 @@ import Invoice from './Invoice';
 import ClosedLeadChat from './ClosedLeadChat';
 import GeneratedInvoice from './GeneratedInvoice';
 import  { useNavigate } from 'react-router-dom';
+import Chart from 'chart.js/auto';
 // import axios from 'axios';
 
 function Index() {
@@ -162,7 +163,7 @@ useEffect(() => {
 // Logout
 const handleLogout = async () => {
     try {
-        const response = await fetch('http://192.168.1.10:3002/logout', {
+        const response = await fetch('http://192.168.1.11:3002/logout', {
             method: 'POST', // Change to POST
             headers: {
                 'Content-Type': 'application/json'
@@ -199,7 +200,7 @@ const handleChange =(e)=>{
 const createLead = async(e) => {
     e.preventDefault();
     try {
-        const response = await fetch('http://192.168.1.10:3002/createlead',{
+        const response = await fetch('http://192.168.1.11:3002/createlead',{
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -221,7 +222,7 @@ const[closedLeadslist, setClosedLeadlist] = useState(['']);
 useEffect(() => {
   const newclosedlead = async(e) => {
       try {
-          const response = await fetch(`http://192.168.1.10:3002/closedLeadlist/${sperson_unique_id}`);
+          const response = await fetch(`http://192.168.1.11:3002/closedLeadlist/${sperson_unique_id}`);
           if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`)
           }
@@ -241,7 +242,7 @@ const[errormessage,seterrormessage] = useState("");
 useEffect(() => {
  const fetchSuccessfulLeads = async () => {
     try {
-       const response = await fetch(`http://192.168.1.10:3002/successfullead/${sperson_unique_id}`);
+       const response = await fetch(`http://192.168.1.11:3002/successfullead/${sperson_unique_id}`);
        if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
        }
@@ -261,7 +262,7 @@ const [notification,setNotification] = useState(['']);
 useEffect(() => {
     const getNotification = async() => {
         try {
-            const response = await fetch(`http://192.168.1.10:3002/notification-list/${sperson_unique_id}`);
+            const response = await fetch(`http://192.168.1.11:3002/notification-list/${sperson_unique_id}`);
             if (!response.ok) {
                 throw new Error(`Error! status: ${response.status}`);  
             }
@@ -275,6 +276,95 @@ useEffect(() => {
     };
     getNotification();
 }, []); 
+
+// charts
+const chartRef = useRef(null); // Reference to the canvas element
+const chartInstanceRef = useRef(null); // Reference to the Chart instance
+
+
+useEffect(() => {
+    const data = [
+      { month: 'January', sales: 30 },
+      { month: 'February', sales: 45 },
+      { month: 'March', sales: 40 },
+      { month: 'April', sales: 50 },
+      { month: 'May', sales: 55 },
+      { month: 'June', sales: 60 },
+      { month: 'July', sales: 65 },
+      { month: 'August', sales: 70 },
+      { month: 'September', sales: 75 },
+      { month: 'October', sales: 80 },
+      { month: 'November', sales: 85 },
+      { month: 'December', sales: 90 },
+    ];
+
+    const ctx = chartRef.current?.getContext('2d');
+
+    if (ctx) {
+      if (chartInstanceRef.current) {
+        chartInstanceRef.current.destroy(); // Destroy previous chart instance if it exists
+      }
+
+      chartInstanceRef.current = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: data.map(row => row.month),
+          datasets: [
+            {
+              label: 'Monthly Sales',
+              data: data.map(row => row.sales),
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+    }
+    // return () => {
+    //     if (chartInstanceRef.current) {
+    //       chartInstanceRef.current.destroy(); // Cleanup on component unmount
+    //     }
+    //   };
+  });
+
+  
+
+    //     const data = [
+    //     { year: 2010, count: 10 },
+    //     { year: 2011, count: 20 },
+    //     { year: 2012, count: 15 },
+    //     { year: 2013, count: 25 },
+    //     { year: 2014, count: 22 },
+    //     { year: 2015, count: 30 },
+    //     { year: 2016, count: 28 },
+    // ];
+
+    // new Chart(
+    //     document.getElementById('myChart'),
+    //     {
+    //         type: 'bar',
+    //         data: {
+    //             labels: data.map(row => row.year),
+    //             datasets: [
+    //                 {
+    //                 label: 'Acquisitions by year',
+    //                 data: data.map(row => row.count)
+    //                 }
+    //             ]
+    //         }
+    //     }
+    //     );
+    // })();
 
 const notificationCount24HoursOld = notification.reduce((count, notification) => {
     const reminderTime = new Date(notification.reminder);
@@ -300,12 +390,12 @@ let successLeadcount =  successLead.length||0;
   return (
     <>
     {isLogedin&&
-        <div className="containers">
-            <div className="main col-md-12 col-sm-12">
-                <div className="header">
-                    <div className="nav">
+        <div>
+            <div className="container-fluid bg-blue">
+                <div className='container'>
+                    <div className='nav'>
                         <div className="tradeimex">
-                            <h2>tradeimex</h2>
+                            <h2>TRADEIMEX</h2>
                         </div>
                         <div className="welcome">
                             <h2>Welcome {sales_person_name}</h2>
@@ -335,12 +425,14 @@ let successLeadcount =  successLead.length||0;
                             )}
                             </div>
                         <div className="logout">
-                           <button onClick={handleLogout}>Logout</button>
+                            <button onClick={handleLogout}>Logout</button>
                         </div>
                     </div>
                 </div>
-                <div className="hero col-md-12 col-sm-12">
-                    <div className="sidebar col-md-2 col-sm-2">
+            </div>
+            <div className="container-fluid bg-gray">
+                <div className='row col-lg-12 col-md-12 col-sm-12'>
+                    <div className="sidebar col-lg-3 col-md-3 col-sm-2">
                         <div className="profile">
                             <div className="profile-logo">
 
@@ -353,7 +445,7 @@ let successLeadcount =  successLead.length||0;
                                 </div>
                                 <div className="account-info-option-two">
                                     <div className="account-name">
-                                    <span>{sales_person_email}</span>
+                                        <span>{sales_person_email}</span>
                                     </div>
                                     <div className="account-email">
                                         <span>{sales_person_name}</span>
@@ -363,9 +455,9 @@ let successLeadcount =  successLead.length||0;
                         </div>
                         <div className="option">
                             <li>
-                            <a href="/sales-dashboard">
-                                <span id='leadlist'><a href="/sales-dashboard">Home</a></span>
-                            </a>
+                                <a href="/sales-dashboard">
+                                    <span id='leadlist'><a href="/sales-dashboard">Home</a></span>
+                                </a>
                             </li>
                             {/* <li>
                                 <span id='leadlist' onClick={handleList}>Created Leads</span>
@@ -384,53 +476,62 @@ let successLeadcount =  successLead.length||0;
                         </div>
                     </div>
                     {/* Create New Lead */}
-                    <div className="hero-content col-md-10 colsm-10">
+                    <div className="hero-content col-lg-9 col-md-9">
                         { notificationshow&&
-                        <Notificationpage notification={notification} handleLeads={handleLeads}/>
-                        }              
+                            <Notificationpage notification={notification} handleLeads={handleLeads}/>
+                        }
                         {newlead&&
-                            <div className="hero-options">
-                                <div className="form-container">                          
-                                    <h3>Create New Lead</h3>
-                                    {message && <p className='message'>{message}</p>}
-                                    <form className="form" method='POST' onSubmit={createLead}>
-                                        <div className="form-group">
-                                        <input type="text" placeholder="Enter your full name" name='fullname'value={formlead.fullname} onChange={handleChange} className="input-field" required />
-                                        </div>
-                                        <div className="form-group">
-                                        <input type="email" placeholder="Enter your email address" name='email' value={formlead.email} onChange={handleChange} className="input-field" required/>
-                                        </div>
-                                        <div className="form-group">
-                                        <input type="tel" placeholder="Enter your phone number" name='phone' value={formlead.phone} onChange={handleChange} className="input-field" required/>
-                                        </div>
-                                        <div className="form-group">
-                                        <input type="text" name="company" id="" placeholder='Enter Company Name....' className='input-field' value={formlead.company} onChange={handleChange}/>
-                                        {/* <textarea placeholder="Enter requirements" name='requirements' value={formlead.requirements} onChange={handleChange} className="textarea-field" rows={10} required/> */}
-                                        </div>
-                                        <div className="form-group">                                  
-                                        <textarea placeholder="Enter requirements" name='requirements' value={formlead.requirements} onChange={handleChange} className="textarea-field"  required/>
-                                        </div>
-                                        <div className="form-group">     
-                                        <label htmlFor="">Set Reminder</label>                             
-                                        <input type="datetime-local" name="reminder" id="" className="input-field" value={formlead.reminder} onChange={handleChange}/>
-                                        </div>
-                                        <div className="form-group">
-                                        <button type="submit" className="submit-button">Submit</button>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div className="options">
-                                    <div className="lead-category closed-leads"  onClick={handleClosedleadlist}>
+                            <div className='hero-options'>
+                                <div className="row gap-4 col-lg-12 p-6 justify-center">
+                                    <div className="col-lg-3 col-md-3 lead-category closed-leads"  onClick={handleClosedleadlist}>
                                         <span>Closed Leads</span>
                                         <span>{closeLeadcount}</span>
                                     </div>
-                                    <div className="lead-category inprogrss-lead">
+                                    <div className="col-lg-3 col-md-3 lead-category inprogrss-lead">
                                         <span>In Progress</span>
                                         <span>10</span>
                                     </div>
-                                    <div className="lead-category successfull-leads" onClick={handleSuccessfulleadlist}>
+                                    <div className="col-lg-3 col-md-3 lead-category successfull-leads" onClick={handleSuccessfulleadlist}>
                                         <span>Successful Leads</span>
                                         <span>{successLeadcount}</span>
+                                    </div>
+                                </div>
+                                <div className='container'>
+                                    <div className='row col-lg-12'>
+                                        <div className='col-lg-6'>
+                                            <div className="form-container">
+                                                <h3>Create New Lead</h3>
+                                                {message && <p className='message'>{message}</p>}
+                                                <form className="form" method='POST' onSubmit={createLead}>
+                                                    <div className="form-group">
+                                                    <input type="text" placeholder="Enter your full name" name='fullname'value={formlead.fullname} onChange={handleChange} className="input-field" required />
+                                                    </div>
+                                                    <div className="form-group">
+                                                    <input type="email" placeholder="Enter your email address" name='email' value={formlead.email} onChange={handleChange} className="input-field" required/>
+                                                    </div>
+                                                    <div className="form-group">
+                                                    <input type="tel" placeholder="Enter your phone number" name='phone' value={formlead.phone} onChange={handleChange} className="input-field" required/>
+                                                    </div>
+                                                    <div className="form-group">
+                                                    <input type="text" name="company" id="" placeholder='Enter Company Name....' className='input-field' value={formlead.company} onChange={handleChange}/>
+                                                    {/* <textarea placeholder="Enter requirements" name='requirements' value={formlead.requirements} onChange={handleChange} className="textarea-field" rows={10} required/> */}
+                                                    </div>
+                                                    <div className="form-group">                                  
+                                                    <textarea placeholder="Enter requirements" name='requirements' value={formlead.requirements} onChange={handleChange} className="textarea-field"  required/>
+                                                    </div>
+                                                    <div className="form-group">     
+                                                    <label htmlFor="">Set Reminder</label>                             
+                                                    <input type="datetime-local" name="reminder" id="" className="input-field" value={formlead.reminder} onChange={handleChange}/>
+                                                    </div>
+                                                    <div className="form-group">
+                                                    <button type="submit" className="submit-button">Submit</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div style={{ width: '500px', height: '500px' }}>
+                                           <canvas ref={chartRef} id="myChart" width="500" height="500"></canvas>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
