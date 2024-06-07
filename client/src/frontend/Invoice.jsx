@@ -286,25 +286,28 @@ function Invoice({leadData,inVoiceClientdata,handleLeads}) {
                               <div className="invoice-billing-right-sub-left">
                                   <p><span>Net total</span>  </p>
                          
-                                    {
-                                        Array.isArray(rows) && rows.length > 0?(
-                                            rows.map((tabledata,index)=>(                                                                          
-                                                <p>
-                                                    {tabledata.tax === 'CGST' ? 'CGST+SGST':
-                                                    tabledata.tax === 'IGST' ? 'IGST'
-                                                :''}     </p>                       
-                                            ))                                          
-                                        ):(
-                                           <p>TAX</p>
+                                  {
+                                        Array.isArray(rows) && rows.length > 0 ? (
+                                            rows.some(tabledata => tabledata.tax === 'CGST') ? (
+                                                <p>CGST+SGST</p>
+                                            ) : (
+                                                rows.some(tabledata => tabledata.tax === 'IGST') ? (
+                                                    <p>IGST</p>
+                                                ) : (
+                                                    <p>TAX</p>
+                                                )
+                                            )
+                                        ) : (
+                                            <p>No data</p>
                                         )
-                                    }                               
+                                    }       
                               </div>
                               <div className="invoice-billing-right-sub-right">
                                     <p>  <span>: {nettotal}</span></p>
                                     <p>
                                         <span>: {cgsttax !== 0 ? cgsttax :
                                             igsttax !== 0 ? igsttax :
-                                            ''}</span>
+                                            ''}₹</span>
                                     </p>
                               </div>
                           </div>
@@ -312,19 +315,19 @@ function Invoice({leadData,inVoiceClientdata,handleLeads}) {
                               <div className="invoice-billing-total-left">
                                   <span>TOTAL</span>
                               </div>
-                              <div className="invoice-billing-total-right">
-                                  
-                                    {Array.isArray(rows) && rows.length > 0 ?(
-                                            rows.map((tabledata,index)=>(                                                                          
-                                                <span>:{tabledata.currency === 'Rs' ? `${total} ₹`
-                                                :tabledata.currency === 'Doller' ? `${nettotal} $`
-                                                :tabledata.currency === 'Euro' ? `${nettotal} €`:''} </span>                                
-                                            ))
-                                        ):(
-                                            <span>0</span>
-                                        )                                                                  
-                                    }
-                                 
+                              <div className="invoice-billing-total-right">                                 
+                               {
+                                    Array.isArray(rows) && rows.length > 0 ? (
+                                        <span>
+                                            {rows[0].currency === 'Rs' ? `${total.toFixed(2)} ₹`
+                                                : rows[0].currency === 'Doller' ? `${nettotal} $`
+                                                    : rows[0].currency === 'Euro' ? `${nettotal} €`
+                                                        : '0'}
+                                        </span>
+                                    ) : (
+                                        <span>0</span>
+                                    )
+                                }                            
                               </div>
                           </div>
                       </div>

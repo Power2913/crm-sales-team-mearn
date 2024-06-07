@@ -320,6 +320,30 @@ app.get('/successfullead/:sperson_unique_id', (req, res) => {
        }
     });
  });
+ app.get('/sales-data/:sperson_unique_id',(req,res)=>{
+    const {sperson_unique_id} = req.params;
+    const sqlgetsales = `
+    SELECT 
+    DATE_FORMAT(sales_date, '%Y-%m') AS sale_month,
+    SUM(amount) AS total_amount
+    FROM  sales
+    WHERE sales_person_id = ?
+    GROUP BY 
+        sale_month
+    ORDER BY 
+        sale_month
+    `;
+    con.query(sqlgetsales, [sperson_unique_id], (err, result) => {
+        if (err) {
+            console.error("Error executing SQL query:", err);
+            res.status(500).send({ Message: "Error in SQL Query in sqlgetsales API" });
+        } else {
+            res.send(result);
+            console.log(result);
+        }
+    });
+});
+
 //  notification
 app.get('/notification', (req, res) => {
     const getLastMessageQuery = 'SELECT * FROM last_message';

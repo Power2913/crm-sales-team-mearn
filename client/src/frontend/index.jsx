@@ -31,6 +31,7 @@ const [closedChat, setClosedChat ] = useState( false );
 const [closedleadschat,setClosedleadschat] = useState( null );
 const [generatedInvoice, setGeneratedInvoice] = useState( false );
 const [isLogedin,setisLogedin] = useState( false );
+const [salesdata,setsalesdata] = useState('');
 
 const navigate =  useNavigate();
 
@@ -276,7 +277,23 @@ useEffect(() => {
     };
     getNotification();
 }, []); 
-
+// Sales Data
+useEffect(() => {
+    const getsales = async(e) =>{
+        try {
+            const response = await fetch(`http://192.168.1.11:3002/sales-data/${sperson_unique_id}`);
+            if(!response.ok){
+                throw new Error(`Error! status: ${response.status}`);  
+            }
+            const data = await response.json();
+            setsalesdata(data);
+            console.log('Sales:',data);
+        } catch (error) {
+            console.error('Error fetching messages from last message:', error);
+        }
+    }
+    getsales();
+}, []);
 // charts
 const chartRef = useRef(null); // Reference to the canvas element
 const chartInstanceRef = useRef(null); // Reference to the Chart instance
