@@ -440,7 +440,7 @@ let successLeadcount =  successLead.length||0;
                                 {notificationCount24HoursOld}
                                 </span>
                             )}
-                            </div>
+                        </div>
                         <div className="logout">
                             <button onClick={handleLogout}>Logout</button>
                         </div>
@@ -546,8 +546,10 @@ let successLeadcount =  successLead.length||0;
                                                 </form>
                                             </div>
                                         </div>
-                                        <div style={{ width: '500px', height: '500px' }}>
-                                           <canvas ref={chartRef} id="myChart" width="500" height="500"></canvas>
+                                        <div className='col-lg-6'>
+                                            <div style={{ width: '500px', height: '500px' }}>
+                                                <canvas ref={chartRef} id="myChart" width="500" height="500"></canvas>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
