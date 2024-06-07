@@ -546,10 +546,8 @@ let successLeadcount =  successLead.length||0;
                                                 </form>
                                             </div>
                                         </div>
-                                        <div className='col-lg-6'>
-                                            <div style={{ width: '500px', height: '500px' }}>
-                                                <canvas ref={chartRef} id="myChart" width="500" height="500"></canvas>
-                                            </div>
+                                        <div style={{ width: '500px', height: '500px' }}>
+                                            <canvas ref={chartRef} id="myChart" width="500" height="500"></canvas>
                                         </div>
                                     </div>
                                 </div>
